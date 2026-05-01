@@ -1,13 +1,13 @@
 <template>
   <AuthLayout>
-    <div class="space-y-7">
+    <div class="space-y-5">
       <!-- Title -->
       <div>
-        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+        <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
           安全登录
         </div>
-        <h2 class="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+        <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
           欢迎回来
         </h2>
         <p class="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
@@ -49,7 +49,7 @@
       </div>
 
       <!-- Login Form -->
-      <form @submit.prevent="handleLogin" class="space-y-5">
+      <form @submit.prevent="handleLogin" class="space-y-4">
         <!-- Email Input -->
         <div>
           <label for="email" class="auth-input-label">
@@ -130,7 +130,7 @@
         <button
           type="submit"
           :disabled="isLoading || (turnstileEnabled && !turnstileToken)"
-          class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <svg
             v-if="isLoading"
@@ -436,7 +436,7 @@ function handle2FACancel(): void {
 
 <style scoped>
 .auth-input {
-  @apply h-12 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+  @apply h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
 }
 
 .auth-input-label {

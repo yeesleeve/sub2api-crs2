@@ -49,7 +49,7 @@
       ></div>
       <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"></div>
 
-      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl gap-8 px-4 py-7 sm:px-6 sm:py-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
         <section class="hidden min-w-0 flex-col justify-center lg:flex">
           <div class="max-w-xl">
             <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -113,7 +113,7 @@
         </section>
 
         <section class="flex min-w-0 items-center justify-center">
-          <div class="w-full max-w-xl">
+          <div class="w-full max-w-md">
             <div class="mb-6 text-center lg:hidden">
               <div class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-50 text-sm font-bold text-emerald-700 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300">
                 CR
@@ -122,7 +122,7 @@
               <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ heroSubtitle }}</p>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40 sm:p-8">
+            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40 sm:p-6">
               <slot />
             </div>
 

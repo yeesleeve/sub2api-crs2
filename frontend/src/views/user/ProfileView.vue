@@ -1,48 +1,126 @@
 <template>
   <AppLayout>
-    <div
-      data-testid="profile-shell"
-      class="mx-auto max-w-[950px] space-y-6"
-    >
-      <ProfileInfoCard
-        :user="user"
-        :linuxdo-enabled="linuxdoOAuthEnabled"
-        :oidc-enabled="oidcOAuthEnabled"
-        :oidc-provider-name="oidcOAuthProviderName"
-        :wechat-enabled="wechatOAuthEnabled"
-        :wechat-open-enabled="wechatOAuthOpenEnabled"
-        :wechat-mp-enabled="wechatOAuthMPEnabled"
-      />
-
-      <div
-        v-if="contactInfo"
-        class="card border-primary-200 bg-primary-50 p-6 dark:bg-primary-900/20"
-      >
-        <div class="flex items-center gap-4">
-          <div class="rounded-xl bg-primary-100 p-3 text-primary-600">
-            <Icon name="chat" size="lg" />
+    <div data-testid="profile-shell" class="space-y-6">
+      <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] lg:p-6">
+        <div class="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+          <div class="flex min-w-0 flex-col gap-5 sm:flex-row sm:items-center">
+            <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-950 text-2xl font-semibold text-white shadow-sm dark:bg-white dark:text-slate-950">
+              <img v-if="avatarUrl" :src="avatarUrl" :alt="displayName" class="h-full w-full object-cover" />
+              <span v-else>{{ avatarInitial }}</span>
+            </div>
+            <div class="min-w-0">
+              <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                账户中心
+              </div>
+              <h1 class="truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-3xl">
+                {{ displayName }}
+              </h1>
+              <p class="mt-2 truncate text-sm text-slate-500 dark:text-slate-400">
+                {{ primaryEmailDisplay || '未绑定邮箱' }}
+              </p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
+                  {{ user?.role === 'admin' ? t('profile.administrator') : t('profile.user') }}
+                </span>
+                <span
+                  class="rounded-full px-3 py-1 text-xs font-semibold"
+                  :class="user?.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300' : 'bg-rose-50 text-rose-700 dark:bg-rose-400/10 dark:text-rose-300'"
+                >
+                  {{ user?.status === 'active' ? t('common.active') : t('common.disabled') }}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 class="font-semibold text-primary-800 dark:text-primary-200">
-              {{ t('common.contactSupport') }}
-            </h3>
-            <p class="text-sm font-medium">{{ contactInfo }}</p>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div
+              v-for="metric in accountMetrics"
+              :key="metric.label"
+              class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]"
+            >
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ metric.label }}</p>
+              <p class="mt-2 truncate text-lg font-semibold text-slate-950 dark:text-white">{{ metric.value }}</p>
+              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ metric.hint }}</p>
+            </div>
           </div>
         </div>
+      </section>
+
+      <div class="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+        <div class="space-y-6">
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-5">
+              <h2 class="text-base font-semibold text-slate-950 dark:text-white">基础资料</h2>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">更新头像、用户名和登录身份信息。</p>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <ProfileAvatarCard :user="user" embedded />
+              </div>
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <ProfileEditForm :initial-username="user?.username || ''" embedded />
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <ProfileIdentityBindingsSection
+              :user="user"
+              :linuxdo-enabled="linuxdoOAuthEnabled"
+              :oidc-enabled="oidcOAuthEnabled"
+              :oidc-provider-name="oidcOAuthProviderName"
+              :wechat-enabled="wechatOAuthEnabled"
+              :wechat-open-enabled="wechatOAuthOpenEnabled"
+              :wechat-mp-enabled="wechatOAuthMPEnabled"
+              embedded
+              compact
+            />
+          </section>
+        </div>
+
+        <div class="space-y-6">
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-base font-semibold text-slate-950 dark:text-white">安全设置</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">密码和两步验证集中管理。</p>
+              </div>
+              <Icon name="shield" size="lg" class="text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div class="space-y-4">
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <ProfilePasswordForm embedded />
+              </div>
+              <ProfileTotpCard />
+            </div>
+          </section>
+
+          <section
+            v-if="contactInfo"
+            class="rounded-xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm dark:border-emerald-400/20 dark:bg-emerald-400/10"
+          >
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-emerald-600 shadow-sm dark:bg-white/10 dark:text-emerald-300">
+                <Icon name="chat" size="md" />
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-semibold text-emerald-900 dark:text-emerald-100">{{ t('common.contactSupport') }}</h3>
+                <p class="mt-1 break-words text-sm font-medium text-emerald-800 dark:text-emerald-200">{{ contactInfo }}</p>
+              </div>
+            </div>
+          </section>
+
+          <ProfileBalanceNotifyCard
+            v-if="user && balanceLowNotifyEnabled"
+            :enabled="user.balance_notify_enabled ?? true"
+            :threshold="user.balance_notify_threshold"
+            :extra-emails="user.balance_notify_extra_emails ?? []"
+            :system-default-threshold="systemDefaultThreshold"
+            :user-email="user.email"
+          />
+        </div>
       </div>
-
-      <ProfilePasswordForm />
-
-      <ProfileBalanceNotifyCard
-        v-if="user && balanceLowNotifyEnabled"
-        :enabled="user.balance_notify_enabled ?? true"
-        :threshold="user.balance_notify_threshold"
-        :extra-emails="user.balance_notify_extra_emails ?? []"
-        :system-default-threshold="systemDefaultThreshold"
-        :user-email="user.email"
-      />
-
-      <ProfileTotpCard />
     </div>
   </AppLayout>
 </template>
@@ -52,8 +130,10 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@/components/icons'
 import AppLayout from '@/components/layout/AppLayout.vue'
+import ProfileAvatarCard from '@/components/user/profile/ProfileAvatarCard.vue'
 import ProfileBalanceNotifyCard from '@/components/user/profile/ProfileBalanceNotifyCard.vue'
-import ProfileInfoCard from '@/components/user/profile/ProfileInfoCard.vue'
+import ProfileEditForm from '@/components/user/profile/ProfileEditForm.vue'
+import ProfileIdentityBindingsSection from '@/components/user/profile/ProfileIdentityBindingsSection.vue'
 import ProfilePasswordForm from '@/components/user/profile/ProfilePasswordForm.vue'
 import ProfileTotpCard from '@/components/user/profile/ProfileTotpCard.vue'
 import { isWeChatWebOAuthEnabled } from '@/api/auth'
@@ -74,6 +154,36 @@ const wechatOAuthOpenEnabled = ref<boolean | undefined>(undefined)
 const wechatOAuthMPEnabled = ref<boolean | undefined>(undefined)
 const oidcOAuthEnabled = ref(false)
 const oidcOAuthProviderName = ref('OIDC')
+
+const displayName = computed(() => user.value?.username?.trim() || user.value?.email?.trim() || t('profile.user'))
+const avatarUrl = computed(() => user.value?.avatar_url?.trim() || '')
+const avatarInitial = computed(() => displayName.value.charAt(0).toUpperCase() || 'U')
+const primaryEmailDisplay = computed(() => user.value?.email?.trim() || '')
+const memberSince = computed(() => {
+  const raw = user.value?.created_at?.trim()
+  if (!raw) return '-'
+  const date = new Date(raw)
+  if (Number.isNaN(date.getTime())) return '-'
+  return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short' }).format(date)
+})
+
+const accountMetrics = computed(() => [
+  {
+    label: '账户余额',
+    value: `$${(user.value?.balance || 0).toFixed(2)}`,
+    hint: '当前可用额度'
+  },
+  {
+    label: '并发额度',
+    value: String(user.value?.concurrency || 0),
+    hint: '同时请求限制'
+  },
+  {
+    label: '加入时间',
+    value: memberSince.value,
+    hint: '账户创建月份'
+  }
+])
 
 onMounted(async () => {
   const profileRefresh = authStore.refreshUser().catch((error) => {

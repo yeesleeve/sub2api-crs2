@@ -73,13 +73,15 @@ describe('ProfileView', () => {
     })
   })
 
-  it('renders the simplified single-column profile shell without separate stat cards', async () => {
+  it('renders the redesigned profile settings shell without separate stat cards', async () => {
     const wrapper = mount(ProfileView, {
       global: {
         stubs: {
           AppLayout: { template: '<div><slot /></div>' },
           StatCard: { template: '<div class="stat-card" />' },
-          ProfileInfoCard: { template: '<div data-testid="profile-info-card" />' },
+          ProfileAvatarCard: { template: '<div data-testid="profile-avatar-card" />' },
+          ProfileEditForm: { template: '<div data-testid="profile-edit-form" />' },
+          ProfileIdentityBindingsSection: { template: '<div data-testid="profile-bindings-card" />' },
           ProfileBalanceNotifyCard: { template: '<div data-testid="profile-balance-notify-card" />' },
           ProfilePasswordForm: { template: '<div data-testid="profile-password-form" />' },
           ProfileTotpCard: { template: '<div data-testid="profile-totp-card" />' },
@@ -91,9 +93,15 @@ describe('ProfileView', () => {
     await flushPromises()
 
     expect(wrapper.findAll('.stat-card')).toHaveLength(0)
-    expect(wrapper.get('[data-testid="profile-shell"]').exists()).toBe(true)
-    expect(wrapper.get('[data-testid="profile-shell"]').html()).toContain('profile-info-card')
-    expect(wrapper.get('[data-testid="profile-shell"]').html()).toContain('profile-password-form')
-    expect(wrapper.get('[data-testid="profile-shell"]').html()).toContain('profile-totp-card')
+    const shell = wrapper.get('[data-testid="profile-shell"]')
+    expect(shell.exists()).toBe(true)
+    expect(shell.html()).toContain('账户中心')
+    expect(shell.html()).toContain('基础资料')
+    expect(shell.html()).toContain('安全设置')
+    expect(shell.html()).toContain('profile-avatar-card')
+    expect(shell.html()).toContain('profile-edit-form')
+    expect(shell.html()).toContain('profile-bindings-card')
+    expect(shell.html()).toContain('profile-password-form')
+    expect(shell.html()).toContain('profile-totp-card')
   })
 })
