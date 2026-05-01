@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen overflow-x-hidden bg-white text-slate-950 transition-colors duration-300 dark:bg-[#050607] dark:text-white">
     <header class="fixed inset-x-0 top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#050607]/85">
-      <nav class="mx-auto flex h-16 max-w-[1180px] items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav class="mx-auto flex h-16 max-w-[1180px] items-center justify-between px-4 sm:px-6 lg:grid lg:grid-cols-[0.95fr_1.05fr] lg:gap-8 lg:px-8">
         <router-link to="/home" class="flex min-w-0 items-center gap-3">
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white">
             <img
@@ -22,7 +22,7 @@
           </div>
         </router-link>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center justify-end gap-2 lg:w-full lg:max-w-md lg:justify-self-center">
           <LocaleSwitcher class="hidden sm:block" />
           <router-link
             to="/home"
