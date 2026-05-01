@@ -1,10 +1,16 @@
 <template>
-  <BaseDialog :show="show" :title="dialogTitle" width="narrow" @close="handleClose">
+  <BaseDialog
+    :show="show"
+    :title="dialogTitle"
+    :description="success ? '支付完成后额度会自动同步到账。' : '请在有效时间内完成支付，关闭弹窗不会取消订单。'"
+    width="narrow"
+    @close="handleClose"
+  >
     <!-- QR Code + Polling State -->
     <div v-if="!success" class="flex flex-col items-center space-y-4">
       <!-- QR Code mode -->
       <template v-if="qrUrl">
-        <div class="rounded-2xl bg-white p-4 shadow-sm dark:bg-dark-800">
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.04]">
           <canvas ref="qrCanvas" class="mx-auto"></canvas>
         </div>
         <p v-if="scanHint" class="text-center text-sm text-gray-500 dark:text-gray-400">
@@ -22,10 +28,11 @@
         </div>
       </template>
       <!-- Countdown -->
-      <div v-if="expired" class="text-center">
-        <p class="text-lg font-medium text-red-500">{{ t('payment.qr.expired') }}</p>
+      <div v-if="expired" class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-center dark:border-red-400/20 dark:bg-red-400/10">
+        <p class="text-lg font-semibold text-red-600 dark:text-red-300">{{ t('payment.qr.expired') }}</p>
+        <p class="mt-1 text-xs text-red-600/80 dark:text-red-200">二维码已过期，请返回充值页重新创建订单。</p>
       </div>
-      <div v-else class="text-center">
+      <div v-else class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-center dark:border-white/10 dark:bg-white/[0.04]">
         <p class="text-sm text-gray-500 dark:text-gray-400">{{ qrUrl ? t('payment.qr.expiresIn') : '' }}</p>
         <p class="mt-1 text-2xl font-bold tabular-nums text-gray-900 dark:text-white">{{ countdownDisplay }}</p>
         <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">{{ t('payment.qr.waitingPayment') }}</p>
@@ -33,8 +40,8 @@
     </div>
     <!-- Success State -->
     <div v-else class="flex flex-col items-center space-y-4 py-4">
-      <div class="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-        <Icon name="check" size="lg" class="text-green-500" />
+      <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-300">
+        <Icon name="checkCircle" size="xl" />
       </div>
       <p class="text-lg font-bold text-gray-900 dark:text-white">{{ t('payment.result.success') }}</p>
       <div v-if="paidOrder" class="w-full rounded-xl bg-gray-50 p-4 dark:bg-dark-800">

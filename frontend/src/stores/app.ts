@@ -106,10 +106,12 @@ export const useAppStore = defineStore('app', () => {
    */
   function showToast(type: ToastType, message: string, duration?: number): string {
     const id = `toast-${++toastIdCounter}`
+    const enhanced = enhanceToastMessage(type, message)
     const toast: Toast = {
       id,
       type,
-      message,
+      message: enhanced.message,
+      title: enhanced.title,
       duration,
       startTime: duration !== undefined ? Date.now() : undefined
     }
@@ -160,6 +162,29 @@ export const useAppStore = defineStore('app', () => {
    */
   function showWarning(message: string, duration: number = 4000): string {
     return showToast('warning', message, duration)
+  }
+
+  function enhanceToastMessage(type: ToastType, message: string): { title?: string; message: string } {
+    const raw = String(message || '').trim()
+    const lower = raw.toLowerCase()
+    if (type === 'error') {
+      if (raw.includes('余额') || lower.includes('insufficient') || lower.includes('balance')) {
+        return { title: '余额不足', message: '当前余额不足以完成本次操作，请先充值或降低调用额度后重试。' }
+      }
+      if (raw.includes('密钥') || lower.includes('api key') || lower.includes('token') || lower.includes('unauthorized')) {
+        return { title: '密钥无效', message: '请检查 API Key 是否复制完整、是否已启用，并确认当前账号有对应分组权限。' }
+      }
+      if (raw.includes('兑换') || lower.includes('redeem') || lower.includes('coupon')) {
+        return { title: '兑换失败', message: raw || '兑换码可能已使用、已过期或不适用于当前账号，请核对后重试。' }
+      }
+      if (raw.includes('支付') || raw.includes('订单') || lower.includes('payment') || lower.includes('order')) {
+        return { title: '支付处理失败', message: raw || '支付通道暂时不可用，请稍后重试；已扣款时请保留订单号联系管理员。' }
+      }
+      return { title: '操作失败', message: raw || '请求没有成功，请稍后重试或联系管理员。' }
+    }
+    if (type === 'success') return { title: '操作成功', message: raw }
+    if (type === 'warning') return { title: '需要注意', message: raw }
+    return { message: raw }
   }
 
   /**

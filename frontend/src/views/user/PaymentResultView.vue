@@ -1,96 +1,69 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-dark-900">
-    <div class="w-full max-w-md space-y-6">
-      <!-- Loading -->
-      <div v-if="loading" class="flex items-center justify-center py-20">
-        <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent"></div>
+  <div class="min-h-screen bg-slate-50 px-4 py-8 text-slate-950 dark:bg-[#050607] dark:text-white sm:py-12">
+    <div class="mx-auto w-full max-w-3xl">
+      <button type="button" class="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-slate-950 dark:text-slate-400 dark:hover:text-white" @click="router.push('/home')">
+        <Icon name="arrowLeft" size="sm" />
+        返回首页
+      </button>
+
+      <div v-if="loading" class="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="mx-auto h-9 w-9 animate-spin rounded-full border-4 border-slate-900 border-t-transparent dark:border-white dark:border-t-transparent"></div>
+        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">正在核对支付结果，请稍候...</p>
       </div>
       <template v-else>
-        <!-- Status Icon -->
-        <div class="text-center">
-          <div v-if="isSuccess"
-            class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-            <svg class="h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-              stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
+        <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/30">
+          <div :class="['border-b px-6 py-7 text-center dark:border-white/10 sm:px-8', resultHeaderClass]">
+            <div :class="['mx-auto flex h-20 w-20 items-center justify-center rounded-2xl shadow-sm', resultIconWrapClass]">
+              <Icon v-if="isSuccess" name="checkCircle" size="xl" class="h-10 w-10" />
+              <div v-else-if="isPending" class="h-10 w-10 animate-spin rounded-full border-4 border-current border-t-transparent"></div>
+              <Icon v-else name="xCircle" size="xl" class="h-10 w-10" />
+            </div>
+            <h1 class="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
+              {{ statusTitle }}
+            </h1>
+            <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-600 dark:text-slate-300">
+              {{ resultDescription }}
+            </p>
           </div>
-          <div v-else-if="isPending"
-            class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30">
-            <div class="h-10 w-10 animate-spin rounded-full border-4 border-yellow-500 border-t-transparent"></div>
-          </div>
-          <div v-else
-            class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-            <svg class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </div>
-          <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
-            {{ statusTitle }}
-          </h2>
-          <p v-if="isPending" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            {{ t('payment.result.processingHint') }}
-          </p>
-        </div>
-        <!-- Order Info -->
-        <div v-if="order" class="rounded-xl bg-white p-5 shadow-sm dark:bg-dark-800">
-          <div class="space-y-3 text-sm">
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.orderId') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">#{{ order.id }}</span>
+
+          <div class="p-5 sm:p-7">
+            <div v-if="order" class="grid gap-3 sm:grid-cols-2">
+              <InfoRow :label="t('payment.orders.orderId')" :value="'#' + order.id" />
+              <InfoRow v-if="order.out_trade_no" :label="t('payment.orders.orderNo')" :value="order.out_trade_no" mono />
+              <InfoRow :label="t('payment.orders.baseAmount')" :value="'¥' + baseAmount.toFixed(2)" />
+              <InfoRow v-if="order.fee_rate > 0" :label="`${t('payment.orders.fee')} (${order.fee_rate}%)`" :value="'¥' + feeAmount.toFixed(2)" />
+              <InfoRow :label="t('payment.orders.payAmount')" :value="'¥' + order.pay_amount.toFixed(2)" highlight />
+              <InfoRow v-if="order.amount !== order.pay_amount" :label="t('payment.orders.creditedAmount')" :value="(order.order_type === 'balance' ? '$' : '¥') + order.amount.toFixed(2)" />
+              <InfoRow :label="t('payment.orders.paymentMethod')" :value="t(paymentMethodI18nKey(order.payment_type), normalizedOrderPaymentType(order.payment_type))" />
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                <div class="text-xs text-slate-500 dark:text-slate-400">{{ t('payment.orders.status') }}</div>
+                <div class="mt-2"><OrderStatusBadge :status="order.status" /></div>
+              </div>
             </div>
-            <div v-if="order.out_trade_no" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.orderNo') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">{{ order.out_trade_no }}</span>
+
+            <div v-else-if="returnInfo" class="grid gap-3 sm:grid-cols-2">
+              <InfoRow v-if="returnInfo.outTradeNo" :label="t('payment.orders.orderId')" :value="returnInfo.outTradeNo" mono />
+              <InfoRow v-if="returnInfo.money" :label="t('payment.orders.payAmount')" :value="'¥' + returnInfo.money" highlight />
+              <InfoRow v-if="returnInfo.type" :label="t('payment.orders.paymentMethod')" :value="t(paymentMethodI18nKey(returnInfo.type), normalizedOrderPaymentType(returnInfo.type))" />
             </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.baseAmount') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">&#165;{{ baseAmount.toFixed(2) }}</span>
+
+            <div v-if="!isSuccess" :class="['mt-5 rounded-2xl border px-4 py-3 text-sm leading-6', resultNoticeClass]">
+              <strong class="font-semibold">{{ resultNoticeTitle }}</strong>
+              <span class="ml-1">{{ resultNoticeText }}</span>
             </div>
-            <div v-if="order.fee_rate > 0" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.fee') }} ({{ order.fee_rate }}%)</span>
-              <span class="font-medium text-gray-900 dark:text-white">&#165;{{ feeAmount.toFixed(2) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.payAmount') }}</span>
-              <span class="font-bold text-primary-600 dark:text-primary-400">&#165;{{ order.pay_amount.toFixed(2) }}</span>
-            </div>
-            <div v-if="order.amount !== order.pay_amount" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.creditedAmount') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">{{ order.order_type === 'balance' ? '$' : '¥' }}{{ order.amount.toFixed(2) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.paymentMethod') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">{{ t(paymentMethodI18nKey(order.payment_type), normalizedOrderPaymentType(order.payment_type)) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.status') }}</span>
-              <OrderStatusBadge :status="order.status" />
+
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button class="btn btn-secondary flex-1" @click="router.push('/purchase')">
+                <Icon name="creditCard" size="md" />
+                {{ t('payment.result.backToRecharge') }}
+              </button>
+              <button class="btn btn-primary flex-1" @click="router.push('/orders')">
+                <Icon name="document" size="md" />
+                {{ t('payment.result.viewOrders') }}
+              </button>
             </div>
           </div>
-        </div>
-        <!-- EasyPay return info (when no order loaded) -->
-        <div v-else-if="returnInfo" class="rounded-xl bg-white p-5 shadow-sm dark:bg-dark-800">
-          <div class="space-y-3 text-sm">
-            <div v-if="returnInfo.outTradeNo" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.orderId') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">{{ returnInfo.outTradeNo }}</span>
-            </div>
-            <div v-if="returnInfo.money" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.payAmount') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">&#165;{{ returnInfo.money }}</span>
-            </div>
-            <div v-if="returnInfo.type" class="flex justify-between">
-              <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.paymentMethod') }}</span>
-              <span class="font-medium text-gray-900 dark:text-white">{{ t(paymentMethodI18nKey(returnInfo.type), normalizedOrderPaymentType(returnInfo.type)) }}</span>
-            </div>
-          </div>
-        </div>
-        <!-- Actions -->
-        <div class="flex gap-3">
-          <button class="btn btn-secondary flex-1" @click="router.push('/purchase')">{{ t('payment.result.backToRecharge') }}</button>
-          <button class="btn btn-primary flex-1" @click="router.push('/orders')">{{ t('payment.result.viewOrders') }}</button>
-        </div>
+        </section>
       </template>
     </div>
   </div>
@@ -101,6 +74,8 @@ import { ref, computed, onBeforeUnmount, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import OrderStatusBadge from '@/components/payment/OrderStatusBadge.vue'
+import Icon from '@/components/icons/Icon.vue'
+import InfoRow from '@/components/payment/PaymentResultInfoRow.vue'
 import {
   PAYMENT_RECOVERY_STORAGE_KEY,
   clearPaymentRecoverySnapshot,
@@ -163,6 +138,35 @@ const statusTitle = computed(() => {
     return t('payment.result.processing')
   }
   return t('payment.result.failed')
+})
+
+const resultDescription = computed(() => {
+  if (isSuccess.value) return '支付已完成，系统会自动把额度或订阅权益同步到你的账户。'
+  if (isPending.value) return t('payment.result.processingHint')
+  return '支付未完成或同步失败，请先核对付款状态，再根据下方提示继续处理。'
+})
+
+const resultHeaderClass = computed(() => {
+  if (isSuccess.value) return 'border-emerald-100 bg-emerald-50/80 text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300'
+  if (isPending.value) return 'border-amber-100 bg-amber-50/80 text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300'
+  return 'border-red-100 bg-red-50/80 text-red-700 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300'
+})
+
+const resultIconWrapClass = computed(() => {
+  if (isSuccess.value) return 'bg-white text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-300'
+  if (isPending.value) return 'bg-white text-amber-600 dark:bg-amber-400/10 dark:text-amber-300'
+  return 'bg-white text-red-600 dark:bg-red-400/10 dark:text-red-300'
+})
+
+const resultNoticeClass = computed(() => {
+  if (isPending.value) return 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200'
+  return 'border-red-200 bg-red-50 text-red-800 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-200'
+})
+
+const resultNoticeTitle = computed(() => (isPending.value ? '正在同步：' : '处理建议：'))
+const resultNoticeText = computed(() => {
+  if (isPending.value) return '请不要重复支付同一订单。稍等 10-30 秒后刷新订单页，或等待系统自动完成。'
+  return '如果你已经扣款但订单失败，请保存订单号并联系客服核对；如果未扣款，可返回充值页重新创建订单。'
 })
 
 function normalizedOrderPaymentType(paymentType: string): string {

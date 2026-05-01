@@ -317,10 +317,23 @@
               <p class="mt-4 text-sm leading-7 text-slate-300">兼容 OpenAI 风格请求，把账号池、额度、统计和通道健康放在服务端统一处理。</p>
             </div>
             <div class="grid gap-3 sm:grid-cols-2">
-              <div v-for="item in faqItems" :key="item.q" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+              <div v-for="item in faqItems" :key="item.q" class="rounded-xl border border-white/10 bg-white/[0.06] p-4 transition hover:border-white/20 hover:bg-white/[0.08]">
                 <h3 class="text-sm font-semibold">{{ item.q }}</h3>
                 <p class="mt-2 text-xs leading-5 text-slate-400">{{ item.a }}</p>
               </div>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-3 lg:grid-cols-3">
+            <div v-for="flow in operationFlow" :key="flow.title" class="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+              <div class="mb-4 flex items-center justify-between">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                  <Icon :name="flow.icon" size="md" :class="flow.color" />
+                </span>
+                <span class="text-xs font-semibold text-slate-500">{{ flow.step }}</span>
+              </div>
+              <h3 class="text-sm font-semibold">{{ flow.title }}</h3>
+              <p class="mt-2 text-xs leading-6 text-slate-400">{{ flow.desc }}</p>
             </div>
           </div>
 
@@ -333,7 +346,7 @@
                 </div>
                 <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">准备好开始统一管理你的 AI 订阅了吗？</h2>
                 <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                  进入控制台即可管理密钥、额度、充值和使用记录，后续运营页面会继续按这套视觉系统统一打磨。
+                  进入控制台即可完成密钥创建、余额充值、模型调用和订单追踪。正式域名上线后，再补齐支付测试、备份和监控。
                 </p>
               </div>
               <router-link
@@ -460,6 +473,36 @@ const faqItems = [
   { q: '模型不可用怎么办？', a: '可在通道状态与可用模型页查看线路状态，后续可继续扩展自动调度策略。' },
   { q: '适合商业运营吗？', a: '页面、充值、用户控制台和后台配置都按正式站点逐步打磨。' }
 ] as const
+
+const operationFlow: Array<{
+  step: string
+  title: string
+  desc: string
+  icon: IconName
+  color: string
+}> = [
+  {
+    step: '01',
+    title: '接入模型能力',
+    desc: '把 Claude、OpenAI、Gemini 等上游能力统一成平台可管理的通道。',
+    icon: 'cloud',
+    color: 'text-blue-300'
+  },
+  {
+    step: '02',
+    title: '发放用户密钥',
+    desc: '用户只使用平台生成的 API Key，额度、权限和调用记录都可追踪。',
+    icon: 'key',
+    color: 'text-emerald-300'
+  },
+  {
+    step: '03',
+    title: '闭环运营结算',
+    desc: '充值、订单、余额、异常提示形成完整闭环，方便长期运营维护。',
+    icon: 'creditCard',
+    color: 'text-amber-300'
+  }
+]
 
 const providers = [
   { name: 'Claude', short: 'C', mode: 'Messages API', latency: '312ms', health: '96%', color: 'bg-orange-500' },

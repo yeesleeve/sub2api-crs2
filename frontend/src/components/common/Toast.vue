@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div
-      class="pointer-events-none fixed right-4 top-4 z-[9999] space-y-3"
+      class="pointer-events-none fixed right-3 top-3 z-[9999] w-[calc(100vw-1.5rem)] space-y-3 sm:right-4 sm:top-4 sm:w-auto"
       aria-live="polite"
       aria-atomic="true"
     >
@@ -17,16 +17,15 @@
           v-for="toast in toasts"
           :key="toast.id"
           :class="[
-            'pointer-events-auto min-w-[320px] max-w-md overflow-hidden rounded-lg shadow-lg',
-            'bg-white dark:bg-dark-800',
-            'border-l-4',
+            'pointer-events-auto w-full overflow-hidden rounded-2xl border shadow-xl shadow-slate-950/10 sm:min-w-[340px] sm:max-w-md',
+            'bg-white/95 backdrop-blur dark:bg-[#0b0d10]/95',
             getBorderColor(toast.type)
           ]"
         >
           <div class="p-4">
             <div class="flex items-start gap-3">
               <!-- Icon -->
-              <div class="mt-0.5 flex-shrink-0">
+              <div :class="['mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl', getIconWrapColor(toast.type)]">
                 <Icon
                   :name="getToastIconName(toast.type)"
                   size="md"
@@ -64,7 +63,7 @@
           </div>
 
           <!-- Progress bar -->
-          <div v-if="toast.duration" class="h-1 bg-gray-100 dark:bg-dark-700">
+            <div v-if="toast.duration" class="h-1 bg-slate-100 dark:bg-white/10">
             <div
               :class="['h-full toast-progress', getProgressBarColor(toast.type)]"
               :style="{ animationDuration: `${toast.duration}ms` }"
@@ -101,9 +100,9 @@ const getToastIconName = (type: string): 'checkCircle' | 'xCircle' | 'exclamatio
 
 const getIconColor = (type: string): string => {
   const colors: Record<string, string> = {
-    success: 'text-green-500',
+    success: 'text-emerald-600 dark:text-emerald-300',
     error: 'text-red-500',
-    warning: 'text-yellow-500',
+    warning: 'text-amber-500',
     info: 'text-blue-500'
   }
   return colors[type] || colors.info
@@ -111,19 +110,29 @@ const getIconColor = (type: string): string => {
 
 const getBorderColor = (type: string): string => {
   const colors: Record<string, string> = {
-    success: 'border-green-500',
-    error: 'border-red-500',
-    warning: 'border-yellow-500',
-    info: 'border-blue-500'
+    success: 'border-emerald-200 dark:border-emerald-400/20',
+    error: 'border-red-200 dark:border-red-400/20',
+    warning: 'border-amber-200 dark:border-amber-400/20',
+    info: 'border-blue-200 dark:border-blue-400/20'
+  }
+  return colors[type] || colors.info
+}
+
+const getIconWrapColor = (type: string): string => {
+  const colors: Record<string, string> = {
+    success: 'bg-emerald-50 dark:bg-emerald-400/10',
+    error: 'bg-red-50 dark:bg-red-400/10',
+    warning: 'bg-amber-50 dark:bg-amber-400/10',
+    info: 'bg-blue-50 dark:bg-blue-400/10'
   }
   return colors[type] || colors.info
 }
 
 const getProgressBarColor = (type: string): string => {
   const colors: Record<string, string> = {
-    success: 'bg-green-500',
+    success: 'bg-emerald-500',
     error: 'bg-red-500',
-    warning: 'bg-yellow-500',
+    warning: 'bg-amber-500',
     info: 'bg-blue-500'
   }
   return colors[type] || colors.info

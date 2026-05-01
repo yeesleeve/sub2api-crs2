@@ -15,18 +15,13 @@
     </template>
 
     <template v-else-if="!data || data.length === 0">
-      <div class="rounded-xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+      <div class="rounded-2xl border border-dashed border-slate-200 bg-white p-4 text-center shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
         <slot name="empty">
-          <div class="flex flex-col items-center">
-            <Icon
-              name="inbox"
-              size="xl"
-              class="mb-4 h-12 w-12 text-gray-400 dark:text-dark-500"
-            />
-            <p class="text-lg font-medium text-gray-900 dark:text-gray-100">
-              {{ t('empty.noData') }}
-            </p>
-          </div>
+          <EmptyState
+            icon="inbox"
+            :title="t('empty.noData')"
+            description="这里暂时没有记录，完成第一步操作后数据会自动出现在这里。"
+          />
         </slot>
       </div>
     </template>
@@ -35,7 +30,7 @@
       <div
         v-for="(row, index) in sortedData"
         :key="resolveRowKey(row, index)"
-        class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]"
+        class="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-[#0b0d10] dark:hover:border-white/20"
       >
         <div class="space-y-2.5">
           <div
@@ -69,17 +64,17 @@
       'is-scrollable': isScrollable
     }"
   >
-    <table class="w-full min-w-max divide-y divide-gray-200 dark:divide-dark-700">
-      <thead class="table-header bg-gray-50 dark:bg-dark-800">
+    <table class="w-full min-w-max">
+      <thead class="table-header bg-slate-50/95 dark:bg-white/[0.04]">
         <tr>
           <th
             v-for="(column, index) in columns"
             :key="column.key"
             scope="col"
             :class="[
-              'sticky-header-cell py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-dark-400',
+              'sticky-header-cell py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400',
               getAdaptivePaddingClass(),
-              { 'cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-700': column.sortable },
+              { 'cursor-pointer hover:bg-slate-100 dark:hover:bg-white/[0.06]': column.sortable },
               getStickyColumnClass(column, index),
               column.class
             ]"
@@ -118,12 +113,12 @@
           </th>
         </tr>
       </thead>
-      <tbody class="table-body divide-y divide-gray-200 bg-white dark:divide-dark-700 dark:bg-dark-900">
+      <tbody class="table-body divide-y divide-slate-100 bg-white dark:divide-white/10 dark:bg-[#0b0d10]">
         <!-- Loading skeleton -->
         <tr v-if="loading" v-for="i in 5" :key="i">
           <td v-for="column in columns" :key="column.key" :class="['whitespace-nowrap py-4', getAdaptivePaddingClass()]">
             <div class="animate-pulse">
-              <div class="h-4 w-3/4 rounded bg-gray-200 dark:bg-dark-700"></div>
+              <div class="h-4 w-3/4 rounded bg-slate-200 dark:bg-white/10"></div>
             </div>
           </td>
         </tr>
@@ -132,19 +127,14 @@
         <tr v-else-if="!data || data.length === 0">
           <td
             :colspan="columns.length"
-            :class="['py-12 text-center text-gray-500 dark:text-dark-400', getAdaptivePaddingClass()]"
+            :class="['py-10 text-center text-slate-500 dark:text-slate-400', getAdaptivePaddingClass()]"
           >
             <slot name="empty">
-              <div class="flex flex-col items-center">
-                <Icon
-                  name="inbox"
-                  size="xl"
-                  class="mb-4 h-12 w-12 text-gray-400 dark:text-dark-500"
-                />
-                <p class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  {{ t('empty.noData') }}
-                </p>
-              </div>
+              <EmptyState
+                icon="inbox"
+                :title="t('empty.noData')"
+                description="这里暂时没有记录，完成第一步操作后数据会自动出现在这里。"
+              />
             </slot>
           </td>
         </tr>
@@ -162,13 +152,13 @@
             :data-row-id="resolveRowKey(sortedData[virtualRow.index], virtualRow.index)"
             :data-index="virtualRow.index"
             :ref="measureElement"
-            class="hover:bg-gray-50 dark:hover:bg-dark-800"
+            class="group transition-colors hover:bg-slate-50/80 dark:hover:bg-white/[0.04]"
           >
             <td
               v-for="(column, colIndex) in columns"
               :key="column.key"
               :class="[
-                'whitespace-nowrap py-4 text-sm text-gray-900 dark:text-gray-100',
+                'whitespace-nowrap py-3.5 text-sm text-slate-800 dark:text-slate-100',
                 getAdaptivePaddingClass(),
                 getStickyColumnClass(column, colIndex),
                 column.class
@@ -200,7 +190,7 @@ import { computed, ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { useI18n } from 'vue-i18n'
 import type { Column } from './types'
-import Icon from '@/components/icons/Icon.vue'
+import EmptyState from '@/components/common/EmptyState.vue'
 
 const { t } = useI18n()
 
@@ -714,6 +704,15 @@ defineExpose({
   flex: 1;
   min-height: 0;
   isolation: isolate;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.dark .table-wrapper {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgb(11 13 16);
 }
 
 /* 表头容器，确保在滚动时覆盖表体内容 */
@@ -721,11 +720,11 @@ defineExpose({
   position: sticky;
   top: 0;
   z-index: 200;
-  background-color: rgb(249 250 251);
+  background-color: rgb(248 250 252);
 }
 
 .dark .table-wrapper .table-header {
-  background-color: rgb(31 41 55);
+  background-color: rgb(18 20 24);
 }
 
 /* 表体保持在表头下方 */
@@ -739,11 +738,11 @@ defineExpose({
   position: sticky;
   top: 0;
   z-index: 210; /* 必须高于所有表体内容 */
-  background-color: rgb(249 250 251);
+  background-color: rgb(248 250 252);
 }
 
 .dark .sticky-header-cell {
-  background-color: rgb(31 41 55);
+  background-color: rgb(18 20 24);
 }
 
 /* Sticky 列基础样式 */
@@ -783,16 +782,16 @@ tbody .sticky-col {
 }
 
 .dark tbody .sticky-col {
-  background-color: rgb(17 24 39);
+  background-color: rgb(11 13 16);
 }
 
 /* hover 状态保持 */
 tbody tr:hover .sticky-col {
-  background-color: rgb(249 250 251);
+  background-color: rgb(248 250 252);
 }
 
 .dark tbody tr:hover .sticky-col {
-  background-color: rgb(31 41 55);
+  background-color: rgb(22 24 28);
 }
 
 /* 阴影只在可滚动时显示 */

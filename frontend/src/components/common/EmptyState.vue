@@ -1,11 +1,17 @@
 <template>
   <div class="empty-state">
-    <!-- Icon -->
     <div
-      class="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-100 dark:bg-dark-800"
+      class="empty-state-visual"
     >
       <slot name="icon">
-        <component v-if="icon" :is="icon" class="empty-state-icon h-10 w-10" aria-hidden="true" />
+        <Icon
+          v-if="typeof icon === 'string'"
+          :name="icon as IconName"
+          size="xl"
+          class="empty-state-icon"
+          aria-hidden="true"
+        />
+        <component v-else-if="icon" :is="icon" class="empty-state-icon h-10 w-10" aria-hidden="true" />
         <svg
           v-else
           class="empty-state-icon h-10 w-10"
@@ -28,12 +34,10 @@
       {{ displayTitle }}
     </h3>
 
-    <!-- Description -->
-    <p class="empty-state-description">
-      {{ description }}
+    <p v-if="displayDescription" class="empty-state-description">
+      {{ displayDescription }}
     </p>
 
-    <!-- Action -->
     <div v-if="actionText || $slots.action" class="mt-6">
       <slot name="action">
         <component
@@ -43,7 +47,7 @@
           @click="!actionTo && $emit('action')"
           class="btn btn-primary"
         >
-          <Icon v-if="actionIcon" name="plus" size="md" class="mr-2" />
+          <Icon v-if="actionIcon" :name="actionIconName" size="md" class="mr-2" />
           {{ actionText }}
         </component>
       </slot>
@@ -58,23 +62,27 @@ import type { Component } from 'vue'
 import Icon from '@/components/icons/Icon.vue'
 
 const { t } = useI18n()
+type IconName = InstanceType<typeof Icon>['$props']['name']
 
 interface Props {
-  icon?: Component | string
+  icon?: Component | IconName
   title?: string
   description?: string
   actionText?: string
   actionTo?: string | object
   actionIcon?: boolean
+  actionIconName?: IconName
   message?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   description: '',
-  actionIcon: true
+  actionIcon: true,
+  actionIconName: 'plus'
 })
 
 const displayTitle = computed(() => props.title || t('common.noData'))
+const displayDescription = computed(() => props.description || props.message || '')
 
 defineEmits(['action'])
 </script>

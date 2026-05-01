@@ -14,12 +14,17 @@
         <div ref="dialogRef" :class="['modal-content', widthClasses]" @click.stop>
           <!-- Header -->
           <div class="modal-header">
-            <h3 :id="dialogId" class="modal-title">
-              {{ title }}
-            </h3>
+            <div class="min-w-0">
+              <h3 :id="dialogId" class="modal-title">
+                {{ title }}
+              </h3>
+              <p v-if="description" class="mt-1 text-sm leading-5 text-slate-500 dark:text-slate-400">
+                {{ description }}
+              </p>
+            </div>
             <button
               @click="emit('close')"
-              class="-mr-2 rounded-xl p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-dark-500 dark:hover:bg-dark-700 dark:hover:text-dark-300"
+              class="-mr-2 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-white/[0.08] dark:hover:text-slate-200"
               aria-label="Close modal"
             >
               <Icon name="x" size="md" />
@@ -58,6 +63,7 @@ type DialogWidth = 'narrow' | 'normal' | 'wide' | 'extra-wide' | 'full'
 interface Props {
   show: boolean
   title: string
+  description?: string
   width?: DialogWidth
   closeOnEscape?: boolean
   closeOnClickOutside?: boolean

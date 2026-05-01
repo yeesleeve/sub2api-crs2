@@ -1,16 +1,41 @@
 <template>
   <AppLayout>
-    <div class="space-y-4">
-      <!-- Filters -->
-      <div class="card p-4">
-        <div class="flex flex-wrap items-center gap-3">
-          <Select v-model="currentFilter" :options="statusFilters" class="w-36" @change="fetchOrders" />
-          <div class="flex flex-1 items-center justify-end gap-2">
+    <div class="space-y-5">
+      <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="grid gap-4 p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+              支付与到账追踪
+            </div>
+            <h1 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">订单中心</h1>
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+              查看充值、支付、退款和到账状态。若支付后仍显示处理中，系统会自动同步，也可以手动刷新。
+            </p>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
+            <div v-for="stat in orderStats" :key="stat.label" class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.04]">
+              <div class="text-xs text-slate-500 dark:text-slate-400">{{ stat.label }}</div>
+              <div class="mt-1 text-lg font-semibold text-slate-950 dark:text-white">{{ stat.value }}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <Select v-model="currentFilter" :options="statusFilters" class="w-40" @change="fetchOrders" />
             <button @click="fetchOrders" :disabled="loading" class="btn btn-secondary" :title="t('common.refresh')">
               <Icon name="refresh" size="md" :class="loading ? 'animate-spin' : ''" />
+              <span class="hidden sm:inline">{{ t('common.refresh') }}</span>
             </button>
-            <button class="btn btn-primary" @click="router.push('/purchase')">{{ t('payment.result.backToRecharge') }}</button>
           </div>
+          <button class="btn btn-primary" @click="router.push('/purchase')">
+            <Icon name="creditCard" size="md" />
+            {{ t('payment.result.backToRecharge') }}
+          </button>
         </div>
       </div>
 
@@ -18,11 +43,11 @@
       <OrderTable :orders="orders" :loading="loading">
         <template #actions="{ row }">
           <div class="flex items-center gap-2">
-            <button v-if="row.status === 'PENDING'" @click="handleCancel(row.id)" class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-yellow-600 hover:bg-yellow-50 dark:text-yellow-400 dark:hover:bg-yellow-900/20">
+            <button v-if="row.status === 'PENDING'" @click="handleCancel(row.id)" class="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300">
               <Icon name="x" size="sm" />
               <span>{{ t('payment.orders.cancel') }}</span>
             </button>
-            <button v-if="canRequestRefund(row)" @click="openRefundDialog(row)" class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-purple-600 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/20">
+            <button v-if="canRequestRefund(row)" @click="openRefundDialog(row)" class="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50 px-2.5 py-1.5 text-xs font-semibold text-violet-700 transition hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-400/10 dark:text-violet-300">
               <Icon name="dollar" size="sm" />
               <span>{{ t('payment.orders.requestRefund') }}</span>
             </button>
@@ -42,20 +67,27 @@
     </div>
 
     <!-- Cancel Confirm Dialog -->
-    <BaseDialog :show="!!cancelTargetId" :title="t('payment.orders.cancel')" width="narrow" @close="cancelTargetId = null">
-      <p class="text-sm text-gray-600 dark:text-gray-300">{{ t('payment.confirmCancel') }}</p>
-      <template #footer>
-        <div class="flex justify-end gap-3">
-          <button class="btn btn-secondary" @click="cancelTargetId = null">{{ t('common.cancel') }}</button>
-          <button class="btn btn-danger" :disabled="actionLoading" @click="confirmCancel">{{ actionLoading ? t('common.processing') : t('payment.orders.cancel') }}</button>
-        </div>
-      </template>
-    </BaseDialog>
+    <ConfirmDialog
+      :show="!!cancelTargetId"
+      :title="t('payment.orders.cancel')"
+      :message="t('payment.confirmCancel')"
+      hint="取消后二维码将失效；如果已经完成付款，请先等待系统同步或查看支付结果页。"
+      :confirm-text="actionLoading ? t('common.processing') : t('payment.orders.cancel')"
+      :cancel-text="t('common.cancel')"
+      danger
+      @cancel="cancelTargetId = null"
+      @confirm="confirmCancel"
+    />
 
     <!-- Refund Dialog -->
-    <BaseDialog :show="!!refundTarget" :title="t('payment.orders.requestRefund')" @close="refundTarget = null">
+    <BaseDialog
+      :show="!!refundTarget"
+      :title="t('payment.orders.requestRefund')"
+      description="提交退款前请填写清楚原因，便于后台核对支付流水和到账记录。"
+      @close="refundTarget = null"
+    >
       <div v-if="refundTarget" class="space-y-4">
-        <div class="rounded-xl bg-gray-50 p-4 dark:bg-dark-800">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
           <div class="flex justify-between text-sm">
             <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.orderId') }}</span>
             <span class="font-mono text-gray-900 dark:text-white">#{{ refundTarget.id }}</span>
@@ -91,6 +123,7 @@ import type { PaymentOrder } from '@/types/payment'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import BaseDialog from '@/components/common/BaseDialog.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import Select from '@/components/common/Select.vue'
 import Icon from '@/components/icons/Icon.vue'
 import OrderTable from '@/components/payment/OrderTable.vue'
@@ -116,6 +149,17 @@ const statusFilters = computed(() => [
   { value: 'FAILED', label: t('payment.status.failed') },
   { value: 'REFUNDED', label: t('payment.status.refunded') },
 ])
+
+const orderStats = computed(() => {
+  const completed = orders.value.filter((order) => order.status === 'COMPLETED' || order.status === 'PAID').length
+  const pending = orders.value.filter((order) => order.status === 'PENDING').length
+  const failed = orders.value.filter((order) => order.status === 'FAILED' || order.status === 'EXPIRED').length
+  return [
+    { label: '当前页订单', value: String(orders.value.length) },
+    { label: '已完成', value: String(completed) },
+    { label: '待处理/异常', value: String(pending + failed) },
+  ]
+})
 
 async function fetchOrders() {
   loading.value = true

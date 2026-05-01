@@ -1,16 +1,24 @@
 <template>
   <BaseDialog :show="show" :title="title" width="narrow" @close="handleCancel">
-    <div class="space-y-4">
-      <p class="text-sm text-gray-600 dark:text-gray-400">{{ message }}</p>
+    <div class="flex gap-4">
+      <div :class="['flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl', toneClass.iconWrap]">
+        <Icon :name="danger ? 'exclamationTriangle' : icon" size="lg" :class="toneClass.icon" />
+      </div>
+      <div class="min-w-0 space-y-3">
+        <p class="text-sm leading-6 text-slate-600 dark:text-slate-300">{{ message }}</p>
+        <div v-if="hint" :class="['rounded-xl border px-3 py-2 text-xs leading-5', toneClass.hint]">
+          {{ hint }}
+        </div>
+      </div>
       <slot></slot>
     </div>
 
     <template #footer>
-      <div class="flex justify-end space-x-3">
+      <div class="flex w-full flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
         <button
           @click="handleCancel"
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:border-dark-600 dark:bg-dark-700 dark:text-gray-200 dark:hover:bg-dark-600 dark:focus:ring-offset-dark-800"
+          class="btn btn-secondary"
         >
           {{ cancelText }}
         </button>
@@ -18,10 +26,10 @@
           @click="handleConfirm"
           type="button"
           :class="[
-            'rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-800',
+            'btn',
             danger
-              ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
-              : 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-500'
+              ? 'btn-danger'
+              : 'btn-primary'
           ]"
         >
           {{ confirmText }}
@@ -35,13 +43,17 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseDialog from './BaseDialog.vue'
+import Icon from '@/components/icons/Icon.vue'
 
 const { t } = useI18n()
+type IconName = InstanceType<typeof Icon>['$props']['name']
 
 interface Props {
   show: boolean
   title: string
   message: string
+  hint?: string
+  icon?: IconName
   confirmText?: string
   cancelText?: string
   danger?: boolean
@@ -53,11 +65,26 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  danger: false
+  danger: false,
+  icon: 'questionCircle'
 })
 
 const confirmText = computed(() => props.confirmText || t('common.confirm'))
 const cancelText = computed(() => props.cancelText || t('common.cancel'))
+const toneClass = computed(() => {
+  if (props.danger) {
+    return {
+      iconWrap: 'bg-red-50 text-red-600 dark:bg-red-500/10',
+      icon: 'text-red-600 dark:text-red-400',
+      hint: 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300'
+    }
+  }
+  return {
+    iconWrap: 'bg-slate-100 text-slate-700 dark:bg-white/[0.08]',
+    icon: 'text-slate-700 dark:text-slate-200',
+    hint: 'border-slate-200 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300'
+  }
+})
 
 const emit = defineEmits<Emits>()
 

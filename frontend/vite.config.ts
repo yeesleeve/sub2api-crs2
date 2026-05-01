@@ -64,6 +64,7 @@ export default defineConfig(({ mode }) => {
   build: {
     outDir: '../backend/internal/web/dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 900,
     rollupOptions: {
       output: {
         /**
@@ -82,9 +83,19 @@ export default defineConfig(({ mode }) => {
               return 'vendor-vue'
             }
 
-            // UI 工具库（较大，单独分离）
-            if (id.includes('/@vueuse/') || id.includes('/xlsx/')) {
-              return 'vendor-ui'
+            // Excel 导入导出体积较大，单独分离，避免挤进通用 UI chunk
+            if (id.includes('/xlsx/')) {
+              return 'vendor-excel'
+            }
+
+            // UI 工具库
+            if (id.includes('/@vueuse/')) {
+              return 'vendor-vueuse'
+            }
+
+            // 二维码仅支付链路使用
+            if (id.includes('/qrcode/')) {
+              return 'vendor-qrcode'
             }
 
             // 图表库

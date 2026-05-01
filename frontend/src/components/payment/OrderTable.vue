@@ -1,10 +1,10 @@
 <template>
   <DataTable :columns="columns" :data="orders" :loading="loading">
     <template #cell-id="{ value }">
-      <span class="font-mono text-sm">#{{ value }}</span>
+      <span class="inline-flex rounded-lg bg-slate-100 px-2 py-1 font-mono text-xs font-semibold text-slate-700 dark:bg-white/[0.06] dark:text-slate-200">#{{ value }}</span>
     </template>
     <template #cell-out_trade_no="{ value }">
-      <span class="text-sm text-gray-900 dark:text-white">{{ value }}</span>
+      <span class="font-mono text-xs text-slate-600 dark:text-slate-300">{{ value || '-' }}</span>
     </template>
     <template v-if="showUser" #cell-user_email="{ value, row }">
       <div class="text-sm">
@@ -14,17 +14,17 @@
     </template>
     <template #cell-pay_amount="{ value, row }">
       <div class="text-sm">
-        <span class="font-medium text-gray-900 dark:text-white">¥{{ value.toFixed(2) }}</span>
-        <span v-if="row.fee_rate > 0" class="ml-1 text-xs text-gray-400" :title="t('payment.orders.fee') + ': ' + row.fee_rate + '%'">
+        <span class="font-semibold text-slate-950 dark:text-white">¥{{ value.toFixed(2) }}</span>
+        <span v-if="row.fee_rate > 0" class="ml-1 text-xs text-slate-400" :title="t('payment.orders.fee') + ': ' + row.fee_rate + '%'">
           ({{ t('payment.orders.fee') }} {{ row.fee_rate }}%)
         </span>
-        <div v-if="row.amount !== row.pay_amount" class="text-xs text-gray-500">
+        <div v-if="row.amount !== row.pay_amount" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
           {{ t('payment.orders.creditedAmount') }}: {{ row.order_type === 'balance' ? '$' : '¥' }}{{ row.amount.toFixed(2) }}
         </div>
       </div>
     </template>
     <template #cell-payment_type="{ value }">
-      <span class="text-sm text-gray-700 dark:text-gray-300">{{ t('payment.methods.' + value, value) }}</span>
+      <span class="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">{{ t('payment.methods.' + value, value) }}</span>
     </template>
     <template #cell-status="{ value }">
       <OrderStatusBadge :status="value" />
@@ -35,6 +35,18 @@
     <template #cell-actions="{ row }">
       <slot name="actions" :row="row" />
     </template>
+    <template #empty>
+      <slot name="empty">
+        <EmptyState
+          icon="creditCard"
+          title="还没有订单记录"
+          description="完成一次充值后，订单状态、支付金额、到账额度都会集中显示在这里。"
+          action-text="去充值"
+          action-to="/purchase"
+          action-icon-name="creditCard"
+        />
+      </slot>
+    </template>
   </DataTable>
 </template>
 
@@ -44,6 +56,7 @@ import { useI18n } from 'vue-i18n'
 import type { PaymentOrder } from '@/types/payment'
 import type { Column } from '@/components/common/types'
 import DataTable from '@/components/common/DataTable.vue'
+import EmptyState from '@/components/common/EmptyState.vue'
 import OrderStatusBadge from '@/components/payment/OrderStatusBadge.vue'
 
 const { t } = useI18n()

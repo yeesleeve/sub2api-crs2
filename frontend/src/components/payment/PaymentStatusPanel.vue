@@ -4,13 +4,16 @@
 
     <!-- Success -->
     <template v-if="outcome === 'success'">
-      <div class="card p-6">
+      <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 dark:border-emerald-400/20 dark:bg-emerald-400/10">
         <div class="flex flex-col items-center space-y-4 py-4">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-            <Icon name="check" size="lg" class="text-green-500" />
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300">
+            <Icon name="checkCircle" size="xl" />
           </div>
-          <p class="text-lg font-bold text-gray-900 dark:text-white">{{ props.orderType === 'subscription' ? t('payment.result.subscriptionSuccess') : t('payment.result.success') }}</p>
-          <div v-if="paidOrder" class="w-full rounded-xl bg-gray-50 p-4 dark:bg-dark-800">
+          <div class="text-center">
+            <p class="text-lg font-bold text-slate-950 dark:text-white">{{ props.orderType === 'subscription' ? t('payment.result.subscriptionSuccess') : t('payment.result.success') }}</p>
+            <p class="mt-1 text-sm text-emerald-700 dark:text-emerald-200">额度已同步到账，可以回到控制台继续使用。</p>
+          </div>
+          <div v-if="paidOrder" class="w-full rounded-2xl border border-emerald-200 bg-white p-4 dark:border-emerald-400/20 dark:bg-[#0b0d10]">
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-500 dark:text-gray-400">{{ t('payment.orders.orderId') }}</span>
@@ -37,12 +40,10 @@
 
     <!-- Cancelled -->
     <template v-else-if="outcome === 'cancelled'">
-      <div class="card p-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0b0d10]">
         <div class="flex flex-col items-center space-y-4 py-4">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-dark-700">
-            <svg class="h-8 w-8 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-white/[0.06] dark:text-slate-300">
+            <Icon name="xCircle" size="xl" />
           </div>
           <p class="text-lg font-bold text-gray-900 dark:text-white">{{ t('payment.qr.cancelled') }}</p>
           <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('payment.qr.cancelledDesc') }}</p>
@@ -53,12 +54,10 @@
 
     <!-- Expired / Failed -->
     <template v-else-if="outcome === 'expired'">
-      <div class="card p-6">
+      <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-5 dark:border-amber-400/20 dark:bg-amber-400/10">
         <div class="flex flex-col items-center space-y-4 py-4">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
-            <svg class="h-8 w-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-amber-600 shadow-sm dark:bg-amber-400/10 dark:text-amber-300">
+            <Icon name="clock" size="xl" />
           </div>
           <p class="text-lg font-bold text-gray-900 dark:text-white">{{ t('payment.qr.expired') }}</p>
           <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('payment.qr.expiredDesc') }}</p>
@@ -71,10 +70,10 @@
 
     <!-- QR Code Mode -->
     <template v-else-if="qrUrl">
-      <div class="card p-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
         <div class="flex flex-col items-center space-y-4">
           <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ scanTitle }}</p>
-          <div :class="['relative rounded-lg border-2 p-4', qrBorderClass]">
+          <div :class="['relative rounded-2xl border p-4 shadow-sm', qrBorderClass]">
             <canvas ref="qrCanvas" class="mx-auto"></canvas>
             <!-- Brand logo overlay -->
             <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -89,9 +88,9 @@
           </button>
         </div>
       </div>
-      <div class="card p-4 text-center">
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('payment.qr.expiresIn') }}</p>
-        <p class="mt-1 text-2xl font-bold tabular-nums text-gray-900 dark:text-white">{{ countdownDisplay }}</p>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center dark:border-white/10 dark:bg-white/[0.04]">
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('payment.qr.expiresIn') }}</p>
+        <p class="mt-1 text-2xl font-bold tabular-nums text-slate-950 dark:text-white">{{ countdownDisplay }}</p>
         <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">{{ t('payment.qr.waitingPayment') }}</p>
       </div>
       <button class="btn btn-secondary w-full" :disabled="cancelling" @click="handleCancel">
@@ -101,7 +100,7 @@
 
     <!-- Waiting for Popup/Redirect Mode -->
     <template v-else>
-      <div class="card p-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
         <div class="flex flex-col items-center space-y-4 py-4">
           <div class="h-10 w-10 animate-spin rounded-full border-4 border-primary-500 border-t-transparent"></div>
           <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('payment.qr.payInNewWindowHint') }}</p>
@@ -110,7 +109,7 @@
           </button>
         </div>
       </div>
-      <div class="card p-4 text-center">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center dark:border-white/10 dark:bg-white/[0.04]">
         <p class="mt-1 text-2xl font-bold tabular-nums text-gray-900 dark:text-white">{{ countdownDisplay }}</p>
         <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">{{ t('payment.qr.waitingPayment') }}</p>
       </div>
