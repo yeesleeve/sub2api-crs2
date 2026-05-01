@@ -1,35 +1,45 @@
 <template>
   <AppLayout>
-    <div class="mx-auto max-w-2xl space-y-6">
-      <!-- Current Balance Card -->
-      <div class="card overflow-hidden">
-        <div class="bg-gradient-to-br from-primary-500 to-primary-600 px-6 py-8 text-center">
-          <div
-            class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm"
-          >
-            <Icon name="creditCard" size="xl" class="text-white" />
-          </div>
-          <p class="text-sm font-medium text-primary-100">{{ t('redeem.currentBalance') }}</p>
-          <p class="mt-2 text-4xl font-bold text-white">
-            ${{ user?.balance?.toFixed(2) || '0.00' }}
-          </p>
-          <p class="mt-2 text-sm text-primary-100">
-            {{ t('redeem.concurrency') }}: {{ user?.concurrency || 0 }} {{ t('redeem.requests') }}
-          </p>
-        </div>
-      </div>
+    <div class="space-y-5">
+      <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="relative overflow-hidden bg-slate-950 p-6 text-white sm:p-8">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(16,185,129,0.32),transparent_34%),radial-gradient(circle_at_80%_12%,rgba(59,130,246,0.26),transparent_28%),radial-gradient(circle_at_72%_88%,rgba(245,158,11,0.20),transparent_30%)]"></div>
+            <div class="relative">
+              <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-emerald-200">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                Credit wallet
+              </div>
+              <h2 class="text-3xl font-semibold tracking-tight">兑换中心</h2>
+              <p class="mt-3 max-w-xl text-sm leading-6 text-slate-300">
+                使用兑换码充值余额、开通订阅或增加并发额度。兑换成功后会同步刷新账户资产。
+              </p>
 
-      <!-- Redeem Form -->
-      <div class="card">
-        <div class="p-6">
-          <form @submit.prevent="handleRedeem" class="space-y-5">
-            <div>
-              <label for="code" class="input-label">
+              <div class="mt-8 grid gap-3 sm:grid-cols-3">
+                <div class="rounded-xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                  <div class="text-xs text-slate-300">{{ t('redeem.currentBalance') }}</div>
+                  <div class="mt-2 text-3xl font-semibold tabular-nums">${{ user?.balance?.toFixed(2) || '0.00' }}</div>
+                </div>
+                <div class="rounded-xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                  <div class="text-xs text-slate-300">{{ t('redeem.concurrency') }}</div>
+                  <div class="mt-2 text-3xl font-semibold tabular-nums">{{ user?.concurrency || 0 }}</div>
+                </div>
+                <div class="rounded-xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                  <div class="text-xs text-slate-300">到账状态</div>
+                  <div class="mt-2 text-lg font-semibold text-emerald-300">实时生效</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-6">
+            <form @submit.prevent="handleRedeem" class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.03]">
+              <label for="code" class="mb-2 block text-sm font-semibold text-slate-800 dark:text-slate-100">
                 {{ t('redeem.redeemCodeLabel') }}
               </label>
-              <div class="relative mt-1">
+              <div class="relative">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                  <Icon name="gift" size="md" class="text-gray-400 dark:text-dark-500" />
+                  <Icon name="gift" size="md" class="text-slate-400 dark:text-slate-500" />
                 </div>
                 <input
                   id="code"
@@ -38,45 +48,44 @@
                   required
                   :placeholder="t('redeem.redeemCodePlaceholder')"
                   :disabled="submitting"
-                  class="input py-3 pl-12 text-lg"
+                  class="redeem-code-input h-12 w-full rounded-lg border border-slate-200 bg-white pr-4 text-base font-semibold tracking-wide text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-100 dark:border-white/10 dark:bg-[#050607] dark:text-white dark:placeholder:text-slate-500"
                 />
               </div>
-              <p class="input-hint">
+              <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
                 {{ t('redeem.redeemCodeHint') }}
               </p>
-            </div>
 
-            <button
-              type="submit"
-              :disabled="!redeemCode || submitting"
-              class="btn btn-primary w-full py-3"
-            >
-              <svg
-                v-if="submitting"
-                class="-ml-1 mr-2 h-5 w-5 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
+              <button
+                type="submit"
+                :disabled="!redeemCode || submitting"
+                class="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              <Icon v-else name="checkCircle" size="md" class="mr-2" />
-              {{ submitting ? t('redeem.redeeming') : t('redeem.redeemButton') }}
-            </button>
-          </form>
+                <svg
+                  v-if="submitting"
+                  class="h-4 w-4 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <Icon v-else name="checkCircle" size="sm" />
+                {{ submitting ? t('redeem.redeeming') : t('redeem.redeemButton') }}
+              </button>
+            </form>
+
+            <div class="mt-4 grid gap-3 sm:grid-cols-3">
+              <div v-for="item in redeemTypes" :key="item.title" class="rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <span class="flex h-9 w-9 items-center justify-center rounded-lg" :class="item.bg">
+                  <Icon :name="item.icon" size="sm" :class="item.color" />
+                </span>
+                <div class="mt-3 text-sm font-semibold text-slate-950 dark:text-white">{{ item.title }}</div>
+                <div class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ item.desc }}</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       <!-- Success Message -->
       <transition name="fade">
@@ -163,45 +172,37 @@
       </transition>
 
       <!-- Information Card -->
-      <div
-        class="card border-primary-200 bg-primary-50 dark:border-primary-800/50 dark:bg-primary-900/20"
-      >
-        <div class="p-6">
-          <div class="flex items-start gap-4">
-            <div
-              class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-100 dark:bg-primary-900/30"
-            >
-              <Icon name="infoCircle" size="md" class="text-primary-600 dark:text-primary-400" />
-            </div>
-            <div class="flex-1">
-              <h3 class="text-sm font-semibold text-primary-800 dark:text-primary-300">
-                {{ t('redeem.aboutCodes') }}
-              </h3>
-              <ul
-                class="mt-2 list-inside list-disc space-y-1 text-sm text-primary-700 dark:text-primary-400"
-              >
-                <li>{{ t('redeem.codeRule1') }}</li>
-                <li>{{ t('redeem.codeRule2') }}</li>
-                <li>
-                  {{ t('redeem.codeRule3') }}
-                  <span
-                    v-if="contactInfo"
-                    class="ml-1.5 inline-flex items-center rounded-md bg-primary-200/50 px-2 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-800/40 dark:text-primary-200"
-                  >
-                    {{ contactInfo }}
-                  </span>
-                </li>
-                <li>{{ t('redeem.codeRule4') }}</li>
-              </ul>
+      <div class="rounded-xl border border-blue-200 bg-blue-50 p-5 dark:border-blue-400/20 dark:bg-blue-400/10">
+        <div class="flex items-start gap-4">
+          <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-400/15">
+            <Icon name="infoCircle" size="md" class="text-blue-600 dark:text-blue-300" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold text-blue-900 dark:text-blue-200">
+              {{ t('redeem.aboutCodes') }}
+            </h3>
+            <div class="mt-3 grid gap-2 text-sm text-blue-800 dark:text-blue-300 md:grid-cols-2">
+              <p>{{ t('redeem.codeRule1') }}</p>
+              <p>{{ t('redeem.codeRule2') }}</p>
+              <p>
+                {{ t('redeem.codeRule3') }}
+                <span
+                  v-if="contactInfo"
+                  class="ml-1.5 inline-flex items-center rounded-md bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-400/15 dark:text-blue-200"
+                >
+                  {{ contactInfo }}
+                </span>
+              </p>
+              <p>{{ t('redeem.codeRule4') }}</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Recent Activity -->
-      <div class="card">
-        <div class="border-b border-gray-100 px-6 py-4 dark:border-dark-700">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+      <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="border-b border-slate-100 px-6 py-4 dark:border-white/10">
+          <h2 class="text-lg font-semibold text-slate-950 dark:text-white">
             {{ t('redeem.recentActivity') }}
           </h2>
         </div>
@@ -356,6 +357,7 @@ const { t } = useI18n()
 const authStore = useAuthStore()
 const appStore = useAppStore()
 const subscriptionStore = useSubscriptionStore()
+type IconName = InstanceType<typeof Icon>['$props']['name']
 
 const user = computed(() => authStore.user)
 
@@ -376,6 +378,36 @@ const errorMessage = ref('')
 const history = ref<RedeemHistoryItem[]>([])
 const loadingHistory = ref(false)
 const contactInfo = ref('')
+
+const redeemTypes: Array<{
+  title: string
+  desc: string
+  icon: IconName
+  bg: string
+  color: string
+}> = [
+  {
+    title: '余额充值',
+    desc: '用于 API 调用扣费',
+    icon: 'dollar',
+    bg: 'bg-emerald-100 dark:bg-emerald-400/15',
+    color: 'text-emerald-600 dark:text-emerald-300'
+  },
+  {
+    title: '订阅开通',
+    desc: '绑定可用模型分组',
+    icon: 'badge',
+    bg: 'bg-violet-100 dark:bg-violet-400/15',
+    color: 'text-violet-600 dark:text-violet-300'
+  },
+  {
+    title: '并发额度',
+    desc: '提升同时请求能力',
+    icon: 'bolt',
+    bg: 'bg-amber-100 dark:bg-amber-400/15',
+    color: 'text-amber-600 dark:text-amber-300'
+  }
+]
 
 // Helper functions for history display
 const isBalanceType = (type: string) => {
@@ -497,5 +529,9 @@ onMounted(async () => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-8px);
+}
+
+.redeem-code-input {
+  padding-left: 3rem;
 }
 </style>

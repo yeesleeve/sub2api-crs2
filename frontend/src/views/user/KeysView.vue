@@ -1,51 +1,86 @@
 <template>
   <AppLayout>
     <TablePageLayout>
-      <template #filters>
-        <div class="flex flex-col gap-3">
-          <div class="flex flex-wrap items-center gap-3">
-            <SearchInput
-              v-model="filterSearch"
-              :placeholder="t('keys.searchPlaceholder')"
-              class="w-full sm:w-64"
-              @search="onFilterChange"
-            />
-            <Select
-              :model-value="filterGroupId"
-              class="w-40"
-              :options="groupFilterOptions"
-              @update:model-value="onGroupFilterChange"
-            />
-            <Select
-              :model-value="filterStatus"
-              class="w-40"
-              :options="statusFilterOptions"
-              @update:model-value="onStatusFilterChange"
-            />
+      <template #actions>
+        <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div class="min-w-0">
+              <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                API access center
+              </div>
+              <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                API 密钥
+              </h2>
+              <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+                统一管理用户侧调用入口、分组权限、额度限制与安全策略，适合生产环境长期使用。
+              </p>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-3 xl:w-[520px]">
+              <div v-for="item in keySummaryCards" :key="item.label" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.label }}</span>
+                  <span class="h-2 w-2 rounded-full" :class="item.dot"></span>
+                </div>
+                <div class="mt-2 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ item.value }}</div>
+                <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ item.hint }}</div>
+              </div>
+            </div>
           </div>
-          <EndpointPopover
-            v-if="publicSettings?.api_base_url || (publicSettings?.custom_endpoints?.length ?? 0) > 0"
-            :api-base-url="publicSettings?.api_base_url || ''"
-            :custom-endpoints="publicSettings?.custom_endpoints || []"
-          />
-        </div>
+        </section>
       </template>
 
-      <template #actions>
-        <div class="flex justify-end gap-3">
-        <button
-          @click="loadApiKeys"
-          :disabled="loading"
-          class="btn btn-secondary"
-          :title="t('common.refresh')"
-        >
-          <Icon name="refresh" size="md" :class="loading ? 'animate-spin' : ''" />
-        </button>
-        <button @click="showCreateModal = true" class="btn btn-primary" data-tour="keys-create-btn">
-          <Icon name="plus" size="md" class="mr-2" />
-          {{ t('keys.createKey') }}
-        </button>
-      </div>
+      <template #filters>
+        <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div class="flex flex-1 flex-wrap items-center gap-3">
+              <SearchInput
+                v-model="filterSearch"
+                :placeholder="t('keys.searchPlaceholder')"
+                class="w-full sm:w-72"
+                @search="onFilterChange"
+              />
+              <Select
+                :model-value="filterGroupId"
+                class="w-full sm:w-44"
+                :options="groupFilterOptions"
+                @update:model-value="onGroupFilterChange"
+              />
+              <Select
+                :model-value="filterStatus"
+                class="w-full sm:w-44"
+                :options="statusFilterOptions"
+                @update:model-value="onStatusFilterChange"
+              />
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                @click="loadApiKeys"
+                :disabled="loading"
+                class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]"
+                :title="t('common.refresh')"
+              >
+                <Icon name="refresh" size="sm" :class="loading ? 'animate-spin' : ''" />
+              </button>
+              <button
+                @click="showCreateModal = true"
+                class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                data-tour="keys-create-btn"
+              >
+                <Icon name="plus" size="sm" />
+                {{ t('keys.createKey') }}
+              </button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <EndpointPopover
+              v-if="publicSettings?.api_base_url || (publicSettings?.custom_endpoints?.length ?? 0) > 0"
+              :api-base-url="publicSettings?.api_base_url || ''"
+              :custom-endpoints="publicSettings?.custom_endpoints || []"
+            />
+          </div>
+        </section>
       </template>
 
       <template #table>
@@ -1145,6 +1180,34 @@ const selectedKey = ref<ApiKey | null>(null)
 const copiedKeyId = ref<number | null>(null)
 const groupSelectorKeyId = ref<number | null>(null)
 const publicSettings = ref<PublicSettings | null>(null)
+
+const activeKeyCount = computed(() => apiKeys.value.filter((key) => key.status === 'active').length)
+const protectedKeyCount = computed(() =>
+  apiKeys.value.filter((key) => (key.ip_whitelist?.length || 0) > 0 || (key.ip_blacklist?.length || 0) > 0).length
+)
+const todayKeyCost = computed(() =>
+  Object.values(usageStats.value).reduce((sum, stat) => sum + (stat?.today_actual_cost ?? 0), 0)
+)
+const keySummaryCards = computed(() => [
+  {
+    label: '有效密钥',
+    value: `${activeKeyCount.value}/${apiKeys.value.length}`,
+    hint: '当前可用于调用',
+    dot: 'bg-emerald-500'
+  },
+  {
+    label: '今日消耗',
+    value: `$${todayKeyCost.value.toFixed(4)}`,
+    hint: '按密钥聚合',
+    dot: 'bg-blue-500'
+  },
+  {
+    label: '安全策略',
+    value: protectedKeyCount.value.toString(),
+    hint: '已启用 IP 规则',
+    dot: 'bg-amber-500'
+  }
+])
 const dropdownRef = ref<HTMLElement | null>(null)
 const dropdownPosition = ref<{ top?: number; bottom?: number; left: number } | null>(null)
 const groupButtonRefs = ref<Map<number, HTMLElement>>(new Map())

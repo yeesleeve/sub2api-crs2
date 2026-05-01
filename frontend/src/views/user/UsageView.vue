@@ -2,93 +2,39 @@
   <AppLayout>
     <TablePageLayout>
       <template #actions>
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <!-- Total Requests -->
-          <div class="card p-4">
-          <div class="flex items-center gap-3">
-            <div class="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
-              <Icon name="document" size="md" class="text-blue-600 dark:text-blue-400" />
-            </div>
+        <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('usage.totalRequests') }}
-              </p>
-              <p class="text-xl font-bold text-gray-900 dark:text-white">
-                {{ usageStats?.total_requests?.toLocaleString() || '0' }}
-              </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ t('usage.inSelectedRange') }}
+              <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
+                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                Usage analytics
+              </div>
+              <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                使用记录
+              </h2>
+              <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+                追踪 API 请求、模型消耗、Token 明细与计费成本，方便定位异常消耗和高频模型。
               </p>
             </div>
-          </div>
-        </div>
 
-        <!-- Total Tokens -->
-        <div class="card p-4">
-          <div class="flex items-center gap-3">
-            <div class="rounded-lg bg-amber-100 p-2 dark:bg-amber-900/30">
-              <Icon name="cube" size="md" class="text-amber-600 dark:text-amber-400" />
-            </div>
-            <div>
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('usage.totalTokens') }}
-              </p>
-              <p class="text-xl font-bold text-gray-900 dark:text-white">
-                {{ formatTokens(usageStats?.total_tokens || 0) }}
-              </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ t('usage.in') }}: {{ formatTokens(usageStats?.total_input_tokens || 0) }} /
-                {{ t('usage.out') }}: {{ formatTokens(usageStats?.total_output_tokens || 0) }}
-              </p>
+            <div class="grid gap-3 sm:grid-cols-2 xl:w-[720px] xl:grid-cols-4">
+              <div v-for="item in usageSummaryCards" :key="item.label" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.label }}</span>
+                  <span class="flex h-7 w-7 items-center justify-center rounded-lg" :class="item.iconBg">
+                    <Icon :name="item.icon" size="sm" :class="item.iconColor" />
+                  </span>
+                </div>
+                <div class="mt-2 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ item.value }}</div>
+                <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.hint }}</div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- Total Cost -->
-        <div class="card p-4">
-          <div class="flex items-center gap-3">
-            <div class="rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
-              <Icon name="dollar" size="md" class="text-green-600 dark:text-green-400" />
-            </div>
-            <div class="min-w-0 flex-1">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('usage.totalCost') }}
-              </p>
-              <p class="text-xl font-bold text-green-600 dark:text-green-400">
-                ${{ (usageStats?.total_actual_cost || 0).toFixed(4) }}
-              </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ t('usage.actualCost') }} /
-                <span class="line-through">${{ (usageStats?.total_cost || 0).toFixed(4) }}</span>
-                {{ t('usage.standardCost') }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Average Duration -->
-        <div class="card p-4">
-          <div class="flex items-center gap-3">
-            <div class="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/30">
-              <Icon name="clock" size="md" class="text-purple-600 dark:text-purple-400" />
-            </div>
-            <div>
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('usage.avgDuration') }}
-              </p>
-              <p class="text-xl font-bold text-gray-900 dark:text-white">
-                {{ formatDuration(usageStats?.average_duration_ms || 0) }}
-              </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">{{ t('usage.perRequest') }}</p>
-            </div>
-          </div>
-        </div>
-        </div>
+        </section>
       </template>
 
       <template #filters>
-        <div class="card">
-          <div class="px-6 py-4">
+        <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
           <div class="flex flex-wrap items-end gap-4">
             <!-- API Key Filter -->
             <div class="min-w-[180px]">
@@ -112,14 +58,14 @@
             </div>
 
             <!-- Actions -->
-            <div class="ml-auto flex items-center gap-3">
-              <button @click="applyFilters" :disabled="loading" class="btn btn-secondary">
+            <div class="ml-auto flex flex-wrap items-center gap-3">
+              <button @click="applyFilters" :disabled="loading" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]">
                 {{ t('common.refresh') }}
               </button>
-              <button @click="resetFilters" class="btn btn-secondary">
+              <button @click="resetFilters" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]">
                 {{ t('common.reset') }}
               </button>
-              <button @click="exportToCSV" :disabled="exporting" class="btn btn-primary">
+              <button @click="exportToCSV" :disabled="exporting" class="inline-flex h-10 items-center justify-center rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
                 <svg
                   v-if="exporting"
                   class="-ml-1 mr-2 h-4 w-4 animate-spin"
@@ -144,8 +90,7 @@
               </button>
             </div>
           </div>
-        </div>
-        </div>
+        </section>
       </template>
 
       <template #table>
@@ -529,6 +474,8 @@ import { getBillingModeLabel, getBillingModeBadgeClass } from '@/utils/billingMo
 const { t } = useI18n()
 const appStore = useAppStore()
 
+type IconName = InstanceType<typeof Icon>['$props']['name']
+
 let abortController: AbortController | null = null
 
 // Tooltip state
@@ -543,6 +490,48 @@ const tokenTooltipData = ref<UsageLog | null>(null)
 
 // Usage stats from API
 const usageStats = ref<UsageStatsResponse | null>(null)
+
+const usageSummaryCards = computed<Array<{
+  label: string
+  value: string
+  hint: string
+  icon: IconName
+  iconBg: string
+  iconColor: string
+}>>(() => [
+  {
+    label: t('usage.totalRequests'),
+    value: (usageStats.value?.total_requests || 0).toLocaleString(),
+    hint: t('usage.inSelectedRange'),
+    icon: 'document',
+    iconBg: 'bg-blue-100 dark:bg-blue-400/15',
+    iconColor: 'text-blue-600 dark:text-blue-300'
+  },
+  {
+    label: t('usage.totalTokens'),
+    value: formatTokens(usageStats.value?.total_tokens || 0),
+    hint: `${t('usage.in')}: ${formatTokens(usageStats.value?.total_input_tokens || 0)} / ${t('usage.out')}: ${formatTokens(usageStats.value?.total_output_tokens || 0)}`,
+    icon: 'cube',
+    iconBg: 'bg-amber-100 dark:bg-amber-400/15',
+    iconColor: 'text-amber-600 dark:text-amber-300'
+  },
+  {
+    label: t('usage.totalCost'),
+    value: `$${(usageStats.value?.total_actual_cost || 0).toFixed(4)}`,
+    hint: `${t('usage.standardCost')} $${(usageStats.value?.total_cost || 0).toFixed(4)}`,
+    icon: 'dollar',
+    iconBg: 'bg-emerald-100 dark:bg-emerald-400/15',
+    iconColor: 'text-emerald-600 dark:text-emerald-300'
+  },
+  {
+    label: t('usage.avgDuration'),
+    value: formatDuration(usageStats.value?.average_duration_ms || 0),
+    hint: t('usage.perRequest'),
+    icon: 'clock',
+    iconBg: 'bg-violet-100 dark:bg-violet-400/15',
+    iconColor: 'text-violet-600 dark:text-violet-300'
+  }
+])
 
 const columns = computed<Column[]>(() => [
   { key: 'api_key', label: t('usage.apiKeyFilter'), sortable: false },

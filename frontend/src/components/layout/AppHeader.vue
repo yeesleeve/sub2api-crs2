@@ -47,13 +47,16 @@
         <!-- Balance Display -->
         <div
           v-if="user"
-          class="hidden h-10 items-center gap-2 rounded-xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50 to-white px-3.5 shadow-sm shadow-emerald-950/5 dark:border-emerald-400/20 dark:from-emerald-400/15 dark:to-white/[0.04] dark:shadow-black/20 sm:flex"
+          class="hidden h-11 items-center gap-3 rounded-xl border border-emerald-200/80 bg-[linear-gradient(135deg,#ecfdf5_0%,#ffffff_62%,#eff6ff_100%)] px-3.5 shadow-sm shadow-emerald-950/5 ring-1 ring-white/80 dark:border-emerald-400/20 dark:bg-[linear-gradient(135deg,rgba(16,185,129,0.16)_0%,rgba(255,255,255,0.04)_58%,rgba(59,130,246,0.10)_100%)] dark:ring-white/5 sm:flex"
         >
-          <span class="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-400/20 dark:text-emerald-300">
-            <Icon name="dollar" size="xs" />
+          <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500 text-white shadow-sm shadow-emerald-500/20">
+            <Icon name="dollar" size="sm" />
           </span>
-          <span class="text-[15px] font-bold tabular-nums text-emerald-700 dark:text-emerald-300">
-            ${{ user.balance?.toFixed(2) || '0.00' }}
+          <span class="leading-none">
+            <span class="block text-[11px] font-medium text-emerald-700/80 dark:text-emerald-300/80">余额</span>
+            <span class="mt-1 block text-[15px] font-bold tabular-nums text-emerald-700 dark:text-emerald-300">
+              ${{ user.balance?.toFixed(2) || '0.00' }}
+            </span>
           </span>
         </div>
 

@@ -277,6 +277,52 @@
 
       <section id="features" class="py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mb-14 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
+            <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+              <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">AI relay workflow</p>
+              <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                不只是转发请求，而是把账号、额度和通道变成可运营资产
+              </h2>
+              <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                面向正式商业站，用户关心的不只是能不能调用模型，还包括余额是否清晰、密钥是否安全、通道是否稳定、成本是否可控。
+              </p>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div v-for="item in relayHighlights" :key="item.title" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                  <span class="flex h-9 w-9 items-center justify-center rounded-lg" :class="item.bg">
+                    <Icon :name="item.icon" size="sm" :class="item.color" />
+                  </span>
+                  <h3 class="mt-3 text-sm font-semibold text-slate-950 dark:text-white">{{ item.title }}</h3>
+                  <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ item.description }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-black">
+              <div class="mb-5 flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-semibold text-emerald-300">Routing layers</p>
+                  <h3 class="mt-1 text-2xl font-semibold tracking-tight">AI 中转链路</h3>
+                </div>
+                <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-slate-200">实时调度</span>
+              </div>
+
+              <div class="space-y-3">
+                <div v-for="layer in relayLayers" :key="layer.title" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                  <div class="flex items-center gap-3">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold text-white" :class="layer.color">{{ layer.step }}</span>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center justify-between gap-3">
+                        <h4 class="truncate text-sm font-semibold">{{ layer.title }}</h4>
+                        <span class="text-xs text-slate-400">{{ layer.metric }}</span>
+                      </div>
+                      <p class="mt-1 text-xs leading-5 text-slate-400">{{ layer.description }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="max-w-3xl">
             <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Product capabilities</p>
             <h2 class="mt-2 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">为正式运营准备的中转站能力</h2>
@@ -461,6 +507,74 @@ const operationsHighlights = [
     title: '运营可信感',
     description: '保留白色主视觉，同时加入轻量色彩和状态元素，显得更专业。',
     bar: 'bg-gradient-to-r from-amber-400 to-rose-500'
+  }
+]
+
+const relayHighlights: Array<{
+  title: string
+  description: string
+  icon: IconName
+  bg: string
+  color: string
+}> = [
+  {
+    title: '统一鉴权入口',
+    description: '用户只持有平台分配的 Key，真实上游账号和订阅信息留在服务端。',
+    icon: 'key',
+    bg: 'bg-emerald-100 dark:bg-emerald-400/15',
+    color: 'text-emerald-600 dark:text-emerald-300'
+  },
+  {
+    title: '模型兼容转发',
+    description: '兼容 OpenAI 风格调用，同时承载 Claude、Gemini 等多种模型接入。',
+    icon: 'swap',
+    bg: 'bg-blue-100 dark:bg-blue-400/15',
+    color: 'text-blue-600 dark:text-blue-300'
+  },
+  {
+    title: '成本和余额清晰',
+    description: '按请求、Token、模型和密钥记录成本，让付费用户知道钱花在哪里。',
+    icon: 'calculator',
+    bg: 'bg-amber-100 dark:bg-amber-400/15',
+    color: 'text-amber-600 dark:text-amber-300'
+  },
+  {
+    title: '通道健康监控',
+    description: '持续观察延迟、可用率和失败情况，为稳定运营预留调度基础。',
+    icon: 'shield',
+    bg: 'bg-rose-100 dark:bg-rose-400/15',
+    color: 'text-rose-600 dark:text-rose-300'
+  }
+]
+
+const relayLayers = [
+  {
+    step: '01',
+    title: '用户 API Key',
+    description: '控制权限、有效期、额度和可用分组。',
+    metric: 'Auth',
+    color: 'bg-emerald-500'
+  },
+  {
+    step: '02',
+    title: '智能路由与模型映射',
+    description: '根据平台、模型、账号池和通道健康选择可用线路。',
+    metric: 'Route',
+    color: 'bg-blue-500'
+  },
+  {
+    step: '03',
+    title: '上游订阅账号池',
+    description: '集中管理 Claude、OpenAI、Gemini、Antigravity 等能力。',
+    metric: 'Pool',
+    color: 'bg-violet-500'
+  },
+  {
+    step: '04',
+    title: '用量统计和计费',
+    description: '记录成本、Token、响应耗时和用户调用轨迹。',
+    metric: 'Billing',
+    color: 'bg-amber-500'
   }
 ]
 

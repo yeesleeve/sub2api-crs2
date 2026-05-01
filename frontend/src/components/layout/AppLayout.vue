@@ -12,7 +12,7 @@
       <AppHeader />
 
       <!-- Main Content -->
-      <main class="mx-auto max-w-[1600px] p-4 md:p-6 lg:p-8">
+      <main class="w-full p-4 md:p-5 lg:p-6">
         <slot />
       </main>
     </div>
