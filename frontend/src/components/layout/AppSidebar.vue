@@ -2,7 +2,7 @@
   <aside
     class="sidebar"
     :class="[
-      sidebarCollapsed ? 'w-[72px]' : 'w-64',
+      sidebarCollapsed ? 'w-[76px]' : 'w-[268px]',
       { '-translate-x-full lg:translate-x-0': !mobileOpen }
     ]"
   >
@@ -38,7 +38,7 @@
             <template v-if="item.children?.length">
               <button
                 type="button"
-                class="sidebar-link mb-1 w-full"
+                class="sidebar-link w-full"
                 :class="{
                   'sidebar-link-active': isGroupActive(item) && !isGroupExpanded(item),
                   'sidebar-link-collapsed': sidebarCollapsed
@@ -65,7 +65,7 @@
                   v-for="child in item.children"
                   :key="child.path"
                   :to="child.path"
-                  class="sidebar-link mb-0.5 py-1.5 text-sm"
+                  class="sidebar-link sidebar-link-child text-sm"
                   :class="{ 'sidebar-link-active': route.path === child.path }"
                   @click="handleMenuItemClick(child.path)"
                 >
@@ -78,7 +78,7 @@
             <router-link
               v-else
               :to="item.path"
-              class="sidebar-link mb-1"
+              class="sidebar-link"
               :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
               :title="sidebarCollapsed ? item.label : undefined"
               :id="
@@ -111,7 +111,7 @@
             v-for="item in personalNavItems"
             :key="item.path"
             :to="item.path"
-            class="sidebar-link mb-1"
+            class="sidebar-link"
             :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
             :title="sidebarCollapsed ? item.label : undefined"
             :data-tour="item.path === '/keys' ? 'sidebar-my-keys' : undefined"
@@ -131,7 +131,7 @@
             v-for="item in userNavItems"
             :key="item.path"
             :to="item.path"
-            class="sidebar-link mb-1"
+            class="sidebar-link"
             :class="{ 'sidebar-link-active': isActive(item.path), 'sidebar-link-collapsed': sidebarCollapsed }"
             :title="sidebarCollapsed ? item.label : undefined"
             :data-tour="item.path === '/keys' ? 'sidebar-my-keys' : undefined"
@@ -150,7 +150,7 @@
       <!-- Theme Toggle -->
       <button
         @click="toggleTheme"
-        class="sidebar-link mb-2 w-full"
+        class="sidebar-link sidebar-link-bottom w-full"
         :class="{ 'sidebar-link-collapsed': sidebarCollapsed }"
         :title="sidebarCollapsed ? (isDark ? t('nav.lightMode') : t('nav.darkMode')) : undefined"
       >

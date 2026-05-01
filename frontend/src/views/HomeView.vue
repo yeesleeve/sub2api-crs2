@@ -87,7 +87,10 @@
           class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] dark:opacity-60"
         ></div>
         <div
-          class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"
+          class="absolute inset-x-0 top-0 -z-10 h-80 bg-[linear-gradient(135deg,#ecfdf5_0%,#eff6ff_42%,#fff7ed_100%)] dark:bg-[linear-gradient(135deg,rgba(16,185,129,0.18)_0%,rgba(59,130,246,0.12)_45%,rgba(245,158,11,0.10)_100%)]"
+        ></div>
+        <div
+          class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-[#050607] dark:via-[#050607]/85 dark:to-transparent"
         ></div>
 
         <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-24">
@@ -138,6 +141,20 @@
                 </div>
               </div>
             </div>
+
+            <div class="mt-6 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+              <div
+                v-for="signal in heroSignals"
+                :key="signal.label"
+                class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white/75 px-3 py-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.04]"
+              >
+                <span class="h-2.5 w-2.5 rounded-full" :class="signal.dot"></span>
+                <div class="min-w-0">
+                  <div class="truncate text-xs font-semibold text-slate-800 dark:text-slate-100">{{ signal.label }}</div>
+                  <div class="truncate text-[11px] text-slate-500 dark:text-slate-400">{{ signal.value }}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="relative min-w-0 max-w-full overflow-hidden">
@@ -174,6 +191,22 @@
                   </div>
                 </div>
 
+                <div class="mt-3 grid gap-3 sm:grid-cols-3">
+                  <div
+                    v-for="route in routeSignals"
+                    :key="route.label"
+                    class="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/[0.03]"
+                  >
+                    <div class="mb-3 flex items-center justify-between">
+                      <span class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ route.label }}</span>
+                      <span class="h-2 w-2 rounded-full" :class="route.dot"></span>
+                    </div>
+                    <div class="h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
+                      <div class="h-full rounded-full" :class="route.bar" :style="{ width: route.value }"></div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-black/20">
                   <div class="mb-3 flex items-center justify-between">
                     <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">通道状态</span>
@@ -204,6 +237,18 @@
 
       <section id="platforms" class="border-b border-slate-200 bg-slate-50/70 py-12 dark:border-white/10 dark:bg-white/[0.02]">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mb-8 grid gap-3 md:grid-cols-3">
+            <div
+              v-for="item in operationsHighlights"
+              :key="item.title"
+              class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]"
+            >
+              <div class="mb-4 h-1.5 rounded-full" :class="item.bar"></div>
+              <div class="text-sm font-semibold text-slate-950 dark:text-white">{{ item.title }}</div>
+              <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ item.description }}</p>
+            </div>
+          </div>
+
           <div class="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
               <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Unified providers</p>
@@ -382,11 +427,41 @@ const metrics = [
   { value: '1 API', label: '统一入口' }
 ]
 
+const heroSignals = [
+  { label: '路由状态', value: '自动选择可用通道', dot: 'bg-emerald-500' },
+  { label: '成本控制', value: '额度与消耗可追踪', dot: 'bg-blue-500' },
+  { label: '安全策略', value: '密钥隔离与权限管理', dot: 'bg-amber-500' }
+]
+
 const dashboardStats = [
   { label: '今日请求', value: '128K', trend: '+18.4% 稳定增长' },
   { label: '平均延迟', value: '386ms', trend: '智能路由优化' },
   { label: '可用通道', value: '24', trend: '账号池在线' },
   { label: '额度利用', value: '71%', trend: '自动分配中' }
+]
+
+const routeSignals = [
+  { label: 'Claude', value: '86%', dot: 'bg-orange-500', bar: 'bg-orange-500' },
+  { label: 'OpenAI', value: '74%', dot: 'bg-emerald-500', bar: 'bg-emerald-500' },
+  { label: 'Gemini', value: '68%', dot: 'bg-blue-500', bar: 'bg-blue-500' }
+]
+
+const operationsHighlights = [
+  {
+    title: '多通道容灾',
+    description: '用不同颜色区分模型与通道状态，让首页不再只有黑白两层。',
+    bar: 'bg-gradient-to-r from-emerald-400 to-blue-500'
+  },
+  {
+    title: '余额与计费',
+    description: '强化金额、消耗、订阅这些付费用户最关心的信息层级。',
+    bar: 'bg-gradient-to-r from-blue-500 to-violet-500'
+  },
+  {
+    title: '运营可信感',
+    description: '保留白色主视觉，同时加入轻量色彩和状态元素，显得更专业。',
+    bar: 'bg-gradient-to-r from-amber-400 to-rose-500'
+  }
 ]
 
 const providers = [

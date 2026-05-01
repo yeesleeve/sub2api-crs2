@@ -85,7 +85,7 @@
               autofocus
               autocomplete="email"
               :disabled="isLoading"
-              class="auth-input pl-11"
+              class="auth-input auth-input-leading"
               :class="{ 'input-error': errors.email }"
               :placeholder="t('auth.emailPlaceholder')"
             />
@@ -108,7 +108,7 @@
               required
               autocomplete="new-password"
               :disabled="isLoading"
-              class="auth-input pl-11 pr-11"
+              class="auth-input auth-input-leading auth-input-trailing"
               :class="{ 'input-error': errors.password }"
               :placeholder="t('auth.createPasswordPlaceholder')"
             />
@@ -140,7 +140,7 @@
               v-model="formData.invitation_code"
               type="text"
               :disabled="isLoading"
-              class="auth-input pl-11 pr-10"
+              class="auth-input auth-input-leading auth-input-trailing"
               :class="{
                 'border-green-500 focus:border-green-500 focus:ring-green-500': invitationValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': invitationValidation.invalid || errors.invitation_code
@@ -188,7 +188,7 @@
               v-model="formData.promo_code"
               type="text"
               :disabled="isLoading"
-              class="auth-input pl-11 pr-10"
+              class="auth-input auth-input-leading auth-input-trailing"
               :class="{
                 'border-green-500 focus:border-green-500 focus:ring-green-500': promoValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': promoValidation.invalid
@@ -798,7 +798,15 @@ async function handleRegister(): Promise<void> {
 
 <style scoped>
 .auth-input {
-  @apply h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+  @apply h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white py-0 pl-4 pr-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+}
+
+.auth-input-leading {
+  padding-left: 2.875rem;
+}
+
+.auth-input-trailing {
+  padding-right: 2.875rem;
 }
 
 .auth-input-label {

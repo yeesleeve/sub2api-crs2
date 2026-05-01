@@ -47,22 +47,12 @@
         <!-- Balance Display -->
         <div
           v-if="user"
-          class="hidden h-9 items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 dark:border-emerald-400/20 dark:bg-emerald-400/10 sm:flex"
+          class="hidden h-10 items-center gap-2 rounded-xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50 to-white px-3.5 shadow-sm shadow-emerald-950/5 dark:border-emerald-400/20 dark:from-emerald-400/15 dark:to-white/[0.04] dark:shadow-black/20 sm:flex"
         >
-          <svg
-            class="h-4 w-4 text-emerald-600 dark:text-emerald-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
-            />
-          </svg>
-          <span class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+          <span class="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-400/20 dark:text-emerald-300">
+            <Icon name="dollar" size="xs" />
+          </span>
+          <span class="text-[15px] font-bold tabular-nums text-emerald-700 dark:text-emerald-300">
             ${{ user.balance?.toFixed(2) || '0.00' }}
           </span>
         </div>
@@ -71,10 +61,10 @@
         <div v-if="user" class="relative" ref="dropdownRef">
           <button
             @click="toggleDropdown"
-            class="flex h-10 items-center gap-2 rounded-lg border border-transparent px-1.5 transition-colors hover:border-slate-200 hover:bg-white dark:hover:border-white/10 dark:hover:bg-white/5"
+            class="flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-2 shadow-sm shadow-slate-950/5 transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:shadow-black/20 dark:hover:bg-white/[0.07]"
             aria-label="User Menu"
           >
-            <div class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-slate-950 text-sm font-semibold text-white shadow-sm dark:bg-white dark:text-slate-950">
+            <div class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-slate-950 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-950/10 dark:bg-white dark:text-slate-950 dark:ring-white/10">
               <img
                 v-if="avatarUrl"
                 :src="avatarUrl"
@@ -84,10 +74,10 @@
               <span v-else>{{ userInitials }}</span>
             </div>
             <div class="hidden text-left md:block">
-              <div class="text-sm font-medium text-slate-950 dark:text-white">
+              <div class="max-w-28 truncate text-sm font-semibold text-slate-950 dark:text-white">
                 {{ displayName }}
               </div>
-              <div class="text-xs capitalize text-slate-500 dark:text-slate-400">
+              <div class="text-xs capitalize leading-4 text-slate-500 dark:text-slate-400">
                 {{ user.role }}
               </div>
             </div>
@@ -96,32 +86,50 @@
 
           <!-- Dropdown Menu -->
           <transition name="dropdown">
-            <div v-if="dropdownOpen" class="dropdown right-0 mt-2 w-56">
+            <div v-if="dropdownOpen" class="account-dropdown right-0 mt-3 w-72">
               <!-- User Info -->
-              <div class="border-b border-gray-100 px-4 py-3 dark:border-dark-700">
-                <div class="text-sm font-medium text-gray-900 dark:text-white">
-                  {{ displayName }}
+              <div class="p-3">
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/[0.04]">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-slate-950 text-sm font-bold text-white shadow-sm dark:bg-white dark:text-slate-950">
+                      <img
+                        v-if="avatarUrl"
+                        :src="avatarUrl"
+                        :alt="displayName"
+                        class="h-full w-full object-cover"
+                      >
+                      <span v-else>{{ userInitials }}</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <div class="truncate text-sm font-semibold text-slate-950 dark:text-white">
+                        {{ displayName }}
+                      </div>
+                      <div class="truncate text-xs text-slate-500 dark:text-slate-400">{{ user.email }}</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="text-xs text-gray-500 dark:text-dark-400">{{ user.email }}</div>
               </div>
 
               <!-- Balance (mobile only) -->
-              <div class="border-b border-gray-100 px-4 py-2 dark:border-dark-700 sm:hidden">
-                <div class="text-xs text-gray-500 dark:text-dark-400">
-                  {{ t('common.balance') }}
-                </div>
-                <div class="text-sm font-semibold text-primary-600 dark:text-primary-400">
-                  ${{ user.balance?.toFixed(2) || '0.00' }}
+              <div class="px-3 pb-3 sm:hidden">
+                <div class="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                  <div class="flex items-center gap-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                    <Icon name="dollar" size="sm" />
+                    {{ t('common.balance') }}
+                  </div>
+                  <div class="text-sm font-bold tabular-nums text-emerald-700 dark:text-emerald-300">
+                    ${{ user.balance?.toFixed(2) || '0.00' }}
+                  </div>
                 </div>
               </div>
 
-              <div class="py-1">
-                <router-link to="/profile" @click="closeDropdown" class="dropdown-item">
+              <div class="space-y-1 border-t border-slate-100 p-2 dark:border-white/10">
+                <router-link to="/profile" @click="closeDropdown" class="account-menu-item">
                   <Icon name="user" size="sm" />
                   {{ t('nav.profile') }}
                 </router-link>
 
-                <router-link to="/keys" @click="closeDropdown" class="dropdown-item">
+                <router-link to="/keys" @click="closeDropdown" class="account-menu-item">
                   <Icon name="key" size="sm" />
                   {{ t('nav.apiKeys') }}
                 </router-link>
@@ -132,7 +140,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   @click="closeDropdown"
-                  class="dropdown-item"
+                  class="account-menu-item"
                 >
                   <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -149,9 +157,9 @@
               <!-- Contact Support (only show if configured) -->
               <div
                 v-if="contactInfo"
-                class="border-t border-gray-100 px-4 py-2.5 dark:border-dark-700"
+                class="border-t border-slate-100 px-4 py-3 dark:border-white/10"
               >
-                <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                   <svg
                     class="h-3.5 w-3.5 flex-shrink-0"
                     fill="none"
@@ -166,14 +174,14 @@
                     />
                   </svg>
                   <span>{{ t('common.contactSupport') }}:</span>
-                  <span class="font-medium text-gray-700 dark:text-gray-300">{{
+                  <span class="font-medium text-slate-700 dark:text-slate-300">{{
                     contactInfo
                   }}</span>
                 </div>
               </div>
 
-              <div v-if="showOnboardingButton" class="border-t border-gray-100 py-1 dark:border-dark-700">
-                <button @click="handleReplayGuide" class="dropdown-item w-full">
+              <div v-if="showOnboardingButton" class="border-t border-slate-100 p-2 dark:border-white/10">
+                <button @click="handleReplayGuide" class="account-menu-item w-full">
                   <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                     <path
                       d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 14a1 1 0 110 2 1 1 0 010-2zm1.07-7.75c0-.6-.49-1.25-1.32-1.25-.7 0-1.22.4-1.43 1.02a1 1 0 11-1.9-.62A3.41 3.41 0 0111.8 5c2.02 0 3.25 1.4 3.25 2.9 0 2-1.83 2.55-2.43 3.12-.43.4-.47.75-.47 1.23a1 1 0 01-2 0c0-1 .16-1.82 1.1-2.7.69-.64 1.82-1.05 1.82-2.06z"
@@ -183,10 +191,10 @@
                 </button>
               </div>
 
-              <div class="border-t border-gray-100 py-1 dark:border-dark-700">
+              <div class="border-t border-slate-100 p-2 dark:border-white/10">
                 <button
                   @click="handleLogout"
-                  class="dropdown-item w-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                  class="account-menu-item w-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
                 >
                   <svg
                     class="h-4 w-4"
@@ -339,5 +347,13 @@ onBeforeUnmount(() => {
 .dropdown-leave-to {
   opacity: 0;
   transform: scale(0.95) translateY(-4px);
+}
+
+.account-dropdown {
+  @apply absolute z-50 origin-top-right overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40;
+}
+
+.account-menu-item {
+  @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.06] dark:hover:text-white;
 }
 </style>
