@@ -49,23 +49,46 @@
       ></div>
       <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"></div>
 
-      <div class="mx-auto hidden max-w-[1180px] px-4 pt-8 sm:px-6 lg:block lg:px-8">
-        <div class="grid max-w-xl grid-cols-3 gap-3">
-          <div
-            v-for="item in trustSignals"
-            :key="item.title"
-            class="rounded-xl border border-emerald-100 bg-white/80 px-4 py-3 shadow-sm shadow-emerald-950/5 backdrop-blur dark:border-emerald-400/15 dark:bg-white/[0.03]"
-          >
-            <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              {{ item.title }}
+      <div class="mx-auto hidden max-w-[1180px] px-4 pt-4 sm:px-6 lg:block lg:px-8">
+        <div class="grid gap-3 lg:grid-cols-[0.95fr_1.05fr] lg:gap-8">
+          <div class="flex max-w-xl items-center justify-between gap-4 rounded-2xl border border-emerald-100 bg-white/80 px-4 py-3 shadow-sm shadow-emerald-950/5 backdrop-blur dark:border-emerald-400/15 dark:bg-white/[0.03]">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                网关运行状态
+              </div>
+              <div class="mt-1 truncate text-[11px] text-slate-500 dark:text-slate-400">鉴权、额度、通道调度保持在线</div>
             </div>
-            <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{{ item.desc }}</div>
+            <div class="hidden items-center gap-2 sm:flex">
+              <span
+                v-for="item in trustSignals"
+                :key="item.title"
+                class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300"
+              >
+                {{ item.title }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex w-full max-w-md justify-self-center overflow-hidden rounded-2xl border border-slate-200 bg-white/80 shadow-sm shadow-slate-950/5 backdrop-blur dark:border-white/10 dark:bg-white/[0.03]">
+            <div
+              v-for="model in modelEntrances"
+              :key="model.name"
+              class="flex min-w-0 flex-1 items-center gap-2 border-r border-slate-200 px-3 py-3 last:border-r-0 dark:border-white/10"
+            >
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold text-white" :class="model.color">
+                {{ model.short }}
+              </span>
+              <div class="min-w-0">
+                <div class="truncate text-xs font-semibold text-slate-800 dark:text-slate-100">{{ model.name }}</div>
+                <div class="truncate text-[11px] text-slate-500 dark:text-slate-400">{{ model.status }}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mx-auto grid min-h-[calc(100vh-9rem)] max-w-[1180px] gap-8 px-4 py-6 sm:px-6 sm:py-7 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <div class="mx-auto grid min-h-[calc(100vh-8rem)] max-w-[1180px] gap-8 px-4 py-5 sm:px-6 sm:py-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
         <section class="hidden min-w-0 flex-col justify-center lg:flex">
           <div class="max-w-xl">
             <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -182,9 +205,15 @@ const metrics = [
 ]
 
 const trustSignals = [
-  { title: '通道状态', desc: '实时检测可用性' },
-  { title: '计费透明', desc: '请求成本可追踪' },
-  { title: '密钥隔离', desc: '项目额度分开管' }
+  { title: '通道健康' },
+  { title: '计费透明' },
+  { title: '密钥隔离' }
+] as const
+
+const modelEntrances = [
+  { name: 'Claude', short: 'C', status: '低延迟线路', color: 'bg-orange-500' },
+  { name: 'OpenAI', short: 'O', status: '统一入口', color: 'bg-emerald-600' },
+  { name: 'Gemini', short: 'G', status: '可用监控', color: 'bg-blue-600' }
 ] as const
 
 const securityItems = [

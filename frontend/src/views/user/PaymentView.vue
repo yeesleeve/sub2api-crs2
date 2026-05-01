@@ -1,11 +1,11 @@
 <template>
   <AppLayout>
-    <div class="mx-auto max-w-[1180px] space-y-5">
+    <div class="mx-auto max-w-[1180px] space-y-4 sm:space-y-5">
       <div v-if="loading" class="flex items-center justify-center py-20">
         <div class="h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-950 dark:border-white/20 dark:border-t-white"></div>
       </div>
       <template v-else>
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
@@ -17,7 +17,7 @@
                 选择充值金额或订阅套餐，系统会在下单前展示手续费、到账余额和实际支付金额。
               </p>
             </div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:w-[460px]">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:w-[460px]">
               <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
                 <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">当前余额</div>
                 <div class="mt-1 text-xl font-semibold text-slate-950 dark:text-white">${{ user?.balance?.toFixed(2) || '0.00' }}</div>
@@ -64,8 +64,8 @@
             </div>
             <div v-else class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
               <div class="space-y-5">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
-                  <div class="mb-5 flex items-center justify-between">
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
+                  <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <h3 class="text-base font-semibold text-slate-950 dark:text-white">选择充值金额</h3>
                       <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">支持快捷金额，也可以输入自定义金额。</p>
@@ -83,7 +83,7 @@
                   <p v-if="amountError" class="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300">{{ amountError }}</p>
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
                   <div class="mb-5">
                     <h3 class="text-base font-semibold text-slate-950 dark:text-white">选择支付方式</h3>
                     <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">不同支付方式可能存在单笔限额和手续费差异。</p>
@@ -96,7 +96,7 @@
                 </div>
               </div>
 
-              <aside class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] lg:sticky lg:top-24 lg:self-start">
+              <aside class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] sm:p-5 lg:sticky lg:top-24 lg:self-start">
                 <div class="mb-5">
                   <h3 class="text-base font-semibold text-slate-950 dark:text-white">结算明细</h3>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">确认金额无误后创建支付订单。</p>
@@ -134,7 +134,7 @@
                   <div class="border-t border-slate-200 pt-4 dark:border-white/10">
                     <div class="flex items-end justify-between">
                       <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ t('payment.actualPay') }}</span>
-                      <span class="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">¥{{ totalAmount.toFixed(2) }}</span>
+                      <span class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-3xl">¥{{ totalAmount.toFixed(2) }}</span>
                     </div>
                   </div>
                 </div>

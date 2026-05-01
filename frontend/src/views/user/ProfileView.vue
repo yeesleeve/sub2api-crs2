@@ -1,10 +1,10 @@
 <template>
   <AppLayout>
-    <div data-testid="profile-shell" class="space-y-6">
-      <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] lg:p-6">
-        <div class="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+    <div data-testid="profile-shell" class="space-y-4 sm:space-y-6">
+      <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5 lg:p-6">
+        <div class="grid gap-5 lg:grid-cols-[1fr_0.9fr] lg:gap-6">
           <div class="flex min-w-0 flex-col gap-5 sm:flex-row sm:items-center">
-            <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-950 text-2xl font-semibold text-white shadow-sm dark:bg-white dark:text-slate-950">
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-950 text-xl font-semibold text-white shadow-sm dark:bg-white dark:text-slate-950 sm:h-20 sm:w-20 sm:text-2xl">
               <img v-if="avatarUrl" :src="avatarUrl" :alt="displayName" class="h-full w-full object-cover" />
               <span v-else>{{ avatarInitial }}</span>
             </div>
@@ -47,14 +47,14 @@
         </div>
       </section>
 
-      <div class="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-        <div class="space-y-6">
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+      <div class="grid gap-4 sm:gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+        <div class="space-y-4 sm:space-y-6">
+          <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
             <div class="mb-5">
               <h2 class="text-base font-semibold text-slate-950 dark:text-white">基础资料</h2>
               <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">更新头像、用户名和登录身份信息。</p>
             </div>
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid gap-3 md:grid-cols-2 md:gap-4">
               <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
                 <ProfileAvatarCard :user="user" embedded />
               </div>
@@ -64,7 +64,7 @@
             </div>
           </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
             <ProfileIdentityBindingsSection
               :user="user"
               :linuxdo-enabled="linuxdoOAuthEnabled"
@@ -79,8 +79,8 @@
           </section>
         </div>
 
-        <div class="space-y-6">
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <div class="space-y-4 sm:space-y-6">
+          <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
             <div class="mb-5 flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-base font-semibold text-slate-950 dark:text-white">安全设置</h2>

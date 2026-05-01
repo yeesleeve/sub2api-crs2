@@ -41,7 +41,7 @@ onUnmounted(() => {
 
 <style scoped>
 .table-page-layout {
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-3 sm:gap-4;
   height: calc(100vh - 64px - 3rem);
 }
 
@@ -100,5 +100,18 @@ onUnmounted(() => {
   @apply flex-none;
   display: table;
   min-width: 100%;
+}
+
+.table-page-layout.mobile-mode :deep(.rounded-xl),
+.table-page-layout.mobile-mode :deep(.rounded-2xl) {
+  border-radius: 0.875rem;
+}
+
+.table-page-layout.mobile-mode :deep(.p-5) {
+  padding: 1rem;
+}
+
+.table-page-layout.mobile-mode :deep(.p-4) {
+  padding: 0.875rem;
 }
 </style>

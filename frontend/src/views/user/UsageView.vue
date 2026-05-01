@@ -17,7 +17,7 @@
               </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-2 xl:w-[720px] xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:w-[720px] xl:grid-cols-4">
               <div v-for="item in usageSummaryCards" :key="item.label" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.label }}</span>
@@ -35,9 +35,9 @@
 
       <template #filters>
         <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
-          <div class="flex flex-wrap items-end gap-4">
+          <div class="grid gap-4 md:grid-cols-[minmax(180px,0.7fr)_minmax(240px,1fr)_auto] md:items-end">
             <!-- API Key Filter -->
-            <div class="min-w-[180px]">
+            <div class="min-w-0">
               <label class="input-label">{{ t('usage.apiKeyFilter') }}</label>
               <Select
                 v-model="filters.api_key_id"
@@ -48,7 +48,7 @@
             </div>
 
             <!-- Date Range Filter -->
-            <div>
+            <div class="min-w-0">
               <label class="input-label">{{ t('usage.timeRange') }}</label>
               <DateRangePicker
                 v-model:start-date="startDate"
@@ -58,14 +58,14 @@
             </div>
 
             <!-- Actions -->
-            <div class="ml-auto flex flex-wrap items-center gap-3">
-              <button @click="applyFilters" :disabled="loading" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]">
+            <div class="flex flex-wrap items-center gap-3 md:justify-end">
+              <button @click="applyFilters" :disabled="loading" class="inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07] sm:flex-none">
                 {{ t('common.refresh') }}
               </button>
-              <button @click="resetFilters" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]">
+              <button @click="resetFilters" class="inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07] sm:flex-none">
                 {{ t('common.reset') }}
               </button>
-              <button @click="exportToCSV" :disabled="exporting" class="inline-flex h-10 items-center justify-center rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+              <button @click="exportToCSV" :disabled="exporting" class="inline-flex h-10 w-full items-center justify-center rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:w-auto">
                 <svg
                   v-if="exporting"
                   class="-ml-1 mr-2 h-4 w-4 animate-spin"

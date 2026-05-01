@@ -1,8 +1,8 @@
 <template>
   <AppLayout>
-    <div class="space-y-6">
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
-        <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <div class="space-y-4 sm:space-y-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10] sm:p-6">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
               <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
@@ -15,7 +15,7 @@
               这里汇总你的余额、API Key、调用量、Token 消耗和模型分布，方便快速判断今天的使用状态。
             </p>
           </div>
-          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:w-[440px]">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:w-[440px]">
             <router-link
               to="/keys"
               class="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="grid gap-4 lg:grid-cols-3">
+      <div class="grid gap-3 sm:gap-4 lg:grid-cols-3">
         <div
           v-for="panel in insightPanels"
           :key="panel.title"

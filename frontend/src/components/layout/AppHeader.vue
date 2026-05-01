@@ -2,7 +2,7 @@
   <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl dark:border-white/10 dark:bg-[#050607]/90">
     <div class="flex h-16 items-center justify-between px-4 md:px-6">
       <!-- Left: Mobile Menu Toggle + Page Title -->
-      <div class="flex items-center gap-4">
+      <div class="flex min-w-0 items-center gap-3 sm:gap-4">
         <button
           @click="toggleMobileSidebar"
           class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 lg:hidden"
@@ -10,6 +10,15 @@
         >
           <Icon name="menu" size="md" />
         </button>
+
+        <div class="min-w-0 lg:hidden">
+          <h1 class="truncate text-sm font-semibold tracking-tight text-slate-950 dark:text-white">
+            {{ pageTitle }}
+          </h1>
+          <p v-if="pageDescription" class="hidden truncate text-[11px] text-slate-500 dark:text-slate-400 sm:block">
+            {{ pageDescription }}
+          </p>
+        </div>
 
         <div class="hidden lg:block">
           <h1 class="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">
@@ -22,7 +31,7 @@
       </div>
 
       <!-- Right: Announcements + Docs + Language + Subscriptions + Balance + User Dropdown -->
-      <div class="flex items-center gap-2.5">
+      <div class="flex shrink-0 items-center gap-2 sm:gap-2.5">
         <div class="hidden items-center gap-1 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-white/[0.04] sm:flex">
           <!-- Announcement Bell -->
           <div class="header-announcement">
@@ -73,10 +82,10 @@
         <div v-if="user" class="relative" ref="dropdownRef">
           <button
             @click="toggleDropdown"
-            class="flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 shadow-sm shadow-slate-950/5 ring-1 ring-white transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:ring-white/5 dark:shadow-black/20 dark:hover:bg-white/[0.07]"
+            class="flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-2 shadow-sm shadow-slate-950/5 ring-1 ring-white transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:ring-white/5 dark:shadow-black/20 dark:hover:bg-white/[0.07] sm:h-11 sm:px-2.5"
             aria-label="User Menu"
           >
-            <div class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-slate-950 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-950/10 dark:bg-white dark:text-slate-950 dark:ring-white/10">
+            <div class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-slate-950 text-xs font-semibold text-white shadow-sm ring-1 ring-slate-950/10 dark:bg-white dark:text-slate-950 dark:ring-white/10 sm:h-8 sm:w-8 sm:text-sm">
               <img
                 v-if="avatarUrl"
                 :src="avatarUrl"

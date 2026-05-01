@@ -43,7 +43,7 @@
           <a href="#platforms" class="transition hover:text-slate-950 dark:hover:text-white">模型接入</a>
           <a href="#features" class="transition hover:text-slate-950 dark:hover:text-white">产品能力</a>
           <a href="#developers" class="transition hover:text-slate-950 dark:hover:text-white">开发接入</a>
-          <a href="#security" class="transition hover:text-slate-950 dark:hover:text-white">安全运营</a>
+          <a href="#developers" class="transition hover:text-slate-950 dark:hover:text-white">常见问题</a>
         </div>
 
         <div class="flex items-center gap-2">
@@ -93,7 +93,7 @@
           class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-[#050607] dark:via-[#050607]/85 dark:to-transparent"
         ></div>
 
-        <div class="mx-auto grid max-w-[1180px] gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-24">
+        <div class="mx-auto grid max-w-[1180px] gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-16">
           <div class="min-w-0 max-w-full flex flex-col justify-center">
             <div
               class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
@@ -235,169 +235,90 @@
         </div>
       </section>
 
-      <section id="platforms" class="border-b border-slate-200 bg-slate-50/70 py-12 dark:border-white/10 dark:bg-white/[0.02]">
+      <section id="platforms" class="border-b border-slate-200 bg-slate-50/70 py-12 dark:border-white/10 dark:bg-white/[0.02] sm:py-14">
         <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
-          <div class="mb-8 grid gap-3 md:grid-cols-3">
-            <div
-              v-for="item in operationsHighlights"
-              :key="item.title"
-              class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]"
-            >
-              <div class="mb-4 h-1.5 rounded-full" :class="item.bar"></div>
-              <div class="text-sm font-semibold text-slate-950 dark:text-white">{{ item.title }}</div>
-              <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ item.description }}</p>
-            </div>
-          </div>
-
           <div class="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
-              <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Unified providers</p>
-              <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">统一接入主流 AI 订阅能力</h2>
+              <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Model access</p>
+              <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">把主流模型能力收进一个入口</h2>
             </div>
             <p class="max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">
-              用一个 API 网关管理多平台账号、密钥、额度和调用记录，减少重复配置与人工维护。
+              首页只保留付费用户最关心的内容：能接哪些模型、是否稳定、如何计费、适合什么场景。
             </p>
           </div>
 
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div v-for="provider in providers" :key="provider.name" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#0b0d10]">
-              <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold text-white" :class="provider.color">
-                  {{ provider.short }}
+          <div class="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div v-for="provider in providers" :key="provider.name" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#0b0d10]">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold text-white" :class="provider.color">
+                    {{ provider.short }}
+                  </div>
+                  <div>
+                    <div class="font-semibold text-slate-950 dark:text-white">{{ provider.name }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ provider.mode }}</div>
+                  </div>
                 </div>
-                <div>
-                  <div class="font-semibold text-slate-950 dark:text-white">{{ provider.name }}</div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400">{{ provider.mode }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="features" class="py-16 sm:py-20">
-        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
-          <div class="mb-14 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
-            <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
-              <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">AI relay workflow</p>
-              <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
-                不只是转发请求，而是把账号、额度和通道变成可运营资产
-              </h2>
-              <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                面向正式商业站，用户关心的不只是能不能调用模型，还包括余额是否清晰、密钥是否安全、通道是否稳定、成本是否可控。
-              </p>
-              <div class="mt-6 grid gap-3 sm:grid-cols-2">
-                <div v-for="item in relayHighlights" :key="item.title" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
-                  <span class="flex h-9 w-9 items-center justify-center rounded-lg" :class="item.bg">
-                    <Icon :name="item.icon" size="sm" :class="item.color" />
-                  </span>
-                  <h3 class="mt-3 text-sm font-semibold text-slate-950 dark:text-white">{{ item.title }}</h3>
-                  <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ item.description }}</p>
+                <div class="mt-4 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 text-xs dark:bg-white/[0.04]">
+                  <span class="text-slate-500 dark:text-slate-400">运行延迟</span>
+                  <span class="font-semibold text-slate-800 dark:text-slate-100">{{ provider.latency }}</span>
                 </div>
               </div>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-black">
+            <div class="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-black sm:p-6">
               <div class="mb-5 flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-semibold text-emerald-300">Routing layers</p>
-                  <h3 class="mt-1 text-2xl font-semibold tracking-tight">AI 中转链路</h3>
+                  <p class="text-sm font-semibold text-emerald-300">Capability matrix</p>
+                  <h3 class="mt-1 text-2xl font-semibold tracking-tight">模型能力矩阵</h3>
                 </div>
-                <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-slate-200">实时调度</span>
+                <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-slate-200">持续维护</span>
               </div>
 
               <div class="space-y-3">
-                <div v-for="layer in relayLayers" :key="layer.title" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
-                  <div class="flex items-center gap-3">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold text-white" :class="layer.color">{{ layer.step }}</span>
-                    <div class="min-w-0 flex-1">
-                      <div class="flex items-center justify-between gap-3">
-                        <h4 class="truncate text-sm font-semibold">{{ layer.title }}</h4>
-                        <span class="text-xs text-slate-400">{{ layer.metric }}</span>
-                      </div>
-                      <p class="mt-1 text-xs leading-5 text-slate-400">{{ layer.description }}</p>
+                <div v-for="model in modelCapabilities" :key="model.name" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                  <div class="mb-3 flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                      <h4 class="truncate text-sm font-semibold">{{ model.name }}</h4>
+                      <p class="mt-1 text-xs text-slate-400">{{ model.scene }}</p>
                     </div>
+                    <span class="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-slate-200">{{ model.badge }}</span>
+                  </div>
+                  <div class="h-1.5 overflow-hidden rounded-full bg-white/10">
+                    <div class="h-full rounded-full" :class="model.bar" :style="{ width: model.value }"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div class="max-w-3xl">
-            <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Product capabilities</p>
-            <h2 class="mt-2 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">为正式运营准备的中转站能力</h2>
-            <p class="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
-              首页先把产品气质立住，后续控制台也会沿用同一套白/黑主题，让付费用户看到的是稳定、清晰、可信的服务。
-            </p>
-          </div>
-
-          <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <article v-for="feature in features" :key="feature.title" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#0b0d10]">
-              <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
-                <Icon :name="feature.icon" size="md" />
+      <section id="features" class="py-12 sm:py-14">
+        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
+          <div class="grid gap-4 lg:grid-cols-3">
+            <article v-for="card in commercialCards" :key="card.title" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+              <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-lg" :class="card.iconBg">
+                <Icon :name="card.icon" size="md" :class="card.iconColor" />
               </div>
-              <h3 class="text-lg font-semibold text-slate-950 dark:text-white">{{ feature.title }}</h3>
-              <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{{ feature.description }}</p>
+              <h3 class="text-lg font-semibold text-slate-950 dark:text-white">{{ card.title }}</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{{ card.description }}</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="developers" class="border-y border-slate-200 bg-slate-950 py-16 text-white dark:border-white/10 dark:bg-black sm:py-20">
-        <div class="mx-auto grid max-w-[1180px] gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-          <div class="flex flex-col justify-center">
+      <section id="developers" class="border-y border-slate-200 bg-slate-950 py-12 text-white dark:border-white/10 dark:bg-black sm:py-14">
+        <div class="mx-auto grid max-w-[1180px] gap-6 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+          <div>
             <p class="text-sm font-semibold text-emerald-400">Developer experience</p>
-            <h2 class="mt-2 text-4xl font-semibold tracking-tight">像接入一个普通 OpenAI 端点一样简单</h2>
-            <p class="mt-4 text-base leading-7 text-slate-300">
-              保持开发者熟悉的请求方式，把账号池、额度控制、统计报表和通道调度放到平台内部处理。
-            </p>
-            <div class="mt-8 flex flex-wrap gap-2">
-              <span v-for="tag in devTags" :key="tag" class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
-                {{ tag }}
-              </span>
-            </div>
+            <h2 class="mt-2 text-3xl font-semibold tracking-tight">接入方式保持熟悉，运营能力交给平台</h2>
+            <p class="mt-4 text-sm leading-7 text-slate-300">兼容 OpenAI 风格请求，把账号池、额度、统计和通道健康放在服务端统一处理。</p>
           </div>
-
-          <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-2xl shadow-black/40">
-            <div class="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
-              <div class="flex items-center gap-2">
-                <span class="h-3 w-3 rounded-full bg-red-400"></span>
-                <span class="h-3 w-3 rounded-full bg-amber-400"></span>
-                <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
-              </div>
-              <span class="text-xs text-slate-400">api-example.ts</span>
-            </div>
-            <pre class="overflow-x-auto text-sm leading-7 text-slate-200"><code>const response = await fetch('https://your-domain.com/v1/chat/completions', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer sk-crs2_xxx',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    model: 'claude-sonnet-4-5',
-    messages: [
-      { role: 'user', content: '帮我分析这份运营数据' }
-    ]
-  })
-})</code></pre>
-          </div>
-        </div>
-      </section>
-
-      <section id="security" class="py-16 sm:py-20">
-        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
-          <div class="grid gap-4 lg:grid-cols-3">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8 dark:border-white/10 dark:bg-white/[0.03] lg:col-span-1">
-              <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Operations</p>
-              <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">面向 7x24 运营</h2>
-              <p class="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                从首页开始建立“稳定服务”的感知，后续接入域名、SSL、支付与计费后可继续扩展成完整商业站。
-              </p>
-            </div>
-            <div v-for="item in securityItems" :key="item.title" class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
-              <Icon :name="item.icon" size="lg" class="text-emerald-600 dark:text-emerald-400" />
-              <h3 class="mt-5 text-lg font-semibold text-slate-950 dark:text-white">{{ item.title }}</h3>
-              <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{{ item.description }}</p>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div v-for="item in faqItems" :key="item.q" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+              <h3 class="text-sm font-semibold">{{ item.q }}</h3>
+              <p class="mt-2 text-xs leading-5 text-slate-400">{{ item.a }}</p>
             </div>
           </div>
         </div>
@@ -492,113 +413,55 @@ const routeSignals = [
   { label: 'Gemini', value: '68%', dot: 'bg-blue-500', bar: 'bg-blue-500' }
 ]
 
-const operationsHighlights = [
-  {
-    title: '多通道容灾',
-    description: '用不同颜色区分模型与通道状态，让首页不再只有黑白两层。',
-    bar: 'bg-gradient-to-r from-emerald-400 to-blue-500'
-  },
-  {
-    title: '余额与计费',
-    description: '强化金额、消耗、订阅这些付费用户最关心的信息层级。',
-    bar: 'bg-gradient-to-r from-blue-500 to-violet-500'
-  },
-  {
-    title: '运营可信感',
-    description: '保留白色主视觉，同时加入轻量色彩和状态元素，显得更专业。',
-    bar: 'bg-gradient-to-r from-amber-400 to-rose-500'
-  }
-]
+const modelCapabilities = [
+  { name: 'Claude / Sonnet', scene: '长文本、代码、复杂推理', badge: '推荐', value: '92%', bar: 'bg-orange-500' },
+  { name: 'OpenAI', scene: '通用问答、工具调用、结构化输出', badge: '稳定', value: '86%', bar: 'bg-emerald-500' },
+  { name: 'Gemini', scene: '多模态、搜索增强、批量任务', badge: '高性价比', value: '78%', bar: 'bg-blue-500' },
+  { name: 'Grok / 其他', scene: '备用线路、场景补充、运营扩展', badge: '扩展中', value: '68%', bar: 'bg-violet-500' }
+] as const
 
-const relayHighlights: Array<{
+const commercialCards: Array<{
   title: string
   description: string
   icon: IconName
-  bg: string
-  color: string
+  iconBg: string
+  iconColor: string
 }> = [
   {
-    title: '统一鉴权入口',
-    description: '用户只持有平台分配的 Key，真实上游账号和订阅信息留在服务端。',
-    icon: 'key',
-    bg: 'bg-emerald-100 dark:bg-emerald-400/15',
-    color: 'text-emerald-600 dark:text-emerald-300'
-  },
-  {
-    title: '模型兼容转发',
-    description: '兼容 OpenAI 风格调用，同时承载 Claude、Gemini 等多种模型接入。',
-    icon: 'swap',
-    bg: 'bg-blue-100 dark:bg-blue-400/15',
-    color: 'text-blue-600 dark:text-blue-300'
-  },
-  {
-    title: '成本和余额清晰',
-    description: '按请求、Token、模型和密钥记录成本，让付费用户知道钱花在哪里。',
-    icon: 'calculator',
-    bg: 'bg-amber-100 dark:bg-amber-400/15',
-    color: 'text-amber-600 dark:text-amber-300'
-  },
-  {
-    title: '通道健康监控',
-    description: '持续观察延迟、可用率和失败情况，为稳定运营预留调度基础。',
+    title: '稳定性说明',
+    description: '多通道接入、状态可观测、异常可追踪，适合把 AI 调用作为长期服务使用。',
     icon: 'shield',
-    bg: 'bg-rose-100 dark:bg-rose-400/15',
-    color: 'text-rose-600 dark:text-rose-300'
+    iconBg: 'bg-emerald-50 dark:bg-emerald-400/10',
+    iconColor: 'text-emerald-600 dark:text-emerald-400'
+  },
+  {
+    title: '计费透明',
+    description: '余额、套餐、请求成本和 Token 明细都集中展示，用户能清楚知道额度消耗在哪里。',
+    icon: 'calculator',
+    iconBg: 'bg-amber-50 dark:bg-amber-400/10',
+    iconColor: 'text-amber-600 dark:text-amber-400'
+  },
+  {
+    title: '适合场景',
+    description: '个人创作、开发测试、团队工具、自动化脚本和多模型应用都可以用同一套入口管理。',
+    icon: 'cpu',
+    iconBg: 'bg-blue-50 dark:bg-blue-400/10',
+    iconColor: 'text-blue-600 dark:text-blue-400'
   }
 ]
 
-const relayLayers = [
-  {
-    step: '01',
-    title: '用户 API Key',
-    description: '控制权限、有效期、额度和可用分组。',
-    metric: 'Auth',
-    color: 'bg-emerald-500'
-  },
-  {
-    step: '02',
-    title: '智能路由与模型映射',
-    description: '根据平台、模型、账号池和通道健康选择可用线路。',
-    metric: 'Route',
-    color: 'bg-blue-500'
-  },
-  {
-    step: '03',
-    title: '上游订阅账号池',
-    description: '集中管理 Claude、OpenAI、Gemini、Antigravity 等能力。',
-    metric: 'Pool',
-    color: 'bg-violet-500'
-  },
-  {
-    step: '04',
-    title: '用量统计和计费',
-    description: '记录成本、Token、响应耗时和用户调用轨迹。',
-    metric: 'Billing',
-    color: 'bg-amber-500'
-  }
-]
+const faqItems = [
+  { q: '是否需要改代码？', a: '多数 OpenAI 兼容应用只需要替换 Base URL 和 API Key。' },
+  { q: '如何控制成本？', a: '通过余额、密钥额度、分组倍率和使用记录持续追踪消耗。' },
+  { q: '模型不可用怎么办？', a: '可在通道状态与可用模型页查看线路状态，后续可继续扩展自动调度策略。' },
+  { q: '适合商业运营吗？', a: '页面、充值、用户控制台和后台配置都按正式站点逐步打磨。' }
+] as const
 
 const providers = [
   { name: 'Claude', short: 'C', mode: 'Messages API', latency: '312ms', health: '96%', color: 'bg-orange-500' },
   { name: 'OpenAI', short: 'O', mode: 'Chat Completions', latency: '348ms', health: '92%', color: 'bg-emerald-600' },
   { name: 'Gemini', short: 'G', mode: 'OAuth / API', latency: '421ms', health: '88%', color: 'bg-blue-600' },
   { name: 'Antigravity', short: 'A', mode: '订阅转发', latency: '406ms', health: '90%', color: 'bg-rose-600' }
-]
-
-const features: Array<{ title: string; description: string; icon: IconName }> = [
-  { title: '统一 API 网关', description: '把多个 AI 订阅和账号池收敛到一个稳定入口，前端、脚本和团队应用只需要维护一套接入配置。', icon: 'server' },
-  { title: '订阅池与额度管理', description: '按账号、分组和用户管理余额、额度、并发与有效期，适合长期付费运营和团队共享。', icon: 'database' },
-  { title: '实时调用统计', description: '追踪请求量、模型消耗、用户维度和通道表现，帮助你快速发现异常成本与高频需求。', icon: 'chart' },
-  { title: '密钥与权限控制', description: '为不同用户分配独立 Key，统一控制可用模型、额度边界、访问权限和调用记录。', icon: 'key' },
-  { title: '通道监控与调度', description: '持续观察通道健康、延迟与失败率，为后续自动切换、降级和告警预留运营基础。', icon: 'shield' },
-  { title: '支付计费预留', description: '页面结构已经按正式商业站规划，后续可继续接入套餐、支付、订单和发票等运营模块。', icon: 'creditCard' }
-]
-
-const devTags = ['OpenAI-compatible', 'Claude Messages', 'Usage analytics', 'Team quotas', 'Channel monitor']
-
-const securityItems: Array<{ title: string; description: string; icon: IconName }> = [
-  { title: '密钥不外泄', description: '真实密钥、JWT、数据库密码只保存在服务器环境变量，不写进前端代码和 Git 仓库。', icon: 'lock' },
-  { title: '服务可维护', description: 'Docker Compose 管理应用、PostgreSQL 与 Redis，配合宝塔 Nginx 反向代理，便于更新、备份和迁移。', icon: 'cube' }
 ]
 
 function toggleTheme() {

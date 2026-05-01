@@ -17,7 +17,7 @@
               </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-3 xl:w-[520px]">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 xl:w-[520px]">
               <div v-for="item in keySummaryCards" :key="item.label" class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.label }}</span>
@@ -54,18 +54,18 @@
                 @update:model-value="onStatusFilterChange"
               />
             </div>
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex w-full flex-wrap items-center gap-3 sm:w-auto">
               <button
                 @click="loadApiKeys"
                 :disabled="loading"
-                class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07]"
+                class="inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07] sm:flex-none"
                 :title="t('common.refresh')"
               >
                 <Icon name="refresh" size="sm" :class="loading ? 'animate-spin' : ''" />
               </button>
               <button
                 @click="showCreateModal = true"
-                class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                class="inline-flex h-10 flex-[2] items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:flex-none"
                 data-tour="keys-create-btn"
               >
                 <Icon name="plus" size="sm" />
