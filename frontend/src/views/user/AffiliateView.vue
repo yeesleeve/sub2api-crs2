@@ -1,13 +1,13 @@
 <template>
   <AppLayout>
-    <div class="space-y-6">
+    <div class="space-y-4 sm:space-y-6">
       <div v-if="loading" class="flex justify-center py-12">
         <div class="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"></div>
       </div>
 
       <template v-else-if="detail">
-        <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] lg:p-6">
-          <div class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5 lg:p-6">
+          <div class="grid gap-4 sm:gap-6 xl:grid-cols-[1.05fr_0.95fr]">
             <div class="min-w-0">
               <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
@@ -20,7 +20,7 @@
                 分享专属注册链接，被邀请用户消费后返利会进入邀请收益池，可随时转入账户余额继续使用。
               </p>
 
-              <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <div
                   v-for="card in summaryCards"
                   :key="card.label"
@@ -30,7 +30,7 @@
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                     <Icon :name="card.icon" size="sm" :class="card.iconClass" />
                   </div>
-                  <p class="mt-3 truncate text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                  <p class="mt-3 break-words text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
                     {{ card.value }}
                   </p>
                   <p v-if="card.hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
@@ -38,8 +38,8 @@
               </div>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-slate-950 p-5 text-white shadow-sm dark:border-white/10 dark:bg-white">
-              <div class="flex items-start justify-between gap-4">
+            <div class="rounded-xl border border-slate-200 bg-slate-950 p-4 text-white shadow-sm dark:border-white/10 dark:bg-white sm:p-5">
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p class="text-xs font-medium uppercase tracking-wide text-white/50 dark:text-slate-500">推广资产</p>
                   <p class="mt-2 text-3xl font-semibold tracking-tight dark:text-slate-950">
@@ -50,7 +50,7 @@
                   </p>
                 </div>
                 <button
-                  class="inline-flex h-10 items-center gap-2 rounded-lg bg-white px-4 text-sm font-semibold text-slate-950 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                  class="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-semibold text-slate-950 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800 sm:w-auto"
                   :disabled="transferring || detail.aff_quota <= 0"
                   @click="transferQuota"
                 >
@@ -60,7 +60,7 @@
                 </button>
               </div>
 
-              <div class="mt-6 grid grid-cols-2 gap-3">
+              <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div class="rounded-lg border border-white/10 bg-white/5 p-4 dark:border-slate-200 dark:bg-slate-50">
                   <p class="text-xs text-white/50 dark:text-slate-500">累计收益</p>
                   <p class="mt-2 text-lg font-semibold dark:text-slate-950">{{ formatCurrency(detail.aff_history_quota) }}</p>
@@ -78,9 +78,9 @@
           </div>
         </section>
 
-        <section class="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
-          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
-            <div class="mb-5 flex items-center justify-between gap-4">
+        <section class="grid gap-4 sm:gap-6 xl:grid-cols-[0.92fr_1.08fr]">
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
+            <div class="mb-5 flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-base font-semibold text-slate-950 dark:text-white">专属推广信息</h2>
                 <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">复制邀请码或链接，发给你的用户。</p>
@@ -91,9 +91,9 @@
             <div class="space-y-4">
               <div>
                 <p class="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">{{ t('affiliate.yourCode') }}</p>
-                <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <code class="min-w-0 flex-1 truncate text-sm font-semibold text-slate-950 dark:text-white">{{ detail.aff_code }}</code>
-                  <button class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.05] dark:text-slate-200 dark:hover:bg-white/[0.08]" @click="copyCode">
+                <div class="flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03] sm:flex-row sm:items-center">
+                  <code class="min-w-0 flex-1 break-all text-sm font-semibold text-slate-950 dark:text-white">{{ detail.aff_code }}</code>
+                  <button class="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.05] dark:text-slate-200 dark:hover:bg-white/[0.08] sm:h-8 sm:w-auto" @click="copyCode">
                     <Icon name="copy" size="sm" />
                     {{ t('affiliate.copyCode') }}
                   </button>
@@ -102,9 +102,9 @@
 
               <div>
                 <p class="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">{{ t('affiliate.inviteLink') }}</p>
-                <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03]">
-                  <code class="min-w-0 flex-1 truncate text-sm text-slate-600 dark:text-slate-300">{{ inviteLink }}</code>
-                  <button class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.05] dark:text-slate-200 dark:hover:bg-white/[0.08]" @click="copyInviteLink">
+                <div class="flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03] sm:flex-row sm:items-center">
+                  <code class="min-w-0 flex-1 break-all text-sm text-slate-600 dark:text-slate-300">{{ inviteLink }}</code>
+                  <button class="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.05] dark:text-slate-200 dark:hover:bg-white/[0.08] sm:h-8 sm:w-auto" @click="copyInviteLink">
                     <Icon name="copy" size="sm" />
                     {{ t('affiliate.copyLink') }}
                   </button>
@@ -113,12 +113,12 @@
             </div>
           </div>
 
-          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
             <div class="mb-5">
               <h2 class="text-base font-semibold text-slate-950 dark:text-white">返利流程</h2>
               <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">完整路径更清楚，用户转化后收益也更容易追踪。</p>
             </div>
-            <div class="grid gap-3 md:grid-cols-3">
+            <div class="grid gap-3 sm:grid-cols-3">
               <div
                 v-for="step in inviteSteps"
                 :key="step.title"
@@ -134,7 +134,7 @@
           </div>
         </section>
 
-        <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+        <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0b0d10] sm:p-5">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 class="text-base font-semibold text-slate-950 dark:text-white">{{ t('affiliate.invitees.title') }}</h2>
@@ -150,8 +150,8 @@
           <div v-if="detail.invitees.length === 0" class="mt-5 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
             {{ t('affiliate.invitees.empty') }}
           </div>
-          <div v-else class="mt-5 overflow-x-auto">
-            <table class="w-full min-w-[680px] text-left text-sm">
+          <div v-else class="mt-5 overflow-x-auto pb-2">
+            <table class="w-full min-w-[560px] text-left text-sm">
               <thead>
                 <tr class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-white/10 dark:text-slate-400">
                   <th class="px-3 py-3 font-medium">{{ t('affiliate.invitees.columns.email') }}</th>
@@ -166,8 +166,8 @@
                   :key="item.user_id"
                   class="border-b border-slate-100 last:border-b-0 dark:border-white/10"
                 >
-                  <td class="px-3 py-4 font-medium text-slate-950 dark:text-white">{{ item.email || '-' }}</td>
-                  <td class="px-3 py-4 text-slate-600 dark:text-slate-300">{{ item.username || '-' }}</td>
+                  <td class="px-3 py-4 font-medium text-slate-950 dark:text-white"><span class="break-all">{{ item.email || '-' }}</span></td>
+                  <td class="px-3 py-4 text-slate-600 dark:text-slate-300"><span class="break-all">{{ item.username || '-' }}</span></td>
                   <td class="px-3 py-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">
                     {{ formatCurrency(item.total_rebate) }}
                   </td>

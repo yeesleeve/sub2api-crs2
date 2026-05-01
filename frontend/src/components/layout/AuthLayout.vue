@@ -49,9 +49,23 @@
       ></div>
       <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"></div>
 
-      <div class="mx-auto hidden max-w-[1180px] px-4 pt-4 sm:px-6 lg:block lg:px-8">
-        <div class="grid gap-3 lg:grid-cols-[0.95fr_1.05fr] lg:gap-8">
-          <div class="flex max-w-xl items-center justify-between gap-4 rounded-2xl border border-emerald-100 bg-white/80 px-4 py-3 shadow-sm shadow-emerald-950/5 backdrop-blur dark:border-emerald-400/15 dark:bg-white/[0.03]">
+      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-[1180px] gap-7 px-4 py-4 sm:px-6 sm:py-5 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+        <section class="hidden min-w-0 flex-col justify-center lg:flex">
+          <div class="max-w-xl">
+            <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              正式运营中的 AI 中转服务
+            </div>
+            <h1 class="text-5xl font-semibold leading-[1.08] tracking-tight text-slate-950 dark:text-white">
+              一个账号入口，
+              <span class="block text-emerald-600 dark:text-emerald-400">管理你的 AI 调用。</span>
+            </h1>
+            <p class="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
+              {{ heroSubtitle }}
+            </p>
+          </div>
+
+          <div class="mt-6 flex max-w-xl items-center justify-between gap-4 rounded-xl border border-emerald-100 bg-white/80 px-4 py-3 shadow-sm shadow-emerald-950/5 backdrop-blur dark:border-emerald-400/15 dark:bg-white/[0.03]">
             <div class="min-w-0">
               <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
                 <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -59,7 +73,7 @@
               </div>
               <div class="mt-1 truncate text-[11px] text-slate-500 dark:text-slate-400">鉴权、额度、通道调度保持在线</div>
             </div>
-            <div class="hidden items-center gap-2 sm:flex">
+            <div class="flex shrink-0 items-center gap-2">
               <span
                 v-for="item in trustSignals"
                 :key="item.title"
@@ -70,7 +84,7 @@
             </div>
           </div>
 
-          <div class="flex w-full max-w-md justify-self-center overflow-hidden rounded-2xl border border-slate-200 bg-white/80 shadow-sm shadow-slate-950/5 backdrop-blur dark:border-white/10 dark:bg-white/[0.03]">
+          <div class="mt-4 flex max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white/80 shadow-sm shadow-slate-950/5 backdrop-blur dark:border-white/10 dark:bg-white/[0.03]">
             <div
               v-for="model in modelEntrances"
               :key="model.name"
@@ -85,26 +99,8 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="mx-auto grid min-h-[calc(100vh-8rem)] max-w-[1180px] gap-8 px-4 py-5 sm:px-6 sm:py-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-        <section class="hidden min-w-0 flex-col justify-center lg:flex">
-          <div class="max-w-xl">
-            <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              正式运营中的 AI 中转服务
-            </div>
-            <h1 class="text-5xl font-semibold leading-[1.08] tracking-tight text-slate-950 dark:text-white">
-              一个账号入口，
-              <span class="block text-emerald-600 dark:text-emerald-400">管理你的 AI 调用。</span>
-            </h1>
-            <p class="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
-              {{ heroSubtitle }}
-            </p>
-          </div>
-
-          <div class="mt-10 grid max-w-xl grid-cols-3 gap-3">
+          <div class="mt-4 grid max-w-xl grid-cols-3 gap-3">
             <div
               v-for="metric in metrics"
               :key="metric.label"
@@ -115,7 +111,7 @@
             </div>
           </div>
 
-          <div class="mt-6 max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40">
+          <div class="mt-4 max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40">
             <div class="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
               <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-red-400"></span>
@@ -151,25 +147,25 @@
           </div>
         </section>
 
-        <section class="flex min-w-0 items-center justify-center">
+        <section class="flex min-w-0 items-start justify-center pt-3 sm:pt-4 lg:items-center lg:pt-0">
           <div class="w-full max-w-md">
-            <div class="mb-6 text-center lg:hidden">
+            <div class="mb-4 text-center lg:hidden">
               <div class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white">
                 CR
               </div>
               <h1 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ displayName }}</h1>
-              <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ heroSubtitle }}</p>
+              <p class="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500 dark:text-slate-400">{{ heroSubtitle }}</p>
             </div>
 
             <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40 sm:p-6">
               <slot />
             </div>
 
-            <div class="mt-6 text-center text-sm">
+            <div class="mt-4 text-center text-sm">
               <slot name="footer" />
             </div>
 
-            <div class="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">
+            <div class="mt-5 text-center text-xs text-slate-400 dark:text-slate-500">
               &copy; {{ currentYear }} {{ displayName }}. All rights reserved.
             </div>
           </div>

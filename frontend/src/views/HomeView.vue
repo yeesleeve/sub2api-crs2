@@ -309,37 +309,41 @@
       </section>
 
       <section id="developers" class="border-y border-slate-200 bg-slate-950 py-12 text-white dark:border-white/10 dark:bg-black sm:py-14">
-        <div class="mx-auto grid max-w-[1180px] gap-6 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
-          <div>
-            <p class="text-sm font-semibold text-emerald-400">Developer experience</p>
-            <h2 class="mt-2 text-3xl font-semibold tracking-tight">接入方式保持熟悉，运营能力交给平台</h2>
-            <p class="mt-4 text-sm leading-7 text-slate-300">兼容 OpenAI 风格请求，把账号池、额度、统计和通道健康放在服务端统一处理。</p>
-          </div>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <div v-for="item in faqItems" :key="item.q" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
-              <h3 class="text-sm font-semibold">{{ item.q }}</h3>
-              <p class="mt-2 text-xs leading-5 text-slate-400">{{ item.a }}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div class="mx-auto max-w-[1180px] rounded-2xl border border-slate-200 bg-slate-950 p-8 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-white dark:text-slate-950 sm:p-10">
-          <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
+        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
+          <div class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
-              <h2 class="text-3xl font-semibold tracking-tight">准备好开始统一管理你的 AI 订阅了吗？</h2>
-              <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300 dark:text-slate-600">
-                先进入控制台完成基础配置，后续我会继续把登录页、控制台和运营文案统一到这套视觉系统。
-              </p>
+              <p class="text-sm font-semibold text-emerald-400">Developer experience</p>
+              <h2 class="mt-2 text-3xl font-semibold tracking-tight">接入方式保持熟悉，运营能力交给平台</h2>
+              <p class="mt-4 text-sm leading-7 text-slate-300">兼容 OpenAI 风格请求，把账号池、额度、统计和通道健康放在服务端统一处理。</p>
             </div>
-            <router-link
-              :to="isAuthenticated ? dashboardPath : '/login'"
-              class="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
-            >
-              {{ isAuthenticated ? '进入控制台' : '登录控制台' }}
-              <Icon name="arrowRight" size="sm" />
-            </router-link>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div v-for="item in faqItems" :key="item.q" class="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                <h3 class="text-sm font-semibold">{{ item.q }}</h3>
+                <p class="mt-2 text-xs leading-5 text-slate-400">{{ item.a }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-white text-slate-950 shadow-2xl shadow-black/20 dark:bg-white dark:text-slate-950">
+            <div class="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <div class="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                  商业运营入口
+                </div>
+                <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">准备好开始统一管理你的 AI 订阅了吗？</h2>
+                <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                  进入控制台即可管理密钥、额度、充值和使用记录，后续运营页面会继续按这套视觉系统统一打磨。
+                </p>
+              </div>
+              <router-link
+                :to="isAuthenticated ? dashboardPath : '/login'"
+                class="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800"
+              >
+                {{ isAuthenticated ? '进入控制台' : '登录控制台' }}
+                <Icon name="arrowRight" size="sm" />
+              </router-link>
+            </div>
           </div>
         </div>
       </section>
