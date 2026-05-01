@@ -1,6 +1,6 @@
 <template>
   <AuthLayout>
-    <div class="space-y-5">
+    <div class="min-w-0 space-y-5">
       <!-- Title -->
       <div>
         <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -10,7 +10,7 @@
         <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
           创建你的控制台账号
         </h2>
-        <p class="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
+        <p class="mt-3 max-w-full text-sm leading-6 text-slate-500 dark:text-slate-400">
           注册后即可进入 {{ siteName }}，统一管理 API Key、订阅额度与调用记录。
         </p>
       </div>
@@ -811,6 +811,13 @@ async function handleRegister(): Promise<void> {
 
 .auth-input-label {
   @apply mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200;
+}
+
+p,
+h2,
+span,
+div {
+  overflow-wrap: anywhere;
 }
 
 .fade-enter-active,

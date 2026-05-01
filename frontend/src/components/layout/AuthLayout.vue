@@ -49,7 +49,7 @@
       ></div>
       <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"></div>
 
-      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-[1180px] gap-7 px-4 py-4 sm:px-6 sm:py-5 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-[1180px] gap-5 px-4 py-3 sm:px-6 sm:py-5 lg:grid-cols-[0.95fr_1.05fr] lg:gap-7 lg:px-8">
         <section class="hidden min-w-0 flex-col justify-center lg:flex">
           <div class="max-w-xl">
             <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -147,17 +147,14 @@
           </div>
         </section>
 
-        <section class="flex min-w-0 items-start justify-center pt-3 sm:pt-4 lg:items-center lg:pt-0">
-          <div class="w-full max-w-md">
-            <div class="mb-4 text-center lg:hidden">
-              <div class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white">
-                CR
-              </div>
-              <h1 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ displayName }}</h1>
-              <p class="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500 dark:text-slate-400">{{ heroSubtitle }}</p>
+        <section class="flex min-w-0 items-start justify-center lg:items-center">
+          <div class="w-full max-w-[calc(100vw-2rem)] sm:max-w-md">
+            <div class="mb-3 text-center lg:hidden">
+              <h1 class="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ displayName }}</h1>
+              <p class="mx-auto mt-1.5 max-w-sm text-xs leading-5 text-slate-500 dark:text-slate-400 sm:text-sm sm:leading-6">{{ heroSubtitle }}</p>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40 sm:p-6">
+            <div class="max-w-full overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/40 sm:p-6">
               <slot />
             </div>
 
