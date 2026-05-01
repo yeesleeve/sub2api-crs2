@@ -1,14 +1,25 @@
 <template>
   <AuthLayout>
-    <div class="space-y-6">
+    <div class="space-y-7">
       <!-- Title -->
-      <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ t('auth.createAccount') }}
+      <div>
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          新用户注册
+        </div>
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+          创建你的控制台账号
         </h2>
-        <p class="mt-2 text-sm text-gray-500 dark:text-dark-400">
-          {{ t('auth.signUpToStart', { siteName }) }}
+        <p class="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
+          注册后即可进入 {{ siteName }}，统一管理 API Key、订阅额度与调用记录。
         </p>
+      </div>
+
+      <div
+        v-if="errorMessage"
+        class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300"
+      >
+        {{ errorMessage }}
       </div>
 
       <div v-if="linuxdoOAuthEnabled || wechatOAuthEnabled || oidcOAuthEnabled" class="space-y-4">
@@ -32,18 +43,18 @@
           :show-divider="false"
         />
         <div class="flex items-center gap-3">
-          <div class="h-px flex-1 bg-gray-200 dark:bg-dark-700"></div>
-          <span class="text-xs text-gray-500 dark:text-dark-400">
+          <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
             {{ t('auth.oauthOrContinue') }}
           </span>
-          <div class="h-px flex-1 bg-gray-200 dark:bg-dark-700"></div>
+          <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
         </div>
       </div>
 
       <!-- Registration Disabled Message -->
       <div
         v-if="!registrationEnabled && settingsLoaded"
-        class="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/50 dark:bg-amber-900/20"
+        class="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-400/20 dark:bg-amber-400/10"
       >
         <div class="flex items-start gap-3">
           <div class="flex-shrink-0">
@@ -59,12 +70,12 @@
       <form v-else @submit.prevent="handleRegister" class="space-y-5">
         <!-- Email Input -->
         <div>
-          <label for="email" class="input-label">
+          <label for="email" class="auth-input-label">
             {{ t('auth.emailLabel') }}
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="mail" size="md" class="text-gray-400 dark:text-dark-500" />
+              <Icon name="mail" size="md" class="text-slate-400 dark:text-slate-500" />
             </div>
             <input
               id="email"
@@ -74,7 +85,7 @@
               autofocus
               autocomplete="email"
               :disabled="isLoading"
-              class="input pl-11"
+              class="auth-input pl-11"
               :class="{ 'input-error': errors.email }"
               :placeholder="t('auth.emailPlaceholder')"
             />
@@ -83,12 +94,12 @@
 
         <!-- Password Input -->
         <div>
-          <label for="password" class="input-label">
+          <label for="password" class="auth-input-label">
             {{ t('auth.passwordLabel') }}
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="lock" size="md" class="text-gray-400 dark:text-dark-500" />
+              <Icon name="lock" size="md" class="text-slate-400 dark:text-slate-500" />
             </div>
             <input
               id="password"
@@ -97,39 +108,39 @@
               required
               autocomplete="new-password"
               :disabled="isLoading"
-              class="input pl-11 pr-11"
+              class="auth-input pl-11 pr-11"
               :class="{ 'input-error': errors.password }"
               :placeholder="t('auth.createPasswordPlaceholder')"
             />
             <button
               type="button"
               @click="showPassword = !showPassword"
-              class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-dark-300"
+              class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
             >
               <Icon v-if="showPassword" name="eyeOff" size="md" />
               <Icon v-else name="eye" size="md" />
             </button>
           </div>
-          <p class="input-hint">
+          <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
             {{ t('auth.passwordHint') }}
           </p>
         </div>
 
         <!-- Invitation Code Input (Required when enabled) -->
         <div v-if="invitationCodeEnabled">
-          <label for="invitation_code" class="input-label">
+          <label for="invitation_code" class="auth-input-label">
             {{ t('auth.invitationCodeLabel') }}
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-green-500' : 'text-gray-400 dark:text-dark-500'" />
+              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-green-500' : 'text-slate-400 dark:text-slate-500'" />
             </div>
             <input
               id="invitation_code"
               v-model="formData.invitation_code"
               type="text"
               :disabled="isLoading"
-              class="input pl-11 pr-10"
+              class="auth-input pl-11 pr-10"
               :class="{
                 'border-green-500 focus:border-green-500 focus:ring-green-500': invitationValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': invitationValidation.invalid || errors.invitation_code
@@ -164,20 +175,20 @@
 
         <!-- Promo Code Input (Optional) -->
         <div v-if="promoCodeEnabled">
-          <label for="promo_code" class="input-label">
+          <label for="promo_code" class="auth-input-label">
             {{ t('auth.promoCodeLabel') }}
-            <span class="ml-1 text-xs font-normal text-gray-400 dark:text-dark-500">({{ t('common.optional') }})</span>
+            <span class="ml-1 text-xs font-normal text-slate-400 dark:text-slate-500">({{ t('common.optional') }})</span>
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-green-500' : 'text-gray-400 dark:text-dark-500'" />
+              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-green-500' : 'text-slate-400 dark:text-slate-500'" />
             </div>
             <input
               id="promo_code"
               v-model="formData.promo_code"
               type="text"
               :disabled="isLoading"
-              class="input pl-11 pr-10"
+              class="auth-input pl-11 pr-10"
               :class="{
                 'border-green-500 focus:border-green-500 focus:ring-green-500': promoValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': promoValidation.invalid
@@ -225,7 +236,7 @@
         <button
           type="submit"
           :disabled="isLoading || (turnstileEnabled && !turnstileToken)"
-          class="btn btn-primary w-full"
+          class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <svg
             v-if="isLoading"
@@ -261,11 +272,11 @@
 
     <!-- Footer -->
     <template #footer>
-      <p class="text-gray-500 dark:text-dark-400">
+      <p class="text-slate-500 dark:text-slate-400">
         {{ t('auth.alreadyHaveAccount') }}
         <router-link
           to="/login"
-          class="font-medium text-primary-600 transition-colors hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+          class="font-semibold text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300"
         >
           {{ t('auth.signIn') }}
         </router-link>
@@ -786,6 +797,14 @@ async function handleRegister(): Promise<void> {
 </script>
 
 <style scoped>
+.auth-input {
+  @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+}
+
+.auth-input-label {
+  @apply mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s ease;

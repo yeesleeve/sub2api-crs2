@@ -1,14 +1,25 @@
 <template>
   <AuthLayout>
-    <div class="space-y-6">
+    <div class="space-y-7">
       <!-- Title -->
-      <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ t('auth.welcomeBack') }}
+      <div>
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          安全登录
+        </div>
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+          欢迎回来
         </h2>
-        <p class="mt-2 text-sm text-gray-500 dark:text-dark-400">
-          {{ t('auth.signInToAccount') }}
+        <p class="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
+          登录控制台，管理你的 API Key、订阅额度、通道状态和调用统计。
         </p>
+      </div>
+
+      <div
+        v-if="errorMessage"
+        class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300"
+      >
+        {{ errorMessage }}
       </div>
 
   <div v-if="!backendModeEnabled && (linuxdoOAuthEnabled || wechatOAuthEnabled || oidcOAuthEnabled)" class="space-y-4">
@@ -29,11 +40,11 @@
           :show-divider="false"
         />
         <div class="flex items-center gap-3">
-          <div class="h-px flex-1 bg-gray-200 dark:bg-dark-700"></div>
-          <span class="text-xs text-gray-500 dark:text-dark-400">
+          <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
             {{ t('auth.oauthOrContinue') }}
           </span>
-          <div class="h-px flex-1 bg-gray-200 dark:bg-dark-700"></div>
+          <div class="h-px flex-1 bg-slate-200 dark:bg-white/10"></div>
         </div>
       </div>
 
@@ -41,12 +52,12 @@
       <form @submit.prevent="handleLogin" class="space-y-5">
         <!-- Email Input -->
         <div>
-          <label for="email" class="input-label">
+          <label for="email" class="auth-input-label">
             {{ t('auth.emailLabel') }}
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="mail" size="md" class="text-gray-400 dark:text-dark-500" />
+              <Icon name="mail" size="md" class="text-slate-400 dark:text-slate-500" />
             </div>
             <input
               id="email"
@@ -56,7 +67,7 @@
               autofocus
               autocomplete="email"
               :disabled="isLoading"
-              class="input pl-11"
+              class="auth-input pl-11"
               :class="{ 'input-error': errors.email }"
               :placeholder="t('auth.emailPlaceholder')"
             />
@@ -65,12 +76,12 @@
 
         <!-- Password Input -->
         <div>
-          <label for="password" class="input-label">
+          <label for="password" class="auth-input-label">
             {{ t('auth.passwordLabel') }}
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="lock" size="md" class="text-gray-400 dark:text-dark-500" />
+              <Icon name="lock" size="md" class="text-slate-400 dark:text-slate-500" />
             </div>
             <input
               id="password"
@@ -79,14 +90,14 @@
               required
               autocomplete="current-password"
               :disabled="isLoading"
-              class="input pl-11 pr-11"
+              class="auth-input pl-11 pr-11"
               :class="{ 'input-error': errors.password }"
               :placeholder="t('auth.passwordPlaceholder')"
             />
             <button
               type="button"
               @click="showPassword = !showPassword"
-              class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-dark-300"
+              class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
             >
               <Icon v-if="showPassword" name="eyeOff" size="md" />
               <Icon v-else name="eye" size="md" />
@@ -97,7 +108,7 @@
             <router-link
               v-if="passwordResetEnabled && !backendModeEnabled"
               to="/forgot-password"
-              class="text-sm font-medium text-primary-600 transition-colors hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+              class="text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300"
             >
               {{ t('auth.forgotPassword') }}
             </router-link>
@@ -119,7 +130,7 @@
         <button
           type="submit"
           :disabled="isLoading || (turnstileEnabled && !turnstileToken)"
-          class="btn btn-primary w-full"
+          class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <svg
             v-if="isLoading"
@@ -149,11 +160,11 @@
 
     <!-- Footer -->
     <template v-if="!backendModeEnabled" #footer>
-      <p class="text-gray-500 dark:text-dark-400">
+      <p class="text-slate-500 dark:text-slate-400">
         {{ t('auth.dontHaveAccount') }}
         <router-link
           to="/register"
-          class="font-medium text-primary-600 transition-colors hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+          class="font-semibold text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300"
         >
           {{ t('auth.signUp') }}
         </router-link>
@@ -424,6 +435,14 @@ function handle2FACancel(): void {
 </script>
 
 <style scoped>
+.auth-input {
+  @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+}
+
+.auth-input-label {
+  @apply mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s ease;
