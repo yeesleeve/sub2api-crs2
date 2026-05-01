@@ -1,11 +1,11 @@
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
               账户运行概览
             </div>
             <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
@@ -20,7 +20,7 @@
               to="/keys"
               class="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
             >
-              <Icon name="key" size="sm" class="text-emerald-600 dark:text-emerald-400" />
+              <Icon name="key" size="sm" class="text-blue-600 dark:text-blue-400" />
               <div class="mt-3 text-sm font-semibold text-slate-950 dark:text-white">API Key</div>
               <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">创建与管理</div>
             </router-link>
@@ -28,7 +28,7 @@
               to="/usage"
               class="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
             >
-              <Icon name="chart" size="sm" class="text-blue-600 dark:text-blue-400" />
+              <Icon name="chart" size="sm" class="text-indigo-600 dark:text-indigo-400" />
               <div class="mt-3 text-sm font-semibold text-slate-950 dark:text-white">用量明细</div>
               <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">请求与成本</div>
             </router-link>
@@ -41,6 +41,25 @@
               <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">健康监控</div>
             </router-link>
           </div>
+        </div>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-3">
+        <div
+          v-for="panel in insightPanels"
+          :key="panel.title"
+          class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]"
+        >
+          <div class="mb-4 flex items-center justify-between">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl" :class="panel.iconClass">
+              <Icon :name="panel.icon" size="md" />
+            </div>
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-500 dark:bg-white/10 dark:text-slate-400">
+              {{ panel.badge }}
+            </span>
+          </div>
+          <h3 class="text-sm font-semibold text-slate-950 dark:text-white">{{ panel.title }}</h3>
+          <p class="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{{ panel.description }}</p>
         </div>
       </div>
 
@@ -69,6 +88,29 @@ const authStore = useAuthStore(); const user = computed(() => authStore.user)
 const displayName = computed(() => user.value?.username || user.value?.email?.split('@')[0] || '用户')
 const stats = ref<UserStatsType | null>(null); const loading = ref(false); const loadingUsage = ref(false); const loadingCharts = ref(false)
 const trendData = ref<TrendDataPoint[]>([]); const modelStats = ref<ModelStat[]>([]); const recentUsage = ref<UsageLog[]>([])
+const insightPanels = [
+  {
+    title: '调用入口建议',
+    description: '优先使用独立 API Key 区分项目，后续排查成本、模型和调用异常会更清晰。',
+    badge: 'Keys',
+    icon: 'key',
+    iconClass: 'bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400'
+  },
+  {
+    title: '成本观察',
+    description: '定期查看模型分布和 Token 趋势，及时发现异常请求或高成本模型。',
+    badge: 'Cost',
+    icon: 'calculator',
+    iconClass: 'bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400'
+  },
+  {
+    title: '通道选择',
+    description: '在可用通道页查看模型能力矩阵，根据任务类型选择更合适的模型池。',
+    badge: 'Models',
+    icon: 'cpu',
+    iconClass: 'bg-violet-50 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400'
+  }
+] as const
 
 const formatLD = (d: Date) => d.toISOString().split('T')[0]
 const startDate = ref(formatLD(new Date(Date.now() - 6 * 86400000))); const endDate = ref(formatLD(new Date())); const granularity = ref('day')

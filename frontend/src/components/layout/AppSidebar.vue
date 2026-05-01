@@ -9,7 +9,7 @@
     <!-- Logo/Brand -->
     <div class="sidebar-header" :class="{ 'sidebar-header-collapsed': sidebarCollapsed }">
       <!-- Custom Logo or Default Logo -->
-      <div class="sidebar-logo flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-emerald-500/20 bg-emerald-50 text-sm font-bold text-emerald-700 shadow-sm dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300">
+      <div class="sidebar-logo flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white text-sm font-bold text-slate-900 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white">
         <img
           v-if="settingsLoaded && siteLogo"
           :src="siteLogo"
@@ -154,11 +154,11 @@
         :href="supportHref || undefined"
         :target="supportHref?.startsWith('http') ? '_blank' : undefined"
         :rel="supportHref?.startsWith('http') ? 'noopener noreferrer' : undefined"
-        class="group block overflow-hidden rounded-2xl border border-emerald-200/80 bg-[linear-gradient(135deg,#ecfeff_0%,#f0fdf4_58%,#fff7ed_100%)] p-3 shadow-sm shadow-emerald-950/5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md dark:border-emerald-400/20 dark:bg-[linear-gradient(135deg,rgba(6,182,212,0.14)_0%,rgba(16,185,129,0.12)_58%,rgba(245,158,11,0.10)_100%)]"
+        class="group block overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
         :title="contactInfo || '联系客服'"
       >
         <div class="flex items-center gap-3">
-          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950">
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950">
             <SupportIcon class="h-5 w-5" />
           </div>
           <div class="min-w-0">
@@ -179,7 +179,7 @@
         class="sidebar-link sidebar-link-collapsed w-full justify-center"
         :title="contactInfo || '联系客服'"
       >
-        <SupportIcon class="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" />
+        <SupportIcon class="h-5 w-5 flex-shrink-0" />
       </component>
 
       <!-- Theme Toggle -->

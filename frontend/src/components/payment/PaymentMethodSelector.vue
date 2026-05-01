@@ -10,12 +10,12 @@
         type="button"
         :disabled="!method.available"
         :class="[
-          'relative flex h-[60px] flex-col items-center justify-center rounded-lg border px-3 transition-all sm:flex-1',
+          'relative flex h-[60px] flex-col items-center justify-center rounded-xl border px-3 transition-all sm:flex-1',
           !method.available
             ? 'cursor-not-allowed border-gray-200 bg-gray-50 opacity-50 dark:border-dark-700 dark:bg-dark-800/50'
             : selected === method.type
               ? methodSelectedClass(method.type)
-              : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400 dark:border-dark-600 dark:bg-dark-800 dark:text-gray-200 dark:hover:border-dark-500',
+              : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]',
         ]"
         @click="method.available && emit('select', method.type)"
       >
@@ -83,9 +83,9 @@ function methodIcon(type: string): string {
 }
 
 function methodSelectedClass(type: string): string {
-  if (type.includes('alipay')) return 'border-[#02A9F1] bg-blue-50 text-gray-900 shadow-sm dark:bg-blue-950 dark:text-gray-100'
-  if (type.includes('wxpay')) return 'border-[#09BB07] bg-green-50 text-gray-900 shadow-sm dark:bg-green-950 dark:text-gray-100'
-  if (type === 'stripe') return 'border-[#676BE5] bg-indigo-50 text-gray-900 shadow-sm dark:bg-indigo-950 dark:text-gray-100'
-  return 'border-primary-500 bg-primary-50 text-gray-900 shadow-sm dark:bg-primary-950 dark:text-gray-100'
+  if (type.includes('alipay')) return 'border-blue-300 bg-blue-50 text-slate-950 shadow-sm dark:border-blue-400/40 dark:bg-blue-400/10 dark:text-white'
+  if (type.includes('wxpay')) return 'border-slate-400 bg-slate-100 text-slate-950 shadow-sm dark:border-white/30 dark:bg-white/10 dark:text-white'
+  if (type === 'stripe') return 'border-indigo-300 bg-indigo-50 text-slate-950 shadow-sm dark:border-indigo-400/40 dark:bg-indigo-400/10 dark:text-white'
+  return 'border-slate-400 bg-slate-100 text-slate-950 shadow-sm dark:border-white/30 dark:bg-white/10 dark:text-white'
 }
 </script>

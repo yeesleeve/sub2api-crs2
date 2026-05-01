@@ -3,8 +3,8 @@
     <div class="space-y-5">
       <!-- Title -->
       <div>
-        <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+        <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
           新用户注册
         </div>
         <h2 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
@@ -133,7 +133,7 @@
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-green-500' : 'text-slate-400 dark:text-slate-500'" />
+              <Icon name="key" size="md" :class="invitationValidation.valid ? 'text-blue-500' : 'text-slate-400 dark:text-slate-500'" />
             </div>
             <input
               id="invitation_code"
@@ -142,7 +142,7 @@
               :disabled="isLoading"
               class="auth-input auth-input-leading auth-input-trailing"
               :class="{
-                'border-green-500 focus:border-green-500 focus:ring-green-500': invitationValidation.valid,
+                'border-blue-500 focus:border-blue-500 focus:ring-blue-500': invitationValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': invitationValidation.invalid || errors.invitation_code
               }"
               :placeholder="t('auth.invitationCodePlaceholder')"
@@ -156,7 +156,7 @@
               </svg>
             </div>
             <div v-else-if="invitationValidation.valid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <Icon name="checkCircle" size="md" class="text-green-500" />
+              <Icon name="checkCircle" size="md" class="text-blue-500" />
             </div>
             <div v-else-if="invitationValidation.invalid || errors.invitation_code" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
               <Icon name="exclamationCircle" size="md" class="text-red-500" />
@@ -164,9 +164,9 @@
           </div>
           <!-- Invitation code validation result -->
           <transition name="fade">
-            <div v-if="invitationValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 dark:bg-green-900/20">
-              <Icon name="checkCircle" size="sm" class="text-green-600 dark:text-green-400" />
-              <span class="text-sm text-green-700 dark:text-green-400">
+            <div v-if="invitationValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 dark:bg-blue-400/10">
+              <Icon name="checkCircle" size="sm" class="text-blue-600 dark:text-blue-400" />
+              <span class="text-sm text-blue-700 dark:text-blue-400">
                 {{ t('auth.invitationCodeValid') }}
               </span>
             </div>
@@ -181,7 +181,7 @@
           </label>
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-green-500' : 'text-slate-400 dark:text-slate-500'" />
+              <Icon name="gift" size="md" :class="promoValidation.valid ? 'text-blue-500' : 'text-slate-400 dark:text-slate-500'" />
             </div>
             <input
               id="promo_code"
@@ -190,7 +190,7 @@
               :disabled="isLoading"
               class="auth-input auth-input-leading auth-input-trailing"
               :class="{
-                'border-green-500 focus:border-green-500 focus:ring-green-500': promoValidation.valid,
+                'border-blue-500 focus:border-blue-500 focus:ring-blue-500': promoValidation.valid,
                 'border-red-500 focus:border-red-500 focus:ring-red-500': promoValidation.invalid
               }"
               :placeholder="t('auth.promoCodePlaceholder')"
@@ -204,7 +204,7 @@
               </svg>
             </div>
             <div v-else-if="promoValidation.valid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <Icon name="checkCircle" size="md" class="text-green-500" />
+              <Icon name="checkCircle" size="md" class="text-blue-500" />
             </div>
             <div v-else-if="promoValidation.invalid" class="absolute inset-y-0 right-0 flex items-center pr-3.5">
               <Icon name="exclamationCircle" size="md" class="text-red-500" />
@@ -212,9 +212,9 @@
           </div>
           <!-- Promo code validation result -->
           <transition name="fade">
-            <div v-if="promoValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 dark:bg-green-900/20">
-              <Icon name="gift" size="sm" class="text-green-600 dark:text-green-400" />
-              <span class="text-sm text-green-700 dark:text-green-400">
+            <div v-if="promoValidation.valid" class="mt-2 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 dark:bg-blue-400/10">
+              <Icon name="gift" size="sm" class="text-blue-600 dark:text-blue-400" />
+              <span class="text-sm text-blue-700 dark:text-blue-400">
                 {{ t('auth.promoCodeValid', { amount: promoValidation.bonusAmount?.toFixed(2) }) }}
               </span>
             </div>
@@ -276,7 +276,7 @@
         {{ t('auth.alreadyHaveAccount') }}
         <router-link
           to="/login"
-          class="font-semibold text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300"
+          class="font-semibold text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
         >
           {{ t('auth.signIn') }}
         </router-link>
@@ -798,7 +798,7 @@ async function handleRegister(): Promise<void> {
 
 <style scoped>
 .auth-input {
-  @apply h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white py-0 pl-4 pr-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:disabled:bg-white/[0.02];
+  @apply h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white py-0 pl-4 pr-4 text-sm leading-6 text-slate-950 shadow-sm transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:bg-slate-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 dark:disabled:bg-white/[0.02];
 }
 
 .auth-input-leading {

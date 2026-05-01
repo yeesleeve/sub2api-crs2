@@ -23,7 +23,6 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <!-- Model Distribution Chart -->
       <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
-        <div class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(135deg,rgba(16,185,129,0.10),rgba(59,130,246,0.08),transparent)] dark:bg-[linear-gradient(135deg,rgba(16,185,129,0.16),rgba(59,130,246,0.12),transparent)]"></div>
         <div v-if="loading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/60 backdrop-blur-sm dark:bg-[#0b0d10]/60">
           <LoadingSpinner size="md" />
         </div>
@@ -32,7 +31,7 @@
             <h3 class="text-sm font-semibold text-slate-950 dark:text-white">{{ t('dashboard.modelDistribution') }}</h3>
             <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">按模型查看请求量、Token 与成本占比</p>
           </div>
-          <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
+          <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-400/10 dark:text-blue-300">
             {{ models.length }} models
           </span>
         </div>
@@ -57,7 +56,7 @@
                   <td class="max-w-[100px] truncate py-1.5 font-medium text-slate-900 dark:text-white" :title="model.model">{{ model.model }}</td>
                   <td class="py-1.5 text-right text-slate-600 dark:text-slate-400">{{ formatNumber(model.requests) }}</td>
                   <td class="py-1.5 text-right text-slate-600 dark:text-slate-400">{{ formatTokens(model.total_tokens) }}</td>
-                  <td class="py-1.5 text-right text-green-600 dark:text-green-400">${{ formatCost(model.actual_cost) }}</td>
+                  <td class="py-1.5 text-right text-blue-600 dark:text-blue-400">${{ formatCost(model.actual_cost) }}</td>
                   <td class="py-1.5 text-right text-slate-400 dark:text-slate-500">${{ formatCost(model.cost) }}</td>
                 </tr>
               </tbody>

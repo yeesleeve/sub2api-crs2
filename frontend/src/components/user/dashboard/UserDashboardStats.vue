@@ -5,14 +5,14 @@
       <!-- Balance -->
       <div v-if="!isSimple" class="metric-card">
         <div class="flex items-center gap-3">
-          <div class="metric-icon bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
-            <svg class="h-5 w-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="metric-icon bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+            <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
             </svg>
           </div>
           <div>
             <p class="metric-label">{{ t('dashboard.balance') }}</p>
-            <p class="metric-value text-emerald-600 dark:text-emerald-400">${{ formatBalance(balance) }}</p>
+            <p class="metric-value text-blue-600 dark:text-blue-400">${{ formatBalance(balance) }}</p>
             <p class="metric-hint">{{ t('common.available') }}</p>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <div>
           <p class="metric-label">{{ t('dashboard.apiKeys') }}</p>
           <p class="metric-value">{{ stats?.total_api_keys || 0 }}</p>
-          <p class="metric-hint text-emerald-600 dark:text-emerald-400">{{ stats?.active_api_keys || 0 }} {{ t('common.active') }}</p>
+          <p class="metric-hint text-blue-600 dark:text-blue-400">{{ stats?.active_api_keys || 0 }} {{ t('common.active') }}</p>
         </div>
       </div>
     </div>
@@ -35,8 +35,8 @@
     <!-- Today Requests -->
       <div class="metric-card">
       <div class="flex items-center gap-3">
-        <div class="metric-icon bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
-          <Icon name="chart" size="md" class="text-green-600 dark:text-green-400" :stroke-width="2" />
+        <div class="metric-icon bg-sky-50 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
+          <Icon name="chart" size="md" class="text-sky-600 dark:text-sky-400" :stroke-width="2" />
         </div>
         <div>
           <p class="metric-label">{{ t('dashboard.todayRequests') }}</p>
@@ -165,21 +165,7 @@ const formatDuration = (ms: number) => ms >= 1000 ? `${(ms / 1000).toFixed(2)}s`
 
 <style scoped>
 .metric-card {
-  @apply relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/20 dark:hover:border-white/20;
-}
-
-.metric-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 12% 0%, rgb(16 185 129 / 0.10), transparent 30%),
-    radial-gradient(circle at 92% 12%, rgb(59 130 246 / 0.08), transparent 26%);
-  pointer-events: none;
-}
-
-.metric-card > * {
-  position: relative;
+  @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/20 dark:hover:border-white/20;
 }
 
 .metric-icon {

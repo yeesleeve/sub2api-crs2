@@ -20,8 +20,8 @@
         />
       </button>
 
-      <button @click="router.push('/usage')" class="group flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]">
-        <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-105 dark:bg-emerald-400/10 dark:text-emerald-400">
+      <button @click="router.push('/usage')" class="group flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]">
+        <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 transition-transform group-hover:scale-105 dark:bg-indigo-400/10 dark:text-indigo-400">
           <Icon name="chart" size="lg" />
         </div>
         <div class="min-w-0 flex-1">
@@ -31,7 +31,7 @@
         <Icon
           name="chevronRight"
           size="md"
-          class="text-slate-400 transition-colors group-hover:text-emerald-500 dark:text-slate-500"
+          class="text-slate-400 transition-colors group-hover:text-indigo-500 dark:text-slate-500"
         />
       </button>
 
