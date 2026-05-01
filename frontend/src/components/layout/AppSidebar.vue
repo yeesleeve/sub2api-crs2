@@ -146,7 +146,42 @@
     </nav>
 
     <!-- Bottom Section -->
-    <div class="mt-auto border-t border-gray-100 p-3 dark:border-dark-800">
+    <div class="mt-auto space-y-3 border-t border-slate-200/70 p-3 dark:border-white/10">
+      <!-- Support Entry -->
+      <component
+        :is="supportHref ? 'a' : 'div'"
+        v-if="!sidebarCollapsed"
+        :href="supportHref || undefined"
+        :target="supportHref?.startsWith('http') ? '_blank' : undefined"
+        :rel="supportHref?.startsWith('http') ? 'noopener noreferrer' : undefined"
+        class="group block overflow-hidden rounded-2xl border border-emerald-200/80 bg-[linear-gradient(135deg,#ecfeff_0%,#f0fdf4_58%,#fff7ed_100%)] p-3 shadow-sm shadow-emerald-950/5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md dark:border-emerald-400/20 dark:bg-[linear-gradient(135deg,rgba(6,182,212,0.14)_0%,rgba(16,185,129,0.12)_58%,rgba(245,158,11,0.10)_100%)]"
+        :title="contactInfo || '联系客服'"
+      >
+        <div class="flex items-center gap-3">
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950">
+            <SupportIcon class="h-5 w-5" />
+          </div>
+          <div class="min-w-0">
+            <div class="text-sm font-semibold text-slate-950 dark:text-white">运营客服</div>
+            <div class="truncate text-xs text-slate-500 dark:text-slate-400">
+              {{ contactInfo || '遇到问题可联系站点客服' }}
+            </div>
+          </div>
+        </div>
+      </component>
+
+      <component
+        :is="supportHref ? 'a' : 'div'"
+        v-else
+        :href="supportHref || undefined"
+        :target="supportHref?.startsWith('http') ? '_blank' : undefined"
+        :rel="supportHref?.startsWith('http') ? 'noopener noreferrer' : undefined"
+        class="sidebar-link sidebar-link-collapsed w-full justify-center"
+        :title="contactInfo || '联系客服'"
+      >
+        <SupportIcon class="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" />
+      </component>
+
       <!-- Theme Toggle -->
       <button
         @click="toggleTheme"
@@ -253,6 +288,14 @@ const displaySiteName = computed(() => siteName.value === 'Sub2API' ? 'CRS2 AI �
 const siteLogo = computed(() => appStore.siteLogo)
 const siteVersion = computed(() => appStore.siteVersion)
 const settingsLoaded = computed(() => appStore.publicSettingsLoaded)
+const contactInfo = computed(() => appStore.contactInfo?.trim() || '')
+const supportHref = computed(() => {
+  const value = contactInfo.value
+  if (!value) return ''
+  if (/^https?:\/\//i.test(value)) return value
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return `mailto:${value}`
+  return ''
+})
 
 // SVG Icon Components
 const DashboardIcon = {
@@ -595,6 +638,21 @@ const SignalIcon = {
           'stroke-linecap': 'round',
           'stroke-linejoin': 'round',
           d: 'M9.348 14.651a3.75 3.75 0 010-5.303m5.304 0a3.75 3.75 0 010 5.303m-7.425 2.122a6.75 6.75 0 010-9.546m9.546 0a6.75 6.75 0 010 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
+        })
+      ]
+    )
+}
+
+const SupportIcon = {
+  render: () =>
+    h(
+      'svg',
+      { fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.5' },
+      [
+        h('path', {
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          d: 'M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z'
         })
       ]
     )

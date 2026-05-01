@@ -1,17 +1,26 @@
 <template>
-  <div class="card p-4">
-    <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
-      {{ t('admin.dashboard.tokenUsageTrend') }}
-    </h3>
+  <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-[#0b0d10]">
+    <div class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(135deg,rgba(59,130,246,0.10),rgba(139,92,246,0.08),transparent)] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(139,92,246,0.12),transparent)]"></div>
+    <div class="relative mb-4 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-semibold text-slate-950 dark:text-white">
+          {{ t('admin.dashboard.tokenUsageTrend') }}
+        </h3>
+        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">输入、输出和缓存命中趋势</p>
+      </div>
+      <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-400/10 dark:text-blue-300">
+        Tokens
+      </span>
+    </div>
     <div v-if="loading" class="flex h-48 items-center justify-center">
       <LoadingSpinner />
     </div>
-    <div v-else-if="trendData.length > 0 && chartData" class="h-48">
+    <div v-else-if="trendData.length > 0 && chartData" class="relative h-48">
       <Line :data="chartData" :options="lineOptions" />
     </div>
     <div
       v-else
-      class="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400"
+      class="relative flex h-48 items-center justify-center text-sm text-slate-500 dark:text-slate-400"
     >
       {{ t('admin.dashboard.noDataAvailable') }}
     </div>

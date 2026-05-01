@@ -165,11 +165,25 @@ const formatDuration = (ms: number) => ms >= 1000 ? `${(ms / 1000).toFixed(2)}s`
 
 <style scoped>
 .metric-card {
-  @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition dark:border-white/10 dark:bg-[#0b0d10];
+  @apply relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5 transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg dark:border-white/10 dark:bg-[#0b0d10] dark:shadow-black/20 dark:hover:border-white/20;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 0%, rgb(16 185 129 / 0.10), transparent 30%),
+    radial-gradient(circle at 92% 12%, rgb(59 130 246 / 0.08), transparent 26%);
+  pointer-events: none;
+}
+
+.metric-card > * {
+  position: relative;
 }
 
 .metric-icon {
-  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-lg;
+  @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl shadow-sm;
 }
 
 .metric-label {

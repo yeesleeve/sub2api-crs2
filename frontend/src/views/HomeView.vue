@@ -16,7 +16,7 @@
     <header
       class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#050607]/85"
     >
-      <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav class="mx-auto flex h-16 max-w-[1180px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <router-link to="/home" class="flex min-w-0 items-center gap-3">
           <div
             class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-50 text-sm font-bold text-emerald-700 shadow-sm dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300"
@@ -93,7 +93,7 @@
           class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-[#050607] dark:via-[#050607]/85 dark:to-transparent"
         ></div>
 
-        <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-24">
+        <div class="mx-auto grid max-w-[1180px] gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-24">
           <div class="min-w-0 max-w-full flex flex-col justify-center">
             <div
               class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
@@ -236,7 +236,7 @@
       </section>
 
       <section id="platforms" class="border-b border-slate-200 bg-slate-50/70 py-12 dark:border-white/10 dark:bg-white/[0.02]">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
           <div class="mb-8 grid gap-3 md:grid-cols-3">
             <div
               v-for="item in operationsHighlights"
@@ -276,7 +276,7 @@
       </section>
 
       <section id="features" class="py-16 sm:py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
           <div class="mb-14 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
             <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
               <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">AI relay workflow</p>
@@ -344,7 +344,7 @@
       </section>
 
       <section id="developers" class="border-y border-slate-200 bg-slate-950 py-16 text-white dark:border-white/10 dark:bg-black sm:py-20">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+        <div class="mx-auto grid max-w-[1180px] gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <div class="flex flex-col justify-center">
             <p class="text-sm font-semibold text-emerald-400">Developer experience</p>
             <h2 class="mt-2 text-4xl font-semibold tracking-tight">像接入一个普通 OpenAI 端点一样简单</h2>
@@ -385,7 +385,7 @@
       </section>
 
       <section id="security" class="py-16 sm:py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
           <div class="grid gap-4 lg:grid-cols-3">
             <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8 dark:border-white/10 dark:bg-white/[0.03] lg:col-span-1">
               <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Operations</p>
@@ -404,7 +404,7 @@
       </section>
 
       <section class="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div class="mx-auto max-w-7xl rounded-2xl border border-slate-200 bg-slate-950 p-8 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-white dark:text-slate-950 sm:p-10">
+        <div class="mx-auto max-w-[1180px] rounded-2xl border border-slate-200 bg-slate-950 p-8 text-white shadow-xl shadow-slate-950/10 dark:border-white/10 dark:bg-white dark:text-slate-950 sm:p-10">
           <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
             <div>
               <h2 class="text-3xl font-semibold tracking-tight">准备好开始统一管理你的 AI 订阅了吗？</h2>
@@ -425,7 +425,7 @@
     </main>
 
     <footer class="border-t border-slate-200 py-8 dark:border-white/10">
-      <div class="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 text-sm text-slate-500 sm:flex-row sm:items-center sm:px-6 lg:px-8">
+      <div class="mx-auto flex max-w-[1180px] flex-col justify-between gap-4 px-4 text-sm text-slate-500 sm:flex-row sm:items-center sm:px-6 lg:px-8">
         <p>&copy; {{ currentYear }} {{ brandName }}. All rights reserved.</p>
         <div class="flex items-center gap-5">
           <a v-if="docUrl" :href="docUrl" target="_blank" rel="noopener noreferrer" class="transition hover:text-slate-950 dark:hover:text-white">文档</a>

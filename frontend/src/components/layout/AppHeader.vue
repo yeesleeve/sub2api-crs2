@@ -22,27 +22,36 @@
       </div>
 
       <!-- Right: Announcements + Docs + Language + Subscriptions + Balance + User Dropdown -->
-      <div class="flex items-center gap-3">
-        <!-- Announcement Bell -->
-        <AnnouncementBell v-if="user" />
+      <div class="flex items-center gap-2.5">
+        <div class="hidden items-center gap-1 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 shadow-sm shadow-slate-950/5 dark:border-white/10 dark:bg-white/[0.04] sm:flex">
+          <!-- Announcement Bell -->
+          <div class="header-announcement">
+            <AnnouncementBell v-if="user" />
+          </div>
 
-        <!-- Docs Link -->
-        <a
-          v-if="docUrl"
-          :href="docUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-sm font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-        >
-          <Icon name="book" size="sm" />
-          <span class="hidden sm:inline">{{ t('nav.docs') }}</span>
-        </a>
+          <!-- Docs Link -->
+          <a
+            v-if="docUrl"
+            :href="docUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="header-tool"
+            title="查看文档"
+          >
+            <Icon name="book" size="sm" />
+            <span class="hidden xl:inline">{{ t('nav.docs') }}</span>
+          </a>
 
-        <!-- Language Switcher -->
-        <LocaleSwitcher />
+          <!-- Language Switcher -->
+          <div class="header-locale">
+            <LocaleSwitcher />
+          </div>
+        </div>
 
         <!-- Subscription Progress (for users with active subscriptions) -->
-        <SubscriptionProgressMini v-if="user" />
+        <div class="hidden lg:block">
+          <SubscriptionProgressMini v-if="user" />
+        </div>
 
         <!-- Balance Display -->
         <div
@@ -64,7 +73,7 @@
         <div v-if="user" class="relative" ref="dropdownRef">
           <button
             @click="toggleDropdown"
-            class="flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-2 shadow-sm shadow-slate-950/5 transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:shadow-black/20 dark:hover:bg-white/[0.07]"
+            class="flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 shadow-sm shadow-slate-950/5 ring-1 ring-white transition hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:ring-white/5 dark:shadow-black/20 dark:hover:bg-white/[0.07]"
             aria-label="User Menu"
           >
             <div class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-slate-950 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-950/10 dark:bg-white dark:text-slate-950 dark:ring-white/10">
@@ -358,5 +367,19 @@ onBeforeUnmount(() => {
 
 .account-menu-item {
   @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.06] dark:hover:text-white;
+}
+
+.header-tool {
+  @apply flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-sm font-medium text-slate-600 transition hover:bg-white hover:text-slate-950 hover:shadow-sm dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-white;
+}
+
+.header-announcement :deep(button) {
+  @apply rounded-xl text-slate-600 hover:bg-white hover:text-slate-950 hover:shadow-sm dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-white;
+}
+
+.header-locale :deep(button),
+.header-locale :deep(.locale-switcher),
+.header-locale :deep([role='button']) {
+  @apply rounded-xl;
 }
 </style>
