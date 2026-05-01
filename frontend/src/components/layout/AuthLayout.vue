@@ -113,7 +113,7 @@
         </section>
 
         <section class="flex min-w-0 items-center justify-center">
-          <div :class="['w-full', isRegisterPage ? 'max-w-2xl' : 'max-w-md']">
+          <div class="w-full max-w-xl">
             <div class="mb-6 text-center lg:hidden">
               <div class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-50 text-sm font-bold text-emerald-700 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300">
                 CR
@@ -142,13 +142,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores'
 import { sanitizeUrl } from '@/utils/url'
 import Icon from '@/components/icons/Icon.vue'
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.vue'
 
-const route = useRoute()
 const appStore = useAppStore()
 
 const siteName = computed(() => appStore.siteName || 'Sub2API')
@@ -159,7 +157,6 @@ const heroSubtitle = computed(() =>
   siteSubtitle.value || '统一接入 Claude、OpenAI、Gemini 等主流 AI 能力，集中管理订阅、额度、密钥与调用统计。'
 )
 const currentYear = computed(() => new Date().getFullYear())
-const isRegisterPage = computed(() => route.path === '/register')
 const isDark = ref(false)
 
 const metrics = [
