@@ -47,18 +47,34 @@
       <div
         class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] dark:opacity-60"
       ></div>
-      <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-slate-50 via-white to-transparent dark:from-slate-900/40 dark:via-[#050607] dark:to-transparent"></div>
+      <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-emerald-50 via-white to-transparent dark:from-emerald-950/25 dark:via-[#050607] dark:to-transparent"></div>
 
-      <div class="mx-auto grid min-h-[calc(100vh-4rem)] max-w-[1180px] gap-8 px-4 py-7 sm:px-6 sm:py-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <div class="mx-auto hidden max-w-[1180px] px-4 pt-8 sm:px-6 lg:block lg:px-8">
+        <div class="grid max-w-xl grid-cols-3 gap-3">
+          <div
+            v-for="item in trustSignals"
+            :key="item.title"
+            class="rounded-xl border border-emerald-100 bg-white/80 px-4 py-3 shadow-sm shadow-emerald-950/5 backdrop-blur dark:border-emerald-400/15 dark:bg-white/[0.03]"
+          >
+            <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              {{ item.title }}
+            </div>
+            <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{{ item.desc }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-auto grid min-h-[calc(100vh-9rem)] max-w-[1180px] gap-8 px-4 py-6 sm:px-6 sm:py-7 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
         <section class="hidden min-w-0 flex-col justify-center lg:flex">
           <div class="max-w-xl">
-            <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300">
-              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+            <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
               正式运营中的 AI 中转服务
             </div>
             <h1 class="text-5xl font-semibold leading-[1.08] tracking-tight text-slate-950 dark:text-white">
               一个账号入口，
-              <span class="block text-blue-600 dark:text-blue-400">管理你的 AI 调用。</span>
+              <span class="block text-emerald-600 dark:text-emerald-400">管理你的 AI 调用。</span>
             </h1>
             <p class="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
               {{ heroSubtitle }}
@@ -81,7 +97,7 @@
               <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-red-400"></span>
                 <span class="h-3 w-3 rounded-full bg-amber-400"></span>
-                <span class="h-3 w-3 rounded-full bg-blue-400"></span>
+                <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
               </div>
               <span class="text-xs text-slate-500 dark:text-slate-400">auth.sub2api.local</span>
             </div>
@@ -91,7 +107,7 @@
                   <div class="text-sm font-semibold text-slate-950 dark:text-white">账号安全状态</div>
                   <div class="text-xs text-slate-500 dark:text-slate-400">密钥、额度与订阅统一管理</div>
                 </div>
-                <div class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-400/10 dark:text-blue-300">
+                <div class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
                   正常
                 </div>
               </div>
@@ -102,7 +118,7 @@
                   class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-black/20"
                 >
                   <div class="flex items-center gap-3">
-                    <Icon :name="item.icon" size="sm" class="text-blue-600 dark:text-blue-400" />
+                    <Icon :name="item.icon" size="sm" class="text-emerald-600 dark:text-emerald-400" />
                     <span class="text-sm font-medium text-slate-800 dark:text-slate-200">{{ item.title }}</span>
                   </div>
                   <span class="text-xs text-slate-500 dark:text-slate-400">{{ item.value }}</span>
@@ -164,6 +180,12 @@ const metrics = [
   { value: '4+', label: '主流平台' },
   { value: '24/7', label: '持续运行' }
 ]
+
+const trustSignals = [
+  { title: '通道状态', desc: '实时检测可用性' },
+  { title: '计费透明', desc: '请求成本可追踪' },
+  { title: '密钥隔离', desc: '项目额度分开管' }
+] as const
 
 const securityItems = [
   { title: '账号访问', value: '受控', icon: 'lock' },
