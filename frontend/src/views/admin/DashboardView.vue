@@ -1,243 +1,126 @@
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
 
       <template v-else-if="stats">
-        <!-- Row 1: Core Stats -->
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <!-- Total API Keys -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
-                <Icon name="key" size="md" class="text-blue-600 dark:text-blue-400" :stroke-width="2" />
+        <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+          <div class="grid gap-6 p-6 lg:grid-cols-[1.35fr_0.65fr] lg:p-7">
+            <div class="min-w-0">
+              <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                运营控制台
               </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.apiKeys') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ stats.total_api_keys }}
-                </p>
-                <p class="text-xs text-green-600 dark:text-green-400">
-                  {{ stats.active_api_keys }} {{ t('common.active') }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Service Accounts -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/30">
-                <Icon name="server" size="md" class="text-purple-600 dark:text-purple-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.accounts') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ stats.total_accounts }}
-                </p>
-                <p class="text-xs">
-                  <span class="text-green-600 dark:text-green-400"
-                    >{{ stats.normal_accounts }} {{ t('common.active') }}</span
-                  >
-                  <span v-if="stats.error_accounts > 0" class="ml-1 text-red-500"
-                    >{{ stats.error_accounts }} {{ t('common.error') }}</span
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Today Requests -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
-                <Icon name="chart" size="md" class="text-green-600 dark:text-green-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.todayRequests') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ stats.today_requests }}
-                </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ t('common.total') }}: {{ formatNumber(stats.total_requests) }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- New Users Today -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-emerald-100 p-2 dark:bg-emerald-900/30">
-                <Icon name="userPlus" size="md" class="text-emerald-600 dark:text-emerald-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.users') }}
-                </p>
-                <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                  +{{ stats.today_new_users }}
-                </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ t('common.total') }}: {{ formatNumber(stats.total_users) }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 2: Token Stats -->
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <!-- Today Tokens -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-amber-100 p-2 dark:bg-amber-900/30">
-                <Icon name="cube" size="md" class="text-amber-600 dark:text-amber-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.todayTokens') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ formatTokens(stats.today_tokens) }}
-                </p>
-                <p class="text-xs">
-                  <span
-                    class="text-green-600 dark:text-green-400"
-                    :title="t('admin.dashboard.actual')"
-                    >${{ formatCost(stats.today_actual_cost) }}</span
-                  >
-                  <span class="text-gray-400 dark:text-gray-500"> / </span>
-                  <span
-                    class="text-orange-500 dark:text-orange-400"
-                    :title="t('admin.dashboard.accountCost')"
-                    >${{ formatCost(stats.today_account_cost) }}</span
-                  >
-                  <span class="text-gray-400 dark:text-gray-500"> / </span>
-                  <span
-                    class="text-gray-400 dark:text-gray-500"
-                    :title="t('admin.dashboard.standard')"
-                    >${{ formatCost(stats.today_cost) }}</span
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Total Tokens -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/30">
-                <Icon name="database" size="md" class="text-indigo-600 dark:text-indigo-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.totalTokens') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ formatTokens(stats.total_tokens) }}
-                </p>
-                <p class="text-xs">
-                  <span
-                    class="text-green-600 dark:text-green-400"
-                    :title="t('admin.dashboard.actual')"
-                    >${{ formatCost(stats.total_actual_cost) }}</span
-                  >
-                  <span class="text-gray-400 dark:text-gray-500"> / </span>
-                  <span
-                    class="text-orange-500 dark:text-orange-400"
-                    :title="t('admin.dashboard.accountCost')"
-                    >${{ formatCost(stats.total_account_cost) }}</span
-                  >
-                  <span class="text-gray-400 dark:text-gray-500"> / </span>
-                  <span
-                    class="text-gray-400 dark:text-gray-500"
-                    :title="t('admin.dashboard.standard')"
-                    >${{ formatCost(stats.total_cost) }}</span
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Performance (RPM/TPM) -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-violet-100 p-2 dark:bg-violet-900/30">
-                <Icon name="bolt" size="md" class="text-violet-600 dark:text-violet-400" :stroke-width="2" />
-              </div>
-              <div class="flex-1">
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.performance') }}
-                </p>
-                <div class="flex items-baseline gap-2">
-                  <p class="text-xl font-bold text-gray-900 dark:text-white">
-                    {{ formatTokens(stats.rpm) }}
-                  </p>
-                  <span class="text-xs text-gray-500 dark:text-gray-400">RPM</span>
-                </div>
-                <div class="flex items-baseline gap-2">
-                  <p class="text-sm font-semibold text-violet-600 dark:text-violet-400">
-                    {{ formatTokens(stats.tpm) }}
-                  </p>
-                  <span class="text-xs text-gray-500 dark:text-gray-400">TPM</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Avg Response Time -->
-          <div class="card p-4">
-            <div class="flex items-center gap-3">
-              <div class="rounded-lg bg-rose-100 p-2 dark:bg-rose-900/30">
-                <Icon name="clock" size="md" class="text-rose-600 dark:text-rose-400" :stroke-width="2" />
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('admin.dashboard.avgResponse') }}
-                </p>
-                <p class="text-xl font-bold text-gray-900 dark:text-white">
-                  {{ formatDuration(stats.average_duration_ms) }}
-                </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ stats.active_users }} {{ t('admin.dashboard.activeUsers') }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Charts Section -->
-        <div class="space-y-6">
-          <!-- Date Range Filter -->
-          <div class="card p-4">
-            <div class="flex flex-wrap items-center gap-4">
-              <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >{{ t('admin.dashboard.timeRange') }}:</span
+              <h1 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-3xl">
+                全站运行与商业数据总览
+              </h1>
+              <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+                这里集中查看用户增长、API Key、服务账号健康、请求量、Token 成本和响应性能，方便快速判断平台是否处于可运营状态。
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <router-link
+                  to="/admin/accounts"
+                  class="inline-flex h-10 items-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
                 >
+                  <Icon name="server" size="sm" />
+                  账号通道
+                </router-link>
+                <router-link
+                  to="/admin/usage"
+                  class="inline-flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:text-slate-950 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]"
+                >
+                  <Icon name="chart" size="sm" />
+                  用量审计
+                </router-link>
+                <button
+                  type="button"
+                  @click="loadDashboardStats"
+                  :disabled="chartsLoading"
+                  class="inline-flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]"
+                >
+                  <Icon name="refresh" size="sm" :class="{ 'animate-spin': chartsLoading }" />
+                  {{ t('common.refresh') }}
+                </button>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.03]">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    平台健康度
+                  </p>
+                  <p class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                    {{ platformHealthScore }}%
+                  </p>
+                </div>
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-lg"
+                  :class="platformHealthScore >= 90 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400'"
+                >
+                  <Icon :name="platformHealthScore >= 90 ? 'checkCircle' : 'exclamationTriangle'" size="lg" />
+                </div>
+              </div>
+              <div class="mt-5 space-y-3">
+                <div v-for="item in healthItems" :key="item.label">
+                  <div class="mb-1 flex items-center justify-between text-xs">
+                    <span class="font-medium text-slate-600 dark:text-slate-300">{{ item.label }}</span>
+                    <span class="text-slate-500 dark:text-slate-400">{{ item.value }}</span>
+                  </div>
+                  <div class="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
+                    <div
+                      class="h-full rounded-full"
+                      :class="item.barClass"
+                      :style="{ width: `${item.percent}%` }"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">
+                运行时间 {{ uptimeLabel }}，统计{{ stats.stats_stale ? '可能延迟' : '已同步' }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div
+            v-for="metric in primaryMetrics"
+            :key="metric.label"
+            class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ metric.label }}</p>
+                <p class="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                  {{ metric.value }}
+                </p>
+                <p class="mt-2 text-xs" :class="metric.hintClass">{{ metric.hint }}</p>
+              </div>
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" :class="metric.iconClass">
+                <Icon :name="metric.icon" size="md" :stroke-width="2" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 class="text-base font-semibold text-slate-950 dark:text-white">关键运营指标</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  用于判断今天的调用规模、成本压力和用户活跃情况。
+                </p>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
                 <DateRangePicker
                   v-model:start-date="startDate"
                   v-model:end-date="endDate"
                   @change="onDateRangeChange"
                 />
-              </div>
-              <button @click="loadDashboardStats" :disabled="chartsLoading" class="btn btn-secondary">
-                {{ t('common.refresh') }}
-              </button>
-              <div class="ml-auto flex items-center gap-2">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >{{ t('admin.dashboard.granularity') }}:</span
-                >
                 <div class="w-28">
                   <Select
                     v-model="granularity"
@@ -247,10 +130,61 @@
                 </div>
               </div>
             </div>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div
+                v-for="metric in secondaryMetrics"
+                :key="metric.label"
+                class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg" :class="metric.iconClass">
+                    <Icon :name="metric.icon" size="sm" :stroke-width="2" />
+                  </div>
+                  <div class="min-w-0">
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ metric.label }}</p>
+                    <p class="mt-1 truncate text-xl font-semibold text-slate-950 dark:text-white">
+                      {{ metric.value }}
+                    </p>
+                  </div>
+                </div>
+                <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">{{ metric.hint }}</p>
+              </div>
+            </div>
           </div>
 
-          <!-- Charts Grid -->
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-base font-semibold text-slate-950 dark:text-white">风险与待处理</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">优先关注会影响付费用户体验的事项。</p>
+              </div>
+              <Icon name="shield" size="lg" class="text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div class="space-y-3">
+              <div
+                v-for="item in riskItems"
+                :key="item.label"
+                class="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]"
+              >
+                <div class="flex min-w-0 items-center gap-3">
+                  <span class="h-2.5 w-2.5 shrink-0 rounded-full" :class="item.dotClass"></span>
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{{ item.label }}</p>
+                    <p class="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.hint }}</p>
+                  </div>
+                </div>
+                <span class="text-sm font-semibold" :class="item.valueClass">{{ item.value }}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <h2 class="text-base font-semibold text-slate-950 dark:text-white">模型与成本分布</h2>
+              <span class="text-xs text-slate-500 dark:text-slate-400">{{ startDate }} - {{ endDate }}</span>
+            </div>
             <ModelDistributionChart
               :model-stats="modelStats"
               :enable-ranking-view="true"
@@ -265,14 +199,25 @@
               :end-date="endDate"
               @ranking-click="goToUserUsage"
             />
-            <TokenUsageTrend :trend-data="trendData" :loading="chartsLoading" />
           </div>
 
-          <!-- User Usage Trend (Full Width) -->
-          <div class="card p-4">
-            <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
-              {{ t('admin.dashboard.recentUsage') }} (Top 12)
-            </h3>
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <h2 class="text-base font-semibold text-slate-950 dark:text-white">Token 调用趋势</h2>
+              <span class="text-xs text-slate-500 dark:text-slate-400">{{ granularity === 'hour' ? '按小时' : '按天' }}</span>
+            </div>
+            <TokenUsageTrend :trend-data="trendData" :loading="chartsLoading" />
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <h2 class="text-base font-semibold text-slate-950 dark:text-white">高消耗用户趋势</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Top 12 用户 Token 消耗变化。</p>
+              </div>
+            </div>
             <div class="h-64">
               <div v-if="userTrendLoading" class="flex h-full items-center justify-center">
                 <LoadingSpinner size="md" />
@@ -286,7 +231,35 @@
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0b0d10]">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <h2 class="text-base font-semibold text-slate-950 dark:text-white">快捷运营入口</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">常用管理动作集中处理。</p>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <router-link
+                v-for="item in quickLinks"
+                :key="item.path"
+                :to="item.path"
+                class="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 transition hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+              >
+                <div class="flex min-w-0 items-center gap-3">
+                  <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg" :class="item.iconClass">
+                    <Icon :name="item.icon" size="sm" />
+                  </div>
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-slate-950 dark:text-white">{{ item.label }}</p>
+                    <p class="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.hint }}</p>
+                  </div>
+                </div>
+                <Icon name="arrowRight" size="sm" class="shrink-0 text-slate-400" />
+              </router-link>
+            </div>
+          </div>
+        </section>
       </template>
     </div>
   </AppLayout>
@@ -385,6 +358,192 @@ const granularityOptions = computed(() => [
   { value: 'day', label: t('admin.dashboard.day') },
   { value: 'hour', label: t('admin.dashboard.hour') }
 ])
+
+const platformHealthScore = computed(() => {
+  if (!stats.value) return 0
+  const accountScore = stats.value.total_accounts > 0
+    ? (stats.value.normal_accounts / stats.value.total_accounts) * 50
+    : 50
+  const latencyScore = stats.value.average_duration_ms <= 3000 ? 25 : Math.max(8, 25 - (stats.value.average_duration_ms - 3000) / 400)
+  const errorPenalty = Math.min((stats.value.error_accounts + stats.value.ratelimit_accounts + stats.value.overload_accounts) * 6, 25)
+  return Math.max(0, Math.min(100, Math.round(accountScore + latencyScore + 25 - errorPenalty)))
+})
+
+const accountHealthPercent = computed(() => {
+  if (!stats.value?.total_accounts) return 100
+  return Math.round((stats.value.normal_accounts / stats.value.total_accounts) * 100)
+})
+
+const keyActivePercent = computed(() => {
+  if (!stats.value?.total_api_keys) return 100
+  return Math.round((stats.value.active_api_keys / stats.value.total_api_keys) * 100)
+})
+
+const latencyHealthPercent = computed(() => {
+  if (!stats.value) return 100
+  return Math.max(8, Math.min(100, Math.round(100 - stats.value.average_duration_ms / 80)))
+})
+
+const healthItems = computed(() => [
+  {
+    label: '服务账号正常率',
+    value: `${accountHealthPercent.value}%`,
+    percent: accountHealthPercent.value,
+    barClass: accountHealthPercent.value >= 90 ? 'bg-emerald-500' : 'bg-amber-500'
+  },
+  {
+    label: 'API Key 可用率',
+    value: `${keyActivePercent.value}%`,
+    percent: keyActivePercent.value,
+    barClass: keyActivePercent.value >= 90 ? 'bg-blue-500' : 'bg-amber-500'
+  },
+  {
+    label: '响应性能',
+    value: stats.value ? formatDuration(stats.value.average_duration_ms) : '0ms',
+    percent: latencyHealthPercent.value,
+    barClass: latencyHealthPercent.value >= 75 ? 'bg-violet-500' : 'bg-rose-500'
+  }
+])
+
+const uptimeLabel = computed(() => stats.value ? formatUptime(stats.value.uptime) : '0m')
+
+const primaryMetrics = computed(() => {
+  if (!stats.value) return []
+  return [
+    {
+      label: '今日请求',
+      value: formatNumber(stats.value.today_requests),
+      hint: `累计 ${formatNumber(stats.value.total_requests)} 次`,
+      icon: 'chart' as const,
+      iconClass: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400',
+      hintClass: 'text-slate-500 dark:text-slate-400'
+    },
+    {
+      label: '今日新增用户',
+      value: `+${formatNumber(stats.value.today_new_users)}`,
+      hint: `总用户 ${formatNumber(stats.value.total_users)} 人`,
+      icon: 'userPlus' as const,
+      iconClass: 'bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400',
+      hintClass: 'text-blue-600 dark:text-blue-400'
+    },
+    {
+      label: 'API Key',
+      value: formatNumber(stats.value.total_api_keys),
+      hint: `${formatNumber(stats.value.active_api_keys)} 个可用`,
+      icon: 'key' as const,
+      iconClass: 'bg-violet-50 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400',
+      hintClass: 'text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      label: '服务账号',
+      value: formatNumber(stats.value.total_accounts),
+      hint: `${formatNumber(stats.value.normal_accounts)} 正常 / ${formatNumber(stats.value.error_accounts)} 异常`,
+      icon: 'server' as const,
+      iconClass: 'bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400',
+      hintClass: stats.value.error_accounts > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'
+    }
+  ]
+})
+
+const secondaryMetrics = computed(() => {
+  if (!stats.value) return []
+  return [
+    {
+      label: '今日 Token',
+      value: formatTokens(stats.value.today_tokens),
+      hint: `输入 ${formatTokens(stats.value.today_input_tokens)} / 输出 ${formatTokens(stats.value.today_output_tokens)}`,
+      icon: 'cube' as const,
+      iconClass: 'bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400'
+    },
+    {
+      label: '今日实际扣费',
+      value: `$${formatCost(stats.value.today_actual_cost)}`,
+      hint: `账号成本 $${formatCost(stats.value.today_account_cost)} / 标准 $${formatCost(stats.value.today_cost)}`,
+      icon: 'dollar' as const,
+      iconClass: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400'
+    },
+    {
+      label: '吞吐性能',
+      value: `${formatTokens(stats.value.rpm)} RPM`,
+      hint: `${formatTokens(stats.value.tpm)} TPM，近 5 分钟平均`,
+      icon: 'bolt' as const,
+      iconClass: 'bg-violet-50 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400'
+    },
+    {
+      label: '平均响应',
+      value: formatDuration(stats.value.average_duration_ms),
+      hint: `${formatNumber(stats.value.active_users)} 个今日活跃用户`,
+      icon: 'clock' as const,
+      iconClass: 'bg-rose-50 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400'
+    }
+  ]
+})
+
+const riskItems = computed(() => {
+  if (!stats.value) return []
+  const hasAccountRisk = stats.value.error_accounts + stats.value.ratelimit_accounts + stats.value.overload_accounts > 0
+  return [
+    {
+      label: '异常账号',
+      hint: '需要检查授权、余额或上游状态',
+      value: formatNumber(stats.value.error_accounts),
+      dotClass: stats.value.error_accounts > 0 ? 'bg-rose-500' : 'bg-emerald-500',
+      valueClass: stats.value.error_accounts > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      label: '限流账号',
+      hint: '可能影响高峰期请求分发',
+      value: formatNumber(stats.value.ratelimit_accounts),
+      dotClass: stats.value.ratelimit_accounts > 0 ? 'bg-amber-500' : 'bg-emerald-500',
+      valueClass: stats.value.ratelimit_accounts > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      label: '过载账号',
+      hint: '建议补充账号或调整路由策略',
+      value: formatNumber(stats.value.overload_accounts),
+      dotClass: stats.value.overload_accounts > 0 ? 'bg-orange-500' : 'bg-emerald-500',
+      valueClass: stats.value.overload_accounts > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      label: '整体状态',
+      hint: hasAccountRisk ? '存在需要处理的账号风险' : '当前核心服务状态良好',
+      value: hasAccountRisk ? '关注' : '正常',
+      dotClass: hasAccountRisk ? 'bg-amber-500' : 'bg-emerald-500',
+      valueClass: hasAccountRisk ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'
+    }
+  ]
+})
+
+const quickLinks = [
+  {
+    label: '用户管理',
+    hint: '查看用户、余额与权限',
+    path: '/admin/users',
+    icon: 'users' as const,
+    iconClass: 'bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400'
+  },
+  {
+    label: '服务账号',
+    hint: '维护上游账号与状态',
+    path: '/admin/accounts',
+    icon: 'server' as const,
+    iconClass: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400'
+  },
+  {
+    label: '兑换码',
+    hint: '生成充值或订阅兑换码',
+    path: '/admin/redeem',
+    icon: 'gift' as const,
+    iconClass: 'bg-violet-50 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400'
+  },
+  {
+    label: '系统设置',
+    hint: '站点配置、注册与支付',
+    path: '/admin/settings',
+    icon: 'cog' as const,
+    iconClass: 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300'
+  }
+]
 
 // Dark mode detection
 const isDarkMode = computed(() => {
@@ -533,26 +692,38 @@ const formatTokens = (value: number | undefined): string => {
   return value.toLocaleString()
 }
 
-const formatNumber = (value: number): string => {
-  return value.toLocaleString()
+const formatNumber = (value: number | undefined): string => {
+  return (value ?? 0).toLocaleString()
 }
 
-const formatCost = (value: number): string => {
-  if (value >= 1000) {
-    return (value / 1000).toFixed(2) + 'K'
-  } else if (value >= 1) {
-    return value.toFixed(2)
-  } else if (value >= 0.01) {
-    return value.toFixed(3)
+const formatCost = (value: number | undefined): string => {
+  const amount = value ?? 0
+  if (amount >= 1000) {
+    return (amount / 1000).toFixed(2) + 'K'
+  } else if (amount >= 1) {
+    return amount.toFixed(2)
+  } else if (amount >= 0.01) {
+    return amount.toFixed(3)
   }
-  return value.toFixed(4)
+  return amount.toFixed(4)
 }
 
-const formatDuration = (ms: number): string => {
-  if (ms >= 1000) {
-    return `${(ms / 1000).toFixed(2)}s`
+const formatDuration = (ms: number | undefined): string => {
+  const duration = ms ?? 0
+  if (duration >= 1000) {
+    return `${(duration / 1000).toFixed(2)}s`
   }
-  return `${Math.round(ms)}ms`
+  return `${Math.round(duration)}ms`
+}
+
+const formatUptime = (seconds: number | undefined): string => {
+  const totalSeconds = seconds ?? 0
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  if (days > 0) return `${days}d ${hours}h`
+  if (hours > 0) return `${hours}h ${minutes}m`
+  return `${minutes}m`
 }
 
 const goToUserUsage = (item: UserSpendingRankingItem) => {
